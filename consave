@@ -1,0 +1,182 @@
+#!/usr/bin/python3
+#  _   ___  __
+# | | | \ \/ /      Prayag Jain | Hax Guru
+# | |_| |\  /       YouTube: https://youtube.com/c/haxguru
+# |  _  |/  \       GitHub: https://github.com/Prayag2
+# |_| |_/_/\_\      Email: prayagjain2@gmail.com
+#
+
+## IMPORT ##
+import sys, getopt, os, shutil
+from time import ctime
+
+
+## GLOBAL VARIABLES ##
+help_text = '''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ _   ___  __
+| | | \ \/ /      Prayag Jain | Hax Guru
+| |_| |\  /       YouTube: https://youtube.com/c/haxguru
+|  _  |/  \       GitHub: https://github.com/Prayag2
+|_| |_/_/\_\      Email: prayagjain2@gmail.com
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Usage: consave [options]
+
+Options:
+-h                    shows help text
+-l                    lists created profiles with their IDs
+-s <profile name>     saves current config with the provided name
+-r <profile id>       removes profile with the provided id
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'''
+
+argv = sys.argv[1:]
+home = os.path.expanduser('~')
+config_dir = home + '/.config/'
+profiles_dir = home + '/.haxguru/consave/profiles/'
+list_of_profiles = ''
+folder_names = ['gtk-2.0', 'gtk-3.0', 'Kvantum']
+file_names = ['dolphinrc', 'konsolerc', 'kcminputrc', 'kdeglobals', 'kglobalshortcutsrc', 'klipperrc', 'krunnerrc', 'kscreenlockerrc', 'ksmserverrc', 'kwinrc', 'kwinrulesrc', 'plasma-org.kde.plasma.desktop-appletsrc', 'plasmarc', 'plasmashellrc', 'gtkrc', 'gtkrc-2.0']
+
+
+## FUNCTIONS ##
+def mkdir(path):
+    '''
+    Creates directory if it doesn't exist
+    '''
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+
+def print_msg(message, include_help=True):
+    '''
+    Prints a message with help info
+    '''
+    print(f"Consave: {message.lower()}")
+    if include_help:
+        print("Try 'consave -h' for more info!")
+
+
+def list_profiles():
+    '''
+    Lists all the created profiles
+    '''
+    if os.path.exists(profiles_dir) and len(list_of_profiles) != 0:
+        print("Consave Profiles:")
+        print(f"ID      NAME")
+        for i, item in enumerate(list_of_profiles):
+            print(f"{i+1}       {item}")
+        
+    else:
+        print_msg('no profile created yet')
+
+
+def save_profile(name):
+    '''
+    Saves necessary config files in ~/.haxguru/consave/profiles/<name>
+    '''
+    if name in list_of_profiles:
+        print_msg('Profile already exists')
+    else:
+        print("Creating profile...")
+        try:
+            profile_dir = profiles_dir + name
+            mkdir(profile_dir)
+            for folder in folder_names:
+                shutil.copytree(config_dir + folder, f"{profile_dir}/{folder}")
+            for file in file_names:
+                shutil.copy(config_dir + file, profile_dir)
+
+        except Exception as e:
+            print(e)
+        else:
+            print_msg("Profile saved!", False)
+
+
+def apply_profile(id):
+    try:
+        id = int(id)
+    except ValueError:
+        print_msg("invalid id")
+    else:
+        if len(list_of_profiles) == 0:
+            print_msg("no profiles saved yet")
+        elif id < 0 or id > len(list_of_profiles):
+            print_msg("profile not found")
+    
+    for i, item in enumerate(list_of_profiles):
+        if i == id-1:
+            name = item
+            break
+
+    profile_dir = profiles_dir + name + '/'
+    for folder in folder_names:
+        shutil.copytree(profile_dir, config_dir, dirs_exist_ok=True)
+
+    for file in file_names:
+        shutil.copy(profile_dir + file, config_dir)
+    
+    os.system('killall plasmashell; plasmashell > /dev/null 2>&1 & disown')
+    print_msg("profile applied successfully!", False)
+
+
+def remove_profile(id):
+    '''
+    Removes the specified profile
+    '''
+    try:
+        id = int(id) - 1
+    except:
+        print_msg('invalid id')
+    else:
+        for i, item in enumerate(list_of_profiles):
+            if i == id:
+                shutil.rmtree(profiles_dir + item)
+                print_msg('removed profile successfully', False)
+                break
+        else:
+            print_msg("Profile not found")
+
+
+## VALID OPTIONS AND THEIR FUNCTIONS ##
+data = {
+    '-h': {'func': print, 'args': {'required': True, 'given_by_user': False, 'arg': help_text}},
+    '-s': {'func': save_profile, 'args': {'required': True, 'given_by_user': True}},
+    '-l': {'func': list_profiles, 'args': {'required': False}},
+    '-r': {'func': remove_profile, 'args': {'required': True, 'given_by_user': True}},
+    '-a': {'func': apply_profile, 'args': {'required': True, 'given_by_user': True}}
+}
+
+
+## MAIN ##
+def main():
+    global list_of_profiles
+    mkdir(profiles_dir)
+    list_of_profiles = os.listdir(profiles_dir)
+
+    try:
+        options, args = getopt.getopt(argv, 'hlr:s:a:b')
+
+    except getopt.GetoptError:
+        print_msg(f'unrecognised option {argv[0]}')
+
+    else:
+        for option, argument in options:
+            if option in data:
+                opt = data[option]
+                if opt['args']['required']:
+                    if opt['args']['given_by_user']:
+                        opt['func'](argument)
+                    else:
+                        opt['func'](opt['args']['arg'])
+                else:
+                    opt['func']()
+            
+
+
+## CALLING MAIN ##
+if __name__ == '__main__':
+    main()
