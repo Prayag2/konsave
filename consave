@@ -29,6 +29,7 @@ Options:
 -l                    lists created profiles with their IDs
 -s <profile name>     saves current config with the provided name
 -r <profile id>       removes profile with the provided id
+-a <profile id>       apply profile of the provided id
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '''
@@ -107,20 +108,20 @@ def apply_profile(id):
         elif id < 0 or id > len(list_of_profiles):
             print_msg("profile not found")
     
-    for i, item in enumerate(list_of_profiles):
-        if i == id-1:
-            name = item
-            break
+        for i, item in enumerate(list_of_profiles):
+            if i == id-1:
+                name = item
+                break
 
-    profile_dir = profiles_dir + name + '/'
-    for folder in folder_names:
-        shutil.copytree(profile_dir, config_dir, dirs_exist_ok=True)
+        profile_dir = profiles_dir + name + '/'
+        for folder in folder_names:
+            shutil.copytree(profile_dir, config_dir, dirs_exist_ok=True)
 
-    for file in file_names:
-        shutil.copy(profile_dir + file, config_dir)
-    
-    os.system('killall plasmashell; plasmashell > /dev/null 2>&1 & disown')
-    print_msg("profile applied successfully!", False)
+        for file in file_names:
+            shutil.copy(profile_dir + file, config_dir)
+        
+        os.system('killall plasmashell; plasmashell > /dev/null 2>&1 & disown')
+        print_msg("profile applied successfully! Please login and logout to see the changes completely!", False)
 
 
 def remove_profile(id):
@@ -143,11 +144,11 @@ def remove_profile(id):
 
 ## VALID OPTIONS AND THEIR FUNCTIONS ##
 data = {
-    '-h': {'func': print, 'args': {'required': True, 'given_by_user': False, 'arg': help_text}},
-    '-s': {'func': save_profile, 'args': {'required': True, 'given_by_user': True}},
-    '-l': {'func': list_profiles, 'args': {'required': False}},
-    '-r': {'func': remove_profile, 'args': {'required': True, 'given_by_user': True}},
-    '-a': {'func': apply_profile, 'args': {'required': True, 'given_by_user': True}}
+    '-h': {'usage': 'consave -h', 'func': print, 'args': {'required': True, 'given_by_user': False, 'arg': help_text}},
+    '-s': {'usage': 'consave -s <profile name>','func': save_profile, 'args': {'required': True, 'given_by_user': True}},
+    '-l': {'usage': 'consave -l','func': list_profiles, 'args': {'required': False}},
+    '-r': {'usage': 'consave -r <profile id>','func': remove_profile, 'args': {'required': True, 'given_by_user': True}},
+    '-a': {'usage': 'consave -a <profile id>','func': apply_profile, 'args': {'required': True, 'given_by_user': True}}
 }
 
 
@@ -161,7 +162,11 @@ def main():
         options, args = getopt.getopt(argv, 'hlr:s:a:b')
 
     except getopt.GetoptError:
-        print_msg(f'unrecognised option {argv[0]}')
+        option = argv[0]
+        if option not in data:
+            print_msg(f'unrecognised option {option}')
+        else:
+            print_msg(f"Usage- {data[option]['usage']}")
 
     else:
         for option, argument in options:
