@@ -1,5 +1,4 @@
 # Consave (Save Plasma Customization)
----
 A CLI program that will let you save and apply your KDE Plasma customizations with just one command!
 ---
 ## Dependencies
