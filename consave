@@ -159,7 +159,7 @@ def main():
     list_of_profiles = os.listdir(profiles_dir)
 
     try:
-        options, args = getopt.getopt(argv, 'hlr:s:a:b')
+        options, args = getopt.getopt(argv, 'r:s:a:hlb')
 
     except getopt.GetoptError:
         option = argv[0]
@@ -169,6 +169,9 @@ def main():
             print_msg(f"Usage- {data[option]['usage']}")
 
     else:
+        if not options:
+            print(help_text)
+            sys.exit(0)
         for option, argument in options:
             if option in data:
                 opt = data[option]
