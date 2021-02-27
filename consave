@@ -120,8 +120,8 @@ def apply_profile(id):
         for file in file_names:
             shutil.copy(profile_dir + file, config_dir)
         
-        os.system('killall plasmashell; plasmashell > /dev/null 2>&1 & disown')
-        print_msg("profile applied successfully! Please login and logout to see the changes completely!", False)
+        os.system('plasmashell --replace > /dev/null 2>&1 & disown')
+        print_msg("Profile applied successfully! Please login and logout to see the changes completely!", False)
 
 
 def remove_profile(id):
