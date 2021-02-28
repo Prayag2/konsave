@@ -12,7 +12,7 @@ echo 'Installing consave...'
 
 # Copy 'consave' to ~/.local/bin/
 cp ./consave ~/.local/bin
-sudo chmod +x ~/.local/bin/consave
+chmod +x ~/.local/bin/consave
 
 # Done
 echo 'Installed successfully! You can now delete this folder.'
