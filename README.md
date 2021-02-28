@@ -11,7 +11,7 @@ There are no dependencies! Just make sure your python version is above `3.8`.
 `git clone https://github.com/Prayag2/konsave ~/Downloads/konsave`
 - Make it executable  
 `cd ~/Downloads/konsave`
-`sudo chmod +x ./install.sh`
+`chmod +x ./install.sh`
 - Install  
 `./install.sh`
 
