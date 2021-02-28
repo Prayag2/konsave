@@ -87,9 +87,13 @@ def save_profile(name):
             profile_dir = profiles_dir + name
             mkdir(profile_dir)
             for folder in folder_names:
-                shutil.copytree(config_dir + folder, f"{profile_dir}/{folder}")
+                source = os.path.join(config_dir, folder)
+                if os.path.exists(source):
+                    shutil.copytree(source, f"{profile_dir}/{folder}")
             for file in file_names:
-                shutil.copy(config_dir + file, profile_dir)
+                source = os.path.join(config_dir, file)
+                if os.path.exists(source):
+                    shutil.copy(source, profile_dir)
 
         except Exception as e:
             print(e)
@@ -114,11 +118,7 @@ def apply_profile(id):
                 break
 
         profile_dir = profiles_dir + name + '/'
-        for folder in folder_names:
-            shutil.copytree(profile_dir, config_dir, dirs_exist_ok=True)
-
-        for file in file_names:
-            shutil.copy(profile_dir + file, config_dir)
+        shutil.copytree(profile_dir, config_dir, dirs_exist_ok=True)
         
         os.system('plasmashell --replace > /dev/null 2>&1 & disown')
         print_msg("Profile applied successfully! Please login and logout to see the changes completely!", False)
