@@ -8,12 +8,12 @@ echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~
 |_| |_/_/\_\      Email: prayagjain2@gmail.com
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-echo 'Installing consave...'
+echo 'Installing konsave...'
 
-# Copy 'consave' to ~/.local/bin/
-cp ./consave ~/.local/bin
-chmod +x ~/.local/bin/consave
+# Copy 'konsave' to ~/.local/bin/
+cp ./konsave ~/.local/bin
+chmod +x ~/.local/bin/konsave
 
 # Done
 echo 'Installed successfully! You can now delete this folder.'
-echo "Try 'consave -h' for more info!"
+echo "Try 'konsave -h' for more info!"
