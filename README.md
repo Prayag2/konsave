@@ -1,4 +1,4 @@
-# konsave (Save Plasma Customization)
+# Konsave (Save Plasma Customization)
 A CLI program that will let you save and apply your KDE Plasma customizations with just one command!
 ![SS_2021-02-27_22-44-17](https://user-images.githubusercontent.com/39525869/109394503-5fb3e580-794d-11eb-8637-70e87e2b0c26.png)
 

@@ -37,7 +37,7 @@ Options:
 argv = sys.argv[1:]
 home = os.path.expanduser('~')
 config_dir = home + '/.config/'
-profiles_dir = home + '/.haxguru/konsave/profiles/'
+profiles_dir = home + '/.config/konsave/profiles/'
 list_of_profiles = ''
 folder_names = ['gtk-2.0', 'gtk-3.0', 'Kvantum']
 file_names = ['dolphinrc', 'konsolerc', 'kcminputrc', 'kdeglobals', 'kglobalshortcutsrc', 'klipperrc', 'krunnerrc', 'kscreenlockerrc', 'ksmserverrc', 'kwinrc', 'kwinrulesrc', 'plasma-org.kde.plasma.desktop-appletsrc', 'plasmarc', 'plasmashellrc', 'gtkrc', 'gtkrc-2.0']
@@ -77,7 +77,7 @@ def list_profiles():
 
 def save_profile(name):
     '''
-    Saves necessary config files in ~/.haxguru/konsave/profiles/<name>
+    Saves necessary config files in ~/.config/konsave/profiles/<name>
     '''
     if name in list_of_profiles:
         print_msg('Profile already exists')
