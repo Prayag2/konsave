@@ -51,15 +51,6 @@ def check_error(func, *args):
         return f
 
 
-# def print_msg(message, include_help=True):
-#     '''
-#     Prints a message with help info
-#     '''
-#     print(f"Konsave: {message.lower()}")
-#     if include_help:
-#         print("Try 'konsave -h' for more info!")
-
-
 def list_profiles():
     '''
     Lists all the created profiles
