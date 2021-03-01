@@ -163,34 +163,6 @@ def main():
         check_error(apply_profile, args.apply)
     else:
         parser.print_help()
-
-
-    # try:
-    #     options, args = getopt.getopt(argv, 'r:s:a:hlb')
-
-    # except getopt.GetoptError:
-    #     option = argv[0]
-    #     if option not in data:
-    #         print(f'Konsave: unrecognised option {option}')
-    #     else:
-    #         print(f"Konsave: Usage- {data[option]['usage']}")
-
-    # else:
-    #     if not options:
-    #         print(help_text)
-    #         sys.exit(0)
-    #     print(options)
-
-        # for option, argument in options:
-        #     if option in data:
-        #         opt = data[option]
-        #         if opt['args']['required']:
-        #             if opt['args']['given_by_user']:
-        #                 check_error(opt['func'], argument)
-        #             else:
-        #                 check_error(opt['func'], opt['args']['arg'])
-        #         else:
-        #             check_error(opt['func'])
             
 
 
