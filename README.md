@@ -3,7 +3,8 @@ A CLI program that will let you save and apply your KDE Plasma customizations wi
 
 ---
 
-![SS_2021-02-27_22-44-17](https://user-images.githubusercontent.com/39525869/109394503-5fb3e580-794d-11eb-8637-70e87e2b0c26.png)
+![SS_2021-03-01_13-32-09](https://user-images.githubusercontent.com/39525869/109468428-90516780-7a92-11eb-904d-77d5d87faf36.png)
+
 
 ---
 ## Dependencies
