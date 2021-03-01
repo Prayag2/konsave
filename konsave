@@ -7,40 +7,18 @@
 #
 
 ## IMPORT ##
-import sys, getopt, os, shutil
-from time import ctime
+import sys, getopt, os, shutil, argparse
 
 
 ## GLOBAL VARIABLES ##
-help_text = '''
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
- _   ___  __
-| | | \ \/ /      Prayag Jain | Hax Guru
-| |_| |\  /       YouTube: https://youtube.com/c/haxguru
-|  _  |/  \       GitHub: https://github.com/Prayag2
-|_| |_/_/\_\      Email: prayagjain2@gmail.com
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Usage: konsave [options]
-
-Options:
--h                    shows help text
--l                    lists created profiles with their IDs
--s <profile name>     saves current config with the provided name
--r <profile id>       removes profile with the provided id
--a <profile id>       apply profile of the provided id
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'''
-
 argv = sys.argv[1:]
 home = os.path.expanduser('~')
 config_dir = home + '/.config/'
 profiles_dir = home + '/.config/konsave/profiles/'
 list_of_profiles = ''
-folder_names = ['gtk-2.0', 'gtk-3.0', 'Kvantum']
-file_names = ['dolphinrc', 'konsolerc', 'kcminputrc', 'kdeglobals', 'kglobalshortcutsrc', 'klipperrc', 'krunnerrc', 'kscreenlockerrc', 'ksmserverrc', 'kwinrc', 'kwinrulesrc', 'plasma-org.kde.plasma.desktop-appletsrc', 'plasmarc', 'plasmashellrc', 'gtkrc', 'gtkrc-2.0']
+length_of_lop = 0
+folder_names = ['gtk-2.0', 'gtk-3.0', 'gtk-4.0', 'Kvantum', 'latte']
+file_names = ['dolphinrc', 'konsolerc', 'kcminputrc', 'kdeglobals', 'kglobalshortcutsrc', 'klipperrc', 'krunnerrc', 'kscreenlockerrc', 'ksmserverrc', 'kwinrc', 'kwinrulesrc', 'plasma-org.kde.plasma.desktop-appletsrc', 'plasmarc', 'plasmashellrc', 'gtkrc', 'gtkrc-2.0', 'lattedockrc', 'breezerc', 'oxygenrc', 'lightlyrc', 'ksplashrc']
 
 
 ## FUNCTIONS ##
@@ -52,136 +30,176 @@ def mkdir(path):
         os.makedirs(path)
 
 
-def print_msg(message, include_help=True):
+def restart_kde():
     '''
-    Prints a message with help info
+    Restarts
     '''
-    print(f"konsave: {message.lower()}")
-    if include_help:
-        print("Try 'konsave -h' for more info!")
+    os.system('plasmashell --replace > /dev/null 2>&1 & disown')
+
+    print("Konsave: Profile applied successfully! Please log-out and log-in to see the changes completely!")
+
+
+def check_error(func, *args):
+    '''
+    This function runs a function and checks if there are any errors.
+    '''
+    try:
+        f = func(*args)
+    except Exception as e:
+        print(f"Konsave: {e}\nTry 'konsave -h' for more info!")
+    else:
+        return f
+
+
+# def print_msg(message, include_help=True):
+#     '''
+#     Prints a message with help info
+#     '''
+#     print(f"Konsave: {message.lower()}")
+#     if include_help:
+#         print("Try 'konsave -h' for more info!")
 
 
 def list_profiles():
     '''
     Lists all the created profiles
     '''
-    if os.path.exists(profiles_dir) and len(list_of_profiles) != 0:
-        print("Konsave profiles:")
-        print(f"ID\tNAME")
-        for i, item in enumerate(list_of_profiles):
-            print(f"{i+1}\t{item}")
-        
-    else:
-        print_msg('No profile created yet.')
+
+    # assert
+    assert (os.path.exists(profiles_dir) and length_of_lop != 0), "No profile found."
+
+    # run
+    print("Konsave profiles:")
+    print(f"ID\tNAME")
+    for i, item in enumerate(list_of_profiles):
+        print(f"{i+1}\t{item}")
 
 
 def save_profile(name):
     '''
     Saves necessary config files in ~/.config/konsave/profiles/<name>
     '''
-    if name in list_of_profiles:
-        print_msg('Profile already exists')
-    else:
-        print("Creating profile...")
-        try:
-            profile_dir = profiles_dir + name
-            mkdir(profile_dir)
-            for folder in folder_names:
-                source = os.path.join(config_dir, folder)
-                if os.path.exists(source):
-                    shutil.copytree(source, f"{profile_dir}/{folder}")
-            for file in file_names:
-                source = os.path.join(config_dir, file)
-                if os.path.exists(source):
-                    shutil.copy(source, profile_dir)
+    
+    # assert
+    assert (name not in list_of_profiles), "Profile with this name already exists"
 
-        except Exception as e:
-            print(e)
-        else:
-            print_msg("Profile saved!", False)
+    # run
+    print("Konsave: Saving profile...")
+    profile_dir = os.path.join(profiles_dir, name)
+    mkdir(profile_dir)
+    
+    for folder in folder_names:
+        source = os.path.join(config_dir, folder)
+        if os.path.exists(source):
+            shutil.copytree(source, f"{profile_dir}/{folder}")
+    for file in file_names:
+        source = os.path.join(config_dir, file)
+        if os.path.exists(source):
+            shutil.copy(source, profile_dir)
+
+    print('Konsave: Profile saved successfully!')
 
 
 def apply_profile(id):
-    try:
-        id = int(id)
-    except ValueError:
-        print_msg("invalid id")
-    else:
-        if len(list_of_profiles) == 0:
-            print_msg("no profiles saved yet")
-        elif id < 0 or id > len(list_of_profiles):
-            print_msg("profile not found")
+    '''
+    Applies profile of the given id
+    '''
     
-        for i, item in enumerate(list_of_profiles):
-            if i == id-1:
-                name = item
-                break
+    # Lowering id by 1
+    id -= 1
 
-        profile_dir = profiles_dir + name + '/'
-        shutil.copytree(profile_dir, config_dir, dirs_exist_ok=True)
-        
-        os.system('plasmashell --replace > /dev/null 2>&1 & disown')
-        print_msg("Profile applied successfully! Please login and logout to see the changes completely!", False)
+    # assert
+    assert (length_of_lop != 0), "No profile saved yet."
+    assert (id in range(length_of_lop)), "Profile not found :("
+
+    # run
+    name = list_of_profiles[id]
+    profile_dir = profiles_dir + name + '/'
+    shutil.copytree(profile_dir, config_dir, dirs_exist_ok=True)
+    restart_kde()
 
 
 def remove_profile(id):
     '''
     Removes the specified profile
     '''
-    try:
-        id = int(id) - 1
-    except:
-        print_msg('invalid id')
-    else:
-        for i, item in enumerate(list_of_profiles):
-            if i == id:
-                shutil.rmtree(profiles_dir + item)
-                print_msg('removed profile successfully', False)
-                break
-        else:
-            print_msg("Profile not found")
 
+    # Lowering id by 1
+    id -= 1
 
-## VALID OPTIONS AND THEIR FUNCTIONS ##
-data = {
-    '-h': {'usage': 'konsave -h', 'func': print, 'args': {'required': True, 'given_by_user': False, 'arg': help_text}},
-    '-s': {'usage': 'konsave -s <profile name>','func': save_profile, 'args': {'required': True, 'given_by_user': True}},
-    '-l': {'usage': 'konsave -l','func': list_profiles, 'args': {'required': False}},
-    '-r': {'usage': 'konsave -r <profile id>','func': remove_profile, 'args': {'required': True, 'given_by_user': True}},
-    '-a': {'usage': 'konsave -a <profile id>','func': apply_profile, 'args': {'required': True, 'given_by_user': True}}
-}
+    # assert
+    assert (id in range(length_of_lop)), "Profile not found."
+
+    # run
+    item = list_of_profiles[id ]
+    shutil.rmtree(profiles_dir + item)
+    print('Konsave: removed profile successfully')
 
 
 ## MAIN ##
 def main():
-    global list_of_profiles
+
+    ## GLOBALS ##
+    global list_of_profiles, length_of_lop
     mkdir(profiles_dir)
     list_of_profiles = os.listdir(profiles_dir)
+    length_of_lop = len(list_of_profiles)
 
-    try:
-        options, args = getopt.getopt(argv, 'r:s:a:hlb')
 
-    except getopt.GetoptError:
-        option = argv[0]
-        if option not in data:
-            print_msg(f'unrecognised option {option}')
-        else:
-            print_msg(f"Usage- {data[option]['usage']}")
+    ## PARSER SETTINGS ##
+    parser = argparse.ArgumentParser(
+        prog = 'Konsave',
+        epilog = "Please report bugs at https://www.github.com/prayag2/konsave"
+    )
 
+    ## ADDING ARGS ##
+    parser.add_argument('-l', '--list', required = False, action = 'store_true', help='Lists created profiles')
+    parser.add_argument('-s', '--save', required = False, type = str, help='Save current config as a profile', metavar = '<name>')
+    parser.add_argument('-r', '--remove', required = False, type = int, help='Remove the specified profile', metavar = '<id>')
+    parser.add_argument('-a', '--apply', required = False, type = int, help='Apply the specified profile', metavar = '<id>')
+
+    ## PARSING ARGS ##
+    args = parser.parse_args()
+
+    ## CHECKING FOR ARGUMENTS ##
+    if args.list:
+        check_error(list_profiles)
+    elif args.save != None:
+        check_error(save_profile, args.save)
+    elif args.remove != None:
+        check_error(remove_profile, args.remove)
+    elif args.apply != None:
+        check_error(apply_profile, args.apply)
     else:
-        if not options:
-            print(help_text)
-            sys.exit(0)
-        for option, argument in options:
-            if option in data:
-                opt = data[option]
-                if opt['args']['required']:
-                    if opt['args']['given_by_user']:
-                        opt['func'](argument)
-                    else:
-                        opt['func'](opt['args']['arg'])
-                else:
-                    opt['func']()
+        parser.print_help()
+
+
+    # try:
+    #     options, args = getopt.getopt(argv, 'r:s:a:hlb')
+
+    # except getopt.GetoptError:
+    #     option = argv[0]
+    #     if option not in data:
+    #         print(f'Konsave: unrecognised option {option}')
+    #     else:
+    #         print(f"Konsave: Usage- {data[option]['usage']}")
+
+    # else:
+    #     if not options:
+    #         print(help_text)
+    #         sys.exit(0)
+    #     print(options)
+
+        # for option, argument in options:
+        #     if option in data:
+        #         opt = data[option]
+        #         if opt['args']['required']:
+        #             if opt['args']['given_by_user']:
+        #                 check_error(opt['func'], argument)
+        #             else:
+        #                 check_error(opt['func'], opt['args']['arg'])
+        #         else:
+        #             check_error(opt['func'])
             
 
 
