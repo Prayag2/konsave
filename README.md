@@ -31,9 +31,9 @@ There are no dependencies! Just make sure your python version is above `3.8`.
 `konsave -a <profile id>` or `konsave --apply <profile id>`
 You may need to log out and log in to see all the changes.  
 ### Export a profile as a ".knsv" file to share it with your friends!
-`konsave -e <profile id>` or `konsave --export <profile id>`
+`konsave -e <profile id>` or `konsave --export-profile <profile id>`
 ### Import a ".knsv file
-`konsave -i <path to the file>` or `konsave --import <path to the file>`
+`konsave -i <path to the file>` or `konsave --import-profile <path to the file>`
 ## Contribution
 You can contribute by reporting issues or fixing bugs!
 
