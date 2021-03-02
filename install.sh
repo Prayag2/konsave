@@ -14,6 +14,9 @@ echo 'Installing konsave...'
 cp ./konsave ~/.local/bin
 chmod +x ~/.local/bin/konsave
 
+# Copy default config file to config directory
+cp ./conf.yaml ~/.config/konsave/
+
 # Done
 echo 'Installed successfully! You can now delete this folder.'
 echo "Try 'konsave -h' for more info!"
