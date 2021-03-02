@@ -7,18 +7,17 @@
 #
 
 ## IMPORT ##
-import sys, getopt, os, shutil, argparse
+import os, shutil, argparse
+from zipfile import ZipFile, ZIP_DEFLATED, is_zipfile
 
 
 ## GLOBAL VARIABLES ##
-argv = sys.argv[1:]
-home = os.path.expanduser('~')
-config_dir = home + '/.config/'
-profiles_dir = home + '/.config/konsave/profiles/'
-list_of_profiles = ''
-length_of_lop = 0
+HOME = os.path.expanduser('~')
+CONFIG_DIR = os.path.join(HOME, '.config')
+PROFILES_DIR = os.path.join(CONFIG_DIR, 'konsave/profiles')
 folder_names = ['gtk-2.0', 'gtk-3.0', 'gtk-4.0', 'Kvantum', 'latte']
 file_names = ['dolphinrc', 'konsolerc', 'kcminputrc', 'kdeglobals', 'kglobalshortcutsrc', 'klipperrc', 'krunnerrc', 'kscreenlockerrc', 'ksmserverrc', 'kwinrc', 'kwinrulesrc', 'plasma-org.kde.plasma.desktop-appletsrc', 'plasmarc', 'plasmashellrc', 'gtkrc', 'gtkrc-2.0', 'lattedockrc', 'breezerc', 'oxygenrc', 'lightlyrc', 'ksplashrc']
+export_extension = '.knsv'
 
 
 ## FUNCTIONS ##
@@ -51,13 +50,13 @@ def check_error(func, *args):
         return f
 
 
-def list_profiles():
+def list_profiles(list_of_profiles, length_of_lop):
     '''
     Lists all the created profiles
     '''
 
     # assert
-    assert (os.path.exists(profiles_dir) and length_of_lop != 0), "No profile found."
+    assert (os.path.exists(PROFILES_DIR) and length_of_lop != 0), "No profile found."
 
     # run
     print("Konsave profiles:")
@@ -66,7 +65,7 @@ def list_profiles():
         print(f"{i+1}\t{item}")
 
 
-def save_profile(name):
+def save_profile(name, list_of_profiles):
     '''
     Saves necessary config files in ~/.config/konsave/profiles/<name>
     '''
@@ -76,22 +75,22 @@ def save_profile(name):
 
     # run
     print("Konsave: Saving profile...")
-    profile_dir = os.path.join(profiles_dir, name)
-    mkdir(profile_dir)
+    PROFILE_DIR = os.path.join(PROFILES_DIR, name)
+    mkdir(PROFILE_DIR)
     
     for folder in folder_names:
-        source = os.path.join(config_dir, folder)
+        source = os.path.join(CONFIG_DIR, folder)
         if os.path.exists(source):
-            shutil.copytree(source, f"{profile_dir}/{folder}")
+            shutil.copytree(source, f"{PROFILE_DIR}/{folder}")
     for file in file_names:
-        source = os.path.join(config_dir, file)
+        source = os.path.join(CONFIG_DIR, file)
         if os.path.exists(source):
-            shutil.copy(source, profile_dir)
+            shutil.copy(source, PROFILE_DIR)
 
     print('Konsave: Profile saved successfully!')
 
 
-def apply_profile(id):
+def apply_profile(id, list_of_profiles, length_of_lop):
     '''
     Applies profile of the given id
     '''
@@ -105,12 +104,12 @@ def apply_profile(id):
 
     # run
     name = list_of_profiles[id]
-    profile_dir = profiles_dir + name + '/'
-    shutil.copytree(profile_dir, config_dir, dirs_exist_ok=True)
+    PROFILE_DIR = PROFILES_DIR + name + '/'
+    shutil.copytree(PROFILE_DIR, CONFIG_DIR, dirs_exist_ok=True)
     restart_kde()
 
 
-def remove_profile(id):
+def remove_profile(id, list_of_profiles, length_of_lop):
     '''
     Removes the specified profile
     '''
@@ -122,18 +121,60 @@ def remove_profile(id):
     assert (id in range(length_of_lop)), "Profile not found."
 
     # run
-    item = list_of_profiles[id ]
-    shutil.rmtree(profiles_dir + item)
+    item = list_of_profiles[id]
+    shutil.rmtree(os.path.join(PROFILES_DIR, item))
     print('Konsave: removed profile successfully')
+
+
+def export(id, list_of_profiles, length_of_lop):
+    '''
+    It will export the specified profile as a ".knsv" file in the home directory
+    '''
+    # lowering id by 1
+    id -= 1
+
+    # assert
+    assert (id in range(length_of_lop)), "Profile not found."
+
+    # run
+    item = list_of_profiles[id]
+    PROFILE_DIR = os.path.join(PROFILES_DIR, item)
+    EXPORT_PATH = os.path.join(HOME, item)
+
+    # compressing the files as zip
+    print("Exporting...")
+    with ZipFile(EXPORT_PATH, 'w', ZIP_DEFLATED) as zip:
+        for root, dirs, files in os.walk(PROFILE_DIR): 
+            for file in files:
+                zip.write(os.path.join(root, file))
+
+    shutil.move(EXPORT_PATH, EXPORT_PATH + export_extension)
+
+    print(f"Exported to {EXPORT_PATH}{export_extension}")
+
+
+def import_profile(path):
+    '''
+    This will import an exported profile
+    '''
+    
+    # assert
+    assert (is_zipfile(path) and path[-5:] == export_extension), "Not a valid konsave file"
+    assert (not os.path.exists(os.path.join(PROFILES_DIR, os.path.basename(path)))), "A profile with this name already exists"
+
+    # run
+    with ZipFile(path, 'r') as zip:
+        zip.extractall('/')
+    
+    print("Profile successfully imported!")
 
 
 ## MAIN ##
 def main():
 
-    ## GLOBALS ##
-    global list_of_profiles, length_of_lop
-    mkdir(profiles_dir)
-    list_of_profiles = os.listdir(profiles_dir)
+    ## VARIABLES ##
+    mkdir(PROFILES_DIR)
+    list_of_profiles = os.listdir(PROFILES_DIR)
     length_of_lop = len(list_of_profiles)
 
 
@@ -148,19 +189,25 @@ def main():
     parser.add_argument('-s', '--save', required = False, type = str, help='Save current config as a profile', metavar = '<name>')
     parser.add_argument('-r', '--remove', required = False, type = int, help='Remove the specified profile', metavar = '<id>')
     parser.add_argument('-a', '--apply', required = False, type = int, help='Apply the specified profile', metavar = '<id>')
+    parser.add_argument('-e', '--export-profile', required = False, type = int, help='Export a profile and share with your friends!', metavar = '<id>')
+    parser.add_argument('-i', '--import-profile', required = False, type = str, help='Import a konsave file', metavar = '<path>')
 
     ## PARSING ARGS ##
     args = parser.parse_args()
 
     ## CHECKING FOR ARGUMENTS ##
     if args.list:
-        check_error(list_profiles)
+        check_error(list_profiles, list_of_profiles, length_of_lop)
     elif args.save != None:
-        check_error(save_profile, args.save)
+        check_error(save_profile, args.save, list_of_profiles)
     elif args.remove != None:
-        check_error(remove_profile, args.remove)
+        check_error(remove_profile, args.remove, list_of_profiles, length_of_lop)
     elif args.apply != None:
-        check_error(apply_profile, args.apply)
+        check_error(apply_profile, args.apply, list_of_profiles, length_of_lop)
+    elif args.export_profile != None:
+        check_error(export, args.export_profile, list_of_profiles, length_of_lop)
+    elif args.import_profile != None:
+        check_error(import_profile, args.import_profile)
     else:
         parser.print_help()
             
