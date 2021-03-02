@@ -6,10 +6,7 @@ A CLI program that will let you save and apply your KDE Plasma customizations wi
 
 ---
 
-
-https://user-images.githubusercontent.com/39525869/109610568-f00f4780-7b52-11eb-8fb0-b8b604b18cda.mp4
-
-
+Preview: https://im7.ezgif.com/tmp/ezgif-7-e0c7257f0aef.gif
 
 ---
 ## Dependencies
