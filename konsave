@@ -12,7 +12,6 @@ from zipfile import ZipFile, ZIP_DEFLATED, is_zipfile
 
 try:
     import yaml
-    import bitches
 except ModuleNotFoundError:
     raise ModuleNotFoundError("Please install the module PyYAML using pip: \n"
                               "pip install PyYAML")
