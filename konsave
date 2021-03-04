@@ -36,7 +36,7 @@ def search_config(path, section, option):
     '''
     This function will parse config files and search for specific values
     '''
-    config = configparser.ConfigParser()
+    config = configparser.ConfigParser(strict = False)
     config.read(path)
     return config[section][option]
 
