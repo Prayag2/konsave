@@ -7,14 +7,17 @@
 #
 
 ## IMPORT ##
-import os, shutil, argparse
-from zipfile import ZipFile, ZIP_DEFLATED, is_zipfile
+import os, shutil, argparse, configparser
+from random import shuffle
+from zipfile import is_zipfile, ZipFile
 
 
 ## GLOBAL VARIABLES ##
-HOME = os.path.expanduser('~')
+HOME = os.path.expandvars('$HOME')
 CONFIG_DIR = os.path.join(HOME, '.config')
-PROFILES_DIR = os.path.join(CONFIG_DIR, 'konsave/profiles')
+KONSAVE_DIR = os.path.join(CONFIG_DIR, 'konsave')
+PROFILES_DIR = os.path.join(KONSAVE_DIR, 'profiles')
+
 folder_names = ['gtk-2.0', 'gtk-3.0', 'gtk-4.0', 'Kvantum', 'latte']
 file_names = ['dolphinrc', 'konsolerc', 'kcminputrc', 'kdeglobals', 'kglobalshortcutsrc', 'klipperrc', 'krunnerrc', 'kscreenlockerrc', 'ksmserverrc', 'kwinrc', 'kwinrulesrc', 'plasma-org.kde.plasma.desktop-appletsrc', 'plasmarc', 'plasmashellrc', 'gtkrc', 'gtkrc-2.0', 'lattedockrc', 'breezerc', 'oxygenrc', 'lightlyrc', 'ksplashrc']
 export_extension = '.knsv'
@@ -27,6 +30,15 @@ def mkdir(path):
     '''
     if not os.path.exists(path):
         os.makedirs(path)
+    return path
+
+def search_config(path, section, option):
+    '''
+    This function will parse config files and search for specific values
+    '''
+    config = configparser.ConfigParser()
+    config.read(path)
+    return config[section][option]
 
 
 def restart_kde():
@@ -48,6 +60,14 @@ def check_error(func, *args):
         print(f"Konsave: {e}\nTry 'konsave -h' for more info!")
     else:
         return f
+
+
+def print_msg(msg):
+    '''
+    Makes any text a little prettier
+    '''
+    msg = msg[0].capitalize() + msg[1:]
+    print(f"Konsave: {msg}")
 
 
 def list_profiles(list_of_profiles, length_of_lop):
@@ -74,7 +94,7 @@ def save_profile(name, list_of_profiles):
     assert (name not in list_of_profiles), "Profile with this name already exists"
 
     # run
-    print("Konsave: Saving profile...")
+    print_msg("saving profile...")
     PROFILE_DIR = os.path.join(PROFILES_DIR, name)
     mkdir(PROFILE_DIR)
     
@@ -87,7 +107,7 @@ def save_profile(name, list_of_profiles):
         if os.path.exists(source):
             shutil.copy(source, PROFILE_DIR)
 
-    print('Konsave: Profile saved successfully!')
+    print_msg('Profile saved successfully!')
 
 
 def apply_profile(id, list_of_profiles, length_of_lop):
@@ -104,7 +124,7 @@ def apply_profile(id, list_of_profiles, length_of_lop):
 
     # run
     name = list_of_profiles[id]
-    PROFILE_DIR = PROFILES_DIR + name + '/'
+    PROFILE_DIR = os.path.join(PROFILES_DIR, name)
     shutil.copytree(PROFILE_DIR, CONFIG_DIR, dirs_exist_ok=True)
     restart_kde()
 
@@ -123,13 +143,14 @@ def remove_profile(id, list_of_profiles, length_of_lop):
     # run
     item = list_of_profiles[id]
     shutil.rmtree(os.path.join(PROFILES_DIR, item))
-    print('Konsave: removed profile successfully')
+    print_msg('removed profile successfully')
 
 
 def export(id, list_of_profiles, length_of_lop):
     '''
     It will export the specified profile as a ".knsv" file in the home directory
     '''
+
     # lowering id by 1
     id -= 1
 
@@ -141,16 +162,49 @@ def export(id, list_of_profiles, length_of_lop):
     PROFILE_DIR = os.path.join(PROFILES_DIR, item)
     EXPORT_PATH = os.path.join(HOME, item)
 
+    if os.path.exists(EXPORT_PATH):
+        rand_str = list('abcdefg12345')
+        shuffle(rand_str)
+        EXPORT_PATH = EXPORT_PATH + ''.join(rand_str)
+
     # compressing the files as zip
-    print("Exporting...")
-    with ZipFile(EXPORT_PATH, 'w', ZIP_DEFLATED) as zip:
-        for root, dirs, files in os.walk(PROFILE_DIR): 
-            for file in files:
-                zip.write(os.path.join(root, file))
+    print_msg("Exporting profile. It might take a minute or two...")
 
-    shutil.move(EXPORT_PATH, EXPORT_PATH + export_extension)
+    CONFIG_EXPORT_PATH = mkdir(os.path.join(EXPORT_PATH, "config"))
+    PLASMA_EXPORT_PATH = mkdir(os.path.join(EXPORT_PATH, "plasma"))
+    CURSOR_EXPORT_PATH = mkdir(os.path.join(EXPORT_PATH, "cursor"))
+    ICON_EXPORT_PATH = mkdir(os.path.join(EXPORT_PATH, "icons"))
 
-    print(f"Exported to {EXPORT_PATH}{export_extension}")
+    # VARIABLES
+    KDE_GLOBALS = os.path.join(CONFIG_DIR, 'kdeglobals')
+
+    icon = search_config(KDE_GLOBALS, 'Icons', 'Theme')
+    cursor = search_config(os.path.join(CONFIG_DIR, 'kcminputrc'), 'Mouse', 'cursorTheme')
+
+    PLASMA_DIR = os.path.join(HOME, '.local/share/plasma')
+    LOCAL_ICON_DIR = os.path.join(HOME, '.local/share/icons', icon)
+    USR_ICON_DIR = os.path.join('/usr/share/icons', icon)
+    LOCAL_CURSOR_DIR = os.path.join(HOME, '.icons', cursor)
+    USR_CURSOR_DIR = os.path.join('/usr/share/icons', cursor)
+
+    def check_path_and_copy(path1, path2, export_location, name):
+        if os.path.exists(path1):
+            shutil.copytree(path1, os.path.join(export_location, name), dirs_exist_ok=True)
+        elif os.path.exists(path2):
+            shutil.copytree(path2, os.path.join(export_location, name), dirs_exist_ok=True)
+        else:
+            print_msg(f"Couldn't find {path1} or {path2}. Skipping...")
+    
+    check_path_and_copy(LOCAL_ICON_DIR, USR_ICON_DIR, ICON_EXPORT_PATH, icon)
+    check_path_and_copy(LOCAL_CURSOR_DIR, USR_CURSOR_DIR, CURSOR_EXPORT_PATH, cursor)
+    shutil.copytree(PLASMA_DIR, PLASMA_EXPORT_PATH, dirs_exist_ok=True)
+    shutil.copytree(PROFILE_DIR, CONFIG_EXPORT_PATH, dirs_exist_ok=True)
+
+    shutil.make_archive(EXPORT_PATH, 'zip', EXPORT_PATH)
+    shutil.rmtree(EXPORT_PATH)
+    shutil.move(EXPORT_PATH + '.zip', EXPORT_PATH + export_extension)
+
+    print_msg(f"Successfully exported to {EXPORT_PATH}{export_extension}")
 
 
 def import_profile(path):
@@ -160,13 +214,41 @@ def import_profile(path):
     
     # assert
     assert (is_zipfile(path) and path[-5:] == export_extension), "Not a valid konsave file"
-    assert (not os.path.exists(os.path.join(PROFILES_DIR, os.path.basename(path)))), "A profile with this name already exists"
+
+    item = os.path.basename(path)[:-5]
+    
+    assert (not os.path.exists(os.path.join(PROFILES_DIR, item))), "A profile with this name already exists"
 
     # run
+
+    print_msg("Importing profile. It might take a minute or two...")
+
+    item = os.path.basename(path).replace(export_extension, '')
+
+    TEMP_PATH = os.path.join(KONSAVE_DIR, 'temp', item)
+
     with ZipFile(path, 'r') as zip:
-        zip.extractall('/')
+        zip.extractall(TEMP_PATH)
+
+    CONFIG_IMPORT_PATH = os.path.join(TEMP_PATH, 'config')
+    PLASMA_IMPORT_PATH = os.path.join(TEMP_PATH, 'plasma')
+    ICON_IMPORT_PATH = os.path.join(TEMP_PATH, 'icons')
+    CURSOR_IMPORT_PATH = os.path.join(TEMP_PATH, 'cursor')
+
+    PLASMA_DIR = os.path.join(HOME, '.local/share/plasma')
+    LOCAL_ICON_DIR = os.path.join(HOME, '.local/share/icons')
+    LOCAL_CURSOR_DIR = os.path.join(HOME, '.icons')
+    PROFILE_DIR = os.path.join(PROFILES_DIR, item)
+
+    print()
+    shutil.copytree(CONFIG_IMPORT_PATH, PROFILE_DIR, dirs_exist_ok=True)
+    shutil.copytree(PLASMA_IMPORT_PATH, PLASMA_DIR, dirs_exist_ok=True)
+    shutil.copytree(ICON_IMPORT_PATH, LOCAL_ICON_DIR, dirs_exist_ok=True)
+    shutil.copytree(CURSOR_IMPORT_PATH, LOCAL_CURSOR_DIR, dirs_exist_ok=True)
     
-    print("Profile successfully imported!")
+    shutil.rmtree(TEMP_PATH)
+
+    print_msg("Profile successfully imported!")
 
 
 ## MAIN ##
