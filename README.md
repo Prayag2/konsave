@@ -20,16 +20,20 @@ There are no dependencies! Just make sure your python version is above `3.8`.
 
 ## Usage
 ### Get Help
-`konsave -h`
+`konsave -h` or `konsave --help`
 ### Save current configuration as a profile
-`konsave -s <profile name>`
+`konsave -s <profile name>` or `konsave --save <profile name>`
 ### List all profiles
-`konsave -l`
+`konsave -l` or `konsave --list`
 ### Remove a profile
-`konsave -r <profile id>`
+`konsave -r <profile id>` or `konsave --remove <profile id>`
 ### Apply a profile
-`konsave -a <profile id>`  
+`konsave -a <profile id>` or `konsave --apply <profile id>`
 You may need to log out and log in to see all the changes.  
+### Export a profile as a ".knsv" file to share it with your friends!
+`konsave -e <profile id>` or `konsave --export-profile <profile id>`
+### Import a ".knsv file
+`konsave -i <path to the file>` or `konsave --import-profile <path to the file>`
 ## Contribution
 You can contribute by reporting issues or fixing bugs!
 
