@@ -19,6 +19,8 @@ Install from PyPI
 `konsave -h` or `konsave --help`
 ### Save current configuration as a profile
 `konsave -s <profile name>` or `konsave --save <profile name>`
+### Overwrite an already saved profile
+`konsave -s <profile name> -f` or `konsave -s <profile name> --force `
 ### List all profiles
 `konsave -l` or `konsave --list`
 ### Remove a profile
