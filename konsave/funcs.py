@@ -1,27 +1,8 @@
-#!/usr/bin/python3
-#  _   ___  __
-# | | | \ \/ /      Prayag Jain | Hax Guru
-# | |_| |\  /       YouTube: https://youtube.com/c/haxguru
-# |  _  |/  \       GitHub: https://github.com/Prayag2
-# |_| |_/_/\_\      Email: prayagjain2@gmail.com
-#
-
 ## IMPORT ##
 import os, shutil, argparse, configparser
 from random import shuffle
 from zipfile import is_zipfile, ZipFile
-
-
-## GLOBAL VARIABLES ##
-HOME = os.path.expandvars('$HOME')
-CONFIG_DIR = os.path.join(HOME, '.config')
-KONSAVE_DIR = os.path.join(CONFIG_DIR, 'konsave')
-PROFILES_DIR = os.path.join(KONSAVE_DIR, 'profiles')
-
-folder_names = ['gtk-2.0', 'gtk-3.0', 'gtk-4.0', 'Kvantum', 'latte']
-file_names = ['dolphinrc', 'konsolerc', 'kcminputrc', 'kdeglobals', 'kglobalshortcutsrc', 'klipperrc', 'krunnerrc', 'kscreenlockerrc', 'ksmserverrc', 'kwinrc', 'kwinrulesrc', 'plasma-org.kde.plasma.desktop-appletsrc', 'plasmarc', 'plasmashellrc', 'gtkrc', 'gtkrc-2.0', 'lattedockrc', 'breezerc', 'oxygenrc', 'lightlyrc', 'ksplashrc']
-export_extension = '.knsv'
-
+from konsave.vars import *
 
 ## FUNCTIONS ##
 def mkdir(path):
@@ -32,6 +13,8 @@ def mkdir(path):
         os.makedirs(path)
     return path
 
+
+# PARSE AND SEARCH IN A CONFIG FILE
 def search_config(path, section, option):
     '''
     This function will parse config files and search for specific values
@@ -41,6 +24,7 @@ def search_config(path, section, option):
     return config[section][option]
 
 
+# RESTART KDE
 def restart_kde():
     '''
     Restarts
@@ -50,6 +34,7 @@ def restart_kde():
     print("Konsave: Profile applied successfully! Please log-out and log-in to see the changes completely!")
 
 
+# CHECK FOR ERRORS
 def check_error(func, *args):
     '''
     This function runs a function and checks if there are any errors.
@@ -62,6 +47,7 @@ def check_error(func, *args):
         return f
 
 
+# PRINT/LOG
 def print_msg(msg):
     '''
     Makes any text a little prettier
@@ -70,6 +56,7 @@ def print_msg(msg):
     print(f"Konsave: {msg}")
 
 
+# LIST PROFILES
 def list_profiles(list_of_profiles, length_of_lop):
     '''
     Lists all the created profiles
@@ -85,6 +72,7 @@ def list_profiles(list_of_profiles, length_of_lop):
         print(f"{i+1}\t{item}")
 
 
+# SAVE PROFILE
 def save_profile(name, list_of_profiles):
     '''
     Saves necessary config files in ~/.config/konsave/profiles/<name>
@@ -110,6 +98,7 @@ def save_profile(name, list_of_profiles):
     print_msg('Profile saved successfully!')
 
 
+# APPLY PROFILE
 def apply_profile(id, list_of_profiles, length_of_lop):
     '''
     Applies profile of the given id
@@ -129,6 +118,7 @@ def apply_profile(id, list_of_profiles, length_of_lop):
     restart_kde()
 
 
+# REMOVE PROFILE
 def remove_profile(id, list_of_profiles, length_of_lop):
     '''
     Removes the specified profile
@@ -146,6 +136,7 @@ def remove_profile(id, list_of_profiles, length_of_lop):
     print_msg('removed profile successfully')
 
 
+# EXPORT PROFILE
 def export(id, list_of_profiles, length_of_lop):
     '''
     It will export the specified profile as a ".knsv" file in the home directory
@@ -207,6 +198,7 @@ def export(id, list_of_profiles, length_of_lop):
     print_msg(f"Successfully exported to {EXPORT_PATH}{export_extension}")
 
 
+# IMPORT PROFILE
 def import_profile(path):
     '''
     This will import an exported profile
@@ -214,9 +206,7 @@ def import_profile(path):
     
     # assert
     assert (is_zipfile(path) and path[-5:] == export_extension), "Not a valid konsave file"
-
-    item = os.path.basename(path)[:-5]
-    
+    item = os.path.basename(path)[:-5]    
     assert (not os.path.exists(os.path.join(PROFILES_DIR, item))), "A profile with this name already exists"
 
     # run
@@ -249,52 +239,3 @@ def import_profile(path):
     shutil.rmtree(TEMP_PATH)
 
     print_msg("Profile successfully imported!")
-
-
-## MAIN ##
-def main():
-
-    ## VARIABLES ##
-    mkdir(PROFILES_DIR)
-    list_of_profiles = os.listdir(PROFILES_DIR)
-    length_of_lop = len(list_of_profiles)
-
-
-    ## PARSER SETTINGS ##
-    parser = argparse.ArgumentParser(
-        prog = 'Konsave',
-        epilog = "Please report bugs at https://www.github.com/prayag2/konsave"
-    )
-
-    ## ADDING ARGS ##
-    parser.add_argument('-l', '--list', required = False, action = 'store_true', help='Lists created profiles')
-    parser.add_argument('-s', '--save', required = False, type = str, help='Save current config as a profile', metavar = '<name>')
-    parser.add_argument('-r', '--remove', required = False, type = int, help='Remove the specified profile', metavar = '<id>')
-    parser.add_argument('-a', '--apply', required = False, type = int, help='Apply the specified profile', metavar = '<id>')
-    parser.add_argument('-e', '--export-profile', required = False, type = int, help='Export a profile and share with your friends!', metavar = '<id>')
-    parser.add_argument('-i', '--import-profile', required = False, type = str, help='Import a konsave file', metavar = '<path>')
-
-    ## PARSING ARGS ##
-    args = parser.parse_args()
-
-    ## CHECKING FOR ARGUMENTS ##
-    if args.list:
-        check_error(list_profiles, list_of_profiles, length_of_lop)
-    elif args.save != None:
-        check_error(save_profile, args.save, list_of_profiles)
-    elif args.remove != None:
-        check_error(remove_profile, args.remove, list_of_profiles, length_of_lop)
-    elif args.apply != None:
-        check_error(apply_profile, args.apply, list_of_profiles, length_of_lop)
-    elif args.export_profile != None:
-        check_error(export, args.export_profile, list_of_profiles, length_of_lop)
-    elif args.import_profile != None:
-        check_error(import_profile, args.import_profile)
-    else:
-        parser.print_help()
-            
-
-
-## CALLING MAIN ##
-if __name__ == '__main__':
-    main()

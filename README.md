@@ -7,16 +7,11 @@ A CLI program that will let you save and apply your KDE Plasma customizations wi
 
 ---
 ## Dependencies
-There are no dependencies! Just make sure your python version is above `3.8`.
+There are no dependencies! Just make sure your python version is above `3.9`.
 
 ## Installation
-- Clone This repo  
-`git clone https://github.com/Prayag2/konsave ~/Downloads/konsave`
-- Make it executable  
-`cd ~/Downloads/konsave`
-`chmod +x ./install.sh`
-- Install  
-`./install.sh`
+Install from PyPI
+`python -m pip install konsave`
 
 ## Usage
 ### Get Help
