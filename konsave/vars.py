@@ -12,7 +12,7 @@ CONFIG_FILE = os.path.join(KONSAVE_DIR, "conf.yaml")
 export_extension = '.knsv'
 
 if not os.path.exists(PROFILES_DIR):
-    os.mkdir(PROFILES_DIR)
+    os.makedirs(PROFILES_DIR)
 
 list_of_profiles = os.listdir(PROFILES_DIR)
 length_of_lop = len(list_of_profiles)
