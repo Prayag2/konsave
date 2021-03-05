@@ -4,6 +4,15 @@ from random import shuffle
 from zipfile import is_zipfile, ZipFile
 from konsave.vars import *
 
+from pkg_resources import resource_stream, resource_filename
+
+try:
+    import yaml
+except ModuleNotFoundError:
+    raise ModuleNotFoundError("Please install the module PyYAML using pip: \n"
+                              "pip install PyYAML")
+
+
 ## FUNCTIONS ##
 def mkdir(path):
     '''
@@ -14,12 +23,38 @@ def mkdir(path):
     return path
 
 
+def load_config():
+    """
+    Load the yaml file which contains the files and folder to be saved
+
+    The file should be formatted like this:
+
+    ---
+    entries:
+        - folder name
+        - file name
+        - another file name
+        - another folder name
+
+    """
+    default_config_path = resource_filename('konsave', 'conf.yaml')
+    if not os.path.exists(CONFIG_FILE):
+        print_msg(f"No config file found! Using default config ({default_config_path}).")
+        shutil.copy(default_config_path, CONFIG_FILE)
+        print_msg(f"Saved default config to: {CONFIG_FILE}")
+        return yaml.load(resource_stream('konsave', 'conf.yaml'), Loader=yaml.FullLoader)["entries"]
+
+    with open(CONFIG_FILE) as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+    return config["entries"]
+
+
 # PARSE AND SEARCH IN A CONFIG FILE
 def search_config(path, section, option):
     '''
     This function will parse config files and search for specific values
     '''
-    config = configparser.ConfigParser(strict = False)
+    config = configparser.ConfigParser(strict=False)
     config.read(path)
     return config[section][option]
 
@@ -69,31 +104,31 @@ def list_profiles(list_of_profiles, length_of_lop):
     print("Konsave profiles:")
     print(f"ID\tNAME")
     for i, item in enumerate(list_of_profiles):
-        print(f"{i+1}\t{item}")
+        print(f"{i + 1}\t{item}")
 
 
 # SAVE PROFILE
-def save_profile(name, list_of_profiles):
+def save_profile(name, list_of_profiles, force=False):
     '''
     Saves necessary config files in ~/.config/konsave/profiles/<name>
     '''
-    
+
     # assert
-    assert (name not in list_of_profiles), "Profile with this name already exists"
+    assert (name not in list_of_profiles or force), "Profile with this name already exists"
 
     # run
     print_msg("saving profile...")
     PROFILE_DIR = os.path.join(PROFILES_DIR, name)
     mkdir(PROFILE_DIR)
-    
-    for folder in folder_names:
-        source = os.path.join(CONFIG_DIR, folder)
+
+    entries = load_config()
+    for entry in entries:
+        source = os.path.join(CONFIG_DIR, entry)
         if os.path.exists(source):
-            shutil.copytree(source, f"{PROFILE_DIR}/{folder}")
-    for file in file_names:
-        source = os.path.join(CONFIG_DIR, file)
-        if os.path.exists(source):
-            shutil.copy(source, PROFILE_DIR)
+            if os.path.isdir(source):
+                shutil.copytree(source, f"{PROFILE_DIR}/{entry}", dirs_exist_ok=True)
+            else:
+                shutil.copy(source, PROFILE_DIR)
 
     print_msg('Profile saved successfully!')
 
@@ -103,7 +138,7 @@ def apply_profile(id, list_of_profiles, length_of_lop):
     '''
     Applies profile of the given id
     '''
-    
+
     # Lowering id by 1
     id -= 1
 
@@ -185,7 +220,7 @@ def export(id, list_of_profiles, length_of_lop):
             shutil.copytree(path2, os.path.join(export_location, name), dirs_exist_ok=True)
         else:
             print_msg(f"Couldn't find {path1} or {path2}. Skipping...")
-    
+
     check_path_and_copy(LOCAL_ICON_DIR, USR_ICON_DIR, ICON_EXPORT_PATH, icon)
     check_path_and_copy(LOCAL_CURSOR_DIR, USR_CURSOR_DIR, CURSOR_EXPORT_PATH, cursor)
     shutil.copytree(PLASMA_DIR, PLASMA_EXPORT_PATH, dirs_exist_ok=True)
@@ -203,10 +238,10 @@ def import_profile(path):
     '''
     This will import an exported profile
     '''
-    
+
     # assert
     assert (is_zipfile(path) and path[-5:] == export_extension), "Not a valid konsave file"
-    item = os.path.basename(path)[:-5]    
+    item = os.path.basename(path)[:-5]
     assert (not os.path.exists(os.path.join(PROFILES_DIR, item))), "A profile with this name already exists"
 
     # run
@@ -235,7 +270,7 @@ def import_profile(path):
     shutil.copytree(PLASMA_IMPORT_PATH, PLASMA_DIR, dirs_exist_ok=True)
     shutil.copytree(ICON_IMPORT_PATH, LOCAL_ICON_DIR, dirs_exist_ok=True)
     shutil.copytree(CURSOR_IMPORT_PATH, LOCAL_CURSOR_DIR, dirs_exist_ok=True)
-    
+
     shutil.rmtree(TEMP_PATH)
 
     print_msg("Profile successfully imported!")

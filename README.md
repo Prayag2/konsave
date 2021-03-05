@@ -7,7 +7,8 @@ A CLI program that will let you save and apply your KDE Plasma customizations wi
 
 ---
 ## Dependencies
-There are no dependencies! Just make sure your python version is above `3.9`.
+There is only `PyYaml` as dependency, which will be installed automatically by pip.
+Also make sure your python version is above `3.9`.
 
 ## Installation
 Install from PyPI
@@ -18,6 +19,8 @@ Install from PyPI
 `konsave -h` or `konsave --help`
 ### Save current configuration as a profile
 `konsave -s <profile name>` or `konsave --save <profile name>`
+### Overwrite an already saved profile
+`konsave -s <profile name> -f` or `konsave -s <profile name> --force `
 ### List all profiles
 `konsave -l` or `konsave --list`
 ### Remove a profile

@@ -6,7 +6,7 @@ def read_desc():
 
 setup (
     name="Konsave",
-    version="1.0.3",
+    version="1.0.4",
     author="Prayag Jain",
     author_email="prayagjain2@gmail.com",
     description = "A program that lets you save your Plasma configuration in an instant!",
@@ -14,6 +14,8 @@ setup (
     long_description_content_type="text/markdown",
     url="https://www.github.com/prayag2/konsave/",
     packages=find_packages(),
+    package_data={'config': ['conf.yaml']},
+    install_requires=['PyYaml'],
     classifiers = [
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Operating System :: POSIX",
