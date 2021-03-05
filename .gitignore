@@ -1,1 +1,6 @@
 README.md
+env
+Konsave.egg-info
+build
+dist
+__pycache__/
