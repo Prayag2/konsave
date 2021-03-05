@@ -15,6 +15,7 @@ setup (
     url="https://www.github.com/prayag2/konsave/",
     packages=find_packages(),
     package_data={'config': ['conf.yaml']},
+    include_package_data=True,
     install_requires=['PyYaml'],
     classifiers = [
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
