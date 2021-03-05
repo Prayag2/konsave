@@ -6,7 +6,7 @@ def read_desc():
 
 setup (
     name="Konsave",
-    version="1.0.3",
+    version="1.0.4",
     author="Prayag Jain",
     author_email="prayagjain2@gmail.com",
     description = "A program that lets you save your Plasma configuration in an instant!",
