@@ -42,9 +42,9 @@ def main():
         check_error(export, args.export_profile, list_of_profiles, length_of_lop)
     elif args.import_profile is not None:
         check_error(import_profile, args.import_profile)
-    elif args.version is not None:
+    elif args.version:
         print(f"Konsave: {VERSION}")
-    elif args.wipe is not None:
+    elif args.wipe:
         check_error(wipe)
     else:
         parser.print_help()
