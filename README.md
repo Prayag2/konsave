@@ -34,6 +34,8 @@ You may need to log out and log in to see all the changes.
 `konsave -i <path to the file>` or `konsave --import-profile <path to the file>`
 ### Show current version
 `konsave -v` or `konsave --version`  
+### Wipe all profiles
+`konsave -w` or `konsave --wipe`
 ## Contribution
 You can contribute by reporting issues or fixing bugs!
 
