@@ -11,9 +11,6 @@ CONFIG_FILE = os.path.join(KONSAVE_DIR, "conf.yaml")
 
 export_extension = '.knsv'
 
-if not os.path.exists(KONSAVE_DIR):
-    os.makedirs(KONSAVE_DIR)
-
 if not os.path.exists(PROFILES_DIR):
     os.makedirs(PROFILES_DIR)
 
