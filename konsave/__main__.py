@@ -24,6 +24,7 @@ def main():
                         metavar='<path>')
     parser.add_argument('-f', '--force', required=False, action='store_true', help='Overwrite already saved profiles')
     parser.add_argument('-v', '--version', required=False, action='store_true', help='Show version')
+    parser.add_argument('-w', '--wipe', required=False, action='store_true', help='Wipes all profiles.')
 
     ## PARSING ARGS ##
     args = parser.parse_args()
@@ -43,6 +44,8 @@ def main():
         check_error(import_profile, args.import_profile)
     elif args.version is not None:
         print(f"Konsave: {VERSION}")
+    elif args.wipe is not None:
+        check_error(wipe)
     else:
         parser.print_help()
 

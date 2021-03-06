@@ -17,4 +17,4 @@ if not os.path.exists(PROFILES_DIR):
 list_of_profiles = os.listdir(PROFILES_DIR)
 length_of_lop = len(list_of_profiles)
 
-VERSION = "1.0.7"
+VERSION = "1.1.0"

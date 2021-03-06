@@ -274,3 +274,16 @@ def import_profile(path):
     shutil.rmtree(TEMP_PATH)
 
     print_msg("Profile successfully imported!")
+
+
+# WIPE
+def wipe():
+    '''
+    This function will wipe all profiles
+    '''
+    confirm = input("This will wipe all your profiles. Enter \"WIPE\" Tto continue: ")
+    if confirm == 'WIPE':
+        shutil.rmtree(PROFILES_DIR)
+        print_msg("Removed all profiles!")
+    else:
+        print_msg("Aborting...")
