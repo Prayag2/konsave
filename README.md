@@ -7,8 +7,8 @@ A CLI program that will let you save and apply your KDE Plasma customizations wi
 
 ---
 ## Dependencies
-There is only `PyYaml` as dependency, which will be installed automatically by pip.
-Also make sure your python version is above `3.9`.
+### PyYaml
+`pip install pyyaml`
 
 ## Installation
 Install from PyPI
