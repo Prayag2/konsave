@@ -6,27 +6,27 @@ on:
       - 'v*'
 
 jobs:
-  release:
-    name: Create GitHub Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: |
-            Changes in this release
-          draft: false
-          prerelease: false
+#   release:
+#     name: Create GitHub Release
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@master
+#       - name: Create Release
+#         id: create_release
+#         uses: actions/create-release@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           tag_name: ${{ github.ref }}
+#           release_name: ${{ github.ref }}
+#           body: |
+#             Changes in this release
+#           draft: false
+#           prerelease: false
   deploy:
     name: Publish to PyPI
-    needs: release
+#     needs: release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
