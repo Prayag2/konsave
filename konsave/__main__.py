@@ -1,6 +1,7 @@
 ## IMPORT ##
 import argparse
 from konsave.funcs import *
+from konsave.vars import VERSION
 
 
 ## MAIN ##
@@ -22,6 +23,7 @@ def main():
     parser.add_argument('-i', '--import-profile', required=False, type=str, help='Import a konsave file',
                         metavar='<path>')
     parser.add_argument('-f', '--force', required=False, action='store_true', help='Overwrite already saved profiles')
+    parser.add_argument('-v', '--version', required=False, action='store_true', help='Show version')
 
     ## PARSING ARGS ##
     args = parser.parse_args()
@@ -39,6 +41,8 @@ def main():
         check_error(export, args.export_profile, list_of_profiles, length_of_lop)
     elif args.import_profile is not None:
         check_error(import_profile, args.import_profile)
+    elif args.version is not None:
+        print(f"Konsave: {VERSION}")
     else:
         parser.print_help()
 
