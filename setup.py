@@ -19,7 +19,7 @@ setup(
     packages=find_packages(),
     package_data={'config': ['conf.yaml']},
     include_package_data=True,
-    python_requires='>=3.8',
+    python_requires='>=3.6',
     install_requires=['PyYaml'],
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
