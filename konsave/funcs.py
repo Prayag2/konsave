@@ -91,6 +91,37 @@ def print_msg(msg):
     print(f"Konsave: {msg}")
 
 
+# COPY FILE/FOLDER
+def copy(source, dest):
+    '''
+    This function was created because shutil.copytree gives error if the destination folder
+    exists and the argument "dirs_exist_ok" was introduced only after python 3.8.
+    This restricts people with python 3.7 or less from using Konsave.
+    This function will let people with python 3.7 or less use Konsave without any issues.
+    It uses recursion to copy files and folders from "source" to "dest"
+    '''
+    assert (type(source) == str and type(dest) == str), "Invalid path"
+    assert (source != dest), "Source and destination can't be same"
+    assert (os.path.exists(source)), "Source path doesn't exist"
+    
+    if not os.path.exists(dest):
+        os.mkdir(dest)
+    
+    if os.path.isdir(source):
+        for item in os.listdir(source): 
+            source_path = os.path.join(source, item)
+            dest_path = os.path.join(dest, item)
+
+            if os.path.isdir(source_path):
+                copy(source_path, dest_path)
+            else:
+                if os.path.exists(dest_path):
+                    os.remove(dest_path)
+                shutil.copy(source_path, dest)
+    else:
+        shutil.copy(source, dest)
+
+
 # LIST PROFILES
 def list_profiles(list_of_profiles, length_of_lop):
     '''
@@ -126,7 +157,7 @@ def save_profile(name, list_of_profiles, force=False):
         source = os.path.join(CONFIG_DIR, entry)
         if os.path.exists(source):
             if os.path.isdir(source):
-                shutil.copytree(source, f"{PROFILE_DIR}/{entry}", dirs_exist_ok=True)
+                check_error(copy, source, os.path.join(PROFILE_DIR, entry))
             else:
                 shutil.copy(source, PROFILE_DIR)
 
@@ -149,7 +180,7 @@ def apply_profile(id, list_of_profiles, length_of_lop):
     # run
     name = list_of_profiles[id]
     PROFILE_DIR = os.path.join(PROFILES_DIR, name)
-    shutil.copytree(PROFILE_DIR, CONFIG_DIR, dirs_exist_ok=True)
+    check_error(copy, PROFILE_DIR, CONFIG_DIR)
     restart_kde()
 
 
@@ -202,10 +233,10 @@ def export(id, list_of_profiles, length_of_lop):
     ICON_EXPORT_PATH = mkdir(os.path.join(EXPORT_PATH, "icons"))
 
     # VARIABLES
-    KDE_GLOBALS = os.path.join(CONFIG_DIR, 'kdeglobals')
+    KDE_GLOBALS = os.path.join(PROFILE_DIR, 'kdeglobals')
 
     icon = search_config(KDE_GLOBALS, 'Icons', 'Theme')
-    cursor = search_config(os.path.join(CONFIG_DIR, 'kcminputrc'), 'Mouse', 'cursorTheme')
+    cursor = search_config(os.path.join(PROFILE_DIR, 'kcminputrc'), 'Mouse', 'cursorTheme')
 
     PLASMA_DIR = os.path.join(HOME, '.local/share/plasma')
     LOCAL_ICON_DIR = os.path.join(HOME, '.local/share/icons', icon)
@@ -215,16 +246,16 @@ def export(id, list_of_profiles, length_of_lop):
 
     def check_path_and_copy(path1, path2, export_location, name):
         if os.path.exists(path1):
-            shutil.copytree(path1, os.path.join(export_location, name), dirs_exist_ok=True)
+            check_error(copy, path1, os.path.join(export_location, name))
         elif os.path.exists(path2):
-            shutil.copytree(path2, os.path.join(export_location, name), dirs_exist_ok=True)
+            check_error(copy, path2, os.path.join(export_location, name))
         else:
             print_msg(f"Couldn't find {path1} or {path2}. Skipping...")
 
     check_path_and_copy(LOCAL_ICON_DIR, USR_ICON_DIR, ICON_EXPORT_PATH, icon)
     check_path_and_copy(LOCAL_CURSOR_DIR, USR_CURSOR_DIR, CURSOR_EXPORT_PATH, cursor)
-    shutil.copytree(PLASMA_DIR, PLASMA_EXPORT_PATH, dirs_exist_ok=True)
-    shutil.copytree(PROFILE_DIR, CONFIG_EXPORT_PATH, dirs_exist_ok=True)
+    check_error(copy, PLASMA_DIR, PLASMA_EXPORT_PATH)
+    check_error(copy, PROFILE_DIR, CONFIG_EXPORT_PATH)
 
     shutil.make_archive(EXPORT_PATH, 'zip', EXPORT_PATH)
     shutil.rmtree(EXPORT_PATH)
@@ -266,10 +297,10 @@ def import_profile(path):
     PROFILE_DIR = os.path.join(PROFILES_DIR, item)
 
     print()
-    shutil.copytree(CONFIG_IMPORT_PATH, PROFILE_DIR, dirs_exist_ok=True)
-    shutil.copytree(PLASMA_IMPORT_PATH, PLASMA_DIR, dirs_exist_ok=True)
-    shutil.copytree(ICON_IMPORT_PATH, LOCAL_ICON_DIR, dirs_exist_ok=True)
-    shutil.copytree(CURSOR_IMPORT_PATH, LOCAL_CURSOR_DIR, dirs_exist_ok=True)
+    check_error(copy, CONFIG_IMPORT_PATH, PROFILE_DIR)
+    check_error(copy, PLASMA_IMPORT_PATH, PLASMA_DIR)
+    check_error(copy, ICON_IMPORT_PATH, LOCAL_ICON_DIR)
+    check_error(copy, CURSOR_IMPORT_PATH, LOCAL_CURSOR_DIR)
 
     shutil.rmtree(TEMP_PATH)
 
