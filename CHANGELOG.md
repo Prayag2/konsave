@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.4] - 2021-03-07
 ### Changes
-- Created a function called `copy` to replace `shutil.copytree`. This would add support for python versions >= 3.7. 
+- Created a function called `copy` to replace `shutil.copytree`. This would add support for python versions <= 3.7. 
 - Changed version in `vars.py` from 1.1.3 to 1.1.4
 
 ### Fixes
