@@ -14,6 +14,21 @@ except ModuleNotFoundError:
 
 
 ## FUNCTIONS ##
+# ERROR HANDLING DECORATOR
+def exception_handler(func):
+    '''
+    This is a decorator that will check for errors in a function.
+    '''
+    def inner_func(*args, **kwargs):
+        try:
+            f = func(*args, **kwargs)
+        except Exception as e:
+            print(f"Konsave: {e}\nTry 'konsave -h' for more info!")
+        else:
+            return f
+    return inner_func
+
+
 def mkdir(path):
     '''
     Creates directory if it doesn't exist
@@ -23,9 +38,39 @@ def mkdir(path):
     return path
 
 
+# PRINT/LOG
+def log(msg, *args, **kwargs):
+    '''
+    Logs text
+    '''
+    print(f"Konsave: {msg.capitalize()}", *args, **kwargs)  
+
+
+# RESTART KDE
+def restart_kde():
+    '''
+    Restarts
+    '''
+    log('restarting kde...')
+    os.system('plasmashell --replace > /dev/null 2>&1 & disown')
+
+
+# PARSE AND SEARCH IN A CONFIG FILE
+@exception_handler
+def search_config(path, section, option):
+    '''
+    This function will parse config files and search for specific values
+    '''
+    config = configparser.ConfigParser(strict=False)
+    config.read(path)
+    return config[section][option]
+
+
+# LOAD CONFIG FILE
+@exception_handler
 def load_config():
     """
-    Load the yaml file which contains the files and folder to be saved
+    Load the yaml file which contains the files and folders to be saved
 
     The file should be formatted like this:
 
@@ -39,9 +84,7 @@ def load_config():
     """
     default_config_path = resource_filename('konsave', 'conf.yaml')
     if not os.path.exists(CONFIG_FILE):
-        print_msg(f"No config file found! Using default config ({default_config_path}).")
         shutil.copy(default_config_path, CONFIG_FILE)
-        print_msg(f"Saved default config to: {CONFIG_FILE}")
         return yaml.load(resource_stream('konsave', 'conf.yaml'), Loader=yaml.FullLoader)["entries"]
 
     with open(CONFIG_FILE) as file:
@@ -49,49 +92,8 @@ def load_config():
     return config["entries"]
 
 
-# PARSE AND SEARCH IN A CONFIG FILE
-def search_config(path, section, option):
-    '''
-    This function will parse config files and search for specific values
-    '''
-    config = configparser.ConfigParser(strict=False)
-    config.read(path)
-    return config[section][option]
-
-
-# RESTART KDE
-def restart_kde():
-    '''
-    Restarts
-    '''
-    os.system('plasmashell --replace > /dev/null 2>&1 & disown')
-
-    print("Konsave: Profile applied successfully! Please log-out and log-in to see the changes completely!")
-
-
-# CHECK FOR ERRORS
-def check_error(func, *args):
-    '''
-    This function runs a function and checks if there are any errors.
-    '''
-    try:
-        f = func(*args)
-    except Exception as e:
-        print(f"Konsave: {e}\nTry 'konsave -h' for more info!")
-    else:
-        return f
-
-
-# PRINT/LOG
-def print_msg(msg):
-    '''
-    Makes any text a little prettier
-    '''
-    msg = msg[0].capitalize() + msg[1:]
-    print(f"Konsave: {msg}")
-
-
 # COPY FILE/FOLDER
+@exception_handler
 def copy(source, dest):
     '''
     This function was created because shutil.copytree gives error if the destination folder
@@ -123,6 +125,7 @@ def copy(source, dest):
 
 
 # LIST PROFILES
+@exception_handler
 def list_profiles(list_of_profiles, length_of_lop):
     '''
     Lists all the created profiles
@@ -139,6 +142,7 @@ def list_profiles(list_of_profiles, length_of_lop):
 
 
 # SAVE PROFILE
+@exception_handler
 def save_profile(name, list_of_profiles, force=False):
     '''
     Saves necessary config files in ~/.config/konsave/profiles/<name>
@@ -148,7 +152,7 @@ def save_profile(name, list_of_profiles, force=False):
     assert (name not in list_of_profiles or force), "Profile with this name already exists"
 
     # run
-    print_msg("saving profile...")
+    log("saving profile...")
     PROFILE_DIR = os.path.join(PROFILES_DIR, name)
     mkdir(PROFILE_DIR)
 
@@ -157,14 +161,15 @@ def save_profile(name, list_of_profiles, force=False):
         source = os.path.join(CONFIG_DIR, entry)
         if os.path.exists(source):
             if os.path.isdir(source):
-                check_error(copy, source, os.path.join(PROFILE_DIR, entry))
+                copy(source, os.path.join(PROFILE_DIR, entry))
             else:
                 shutil.copy(source, PROFILE_DIR)
 
-    print_msg('Profile saved successfully!')
+    log('Profile saved successfully!')
 
 
 # APPLY PROFILE
+@exception_handler
 def apply_profile(id, list_of_profiles, length_of_lop):
     '''
     Applies profile of the given id
@@ -180,11 +185,17 @@ def apply_profile(id, list_of_profiles, length_of_lop):
     # run
     name = list_of_profiles[id]
     PROFILE_DIR = os.path.join(PROFILES_DIR, name)
-    check_error(copy, PROFILE_DIR, CONFIG_DIR)
+
+    log('copying files...')
+
+    copy(PROFILE_DIR, CONFIG_DIR)
     restart_kde()
+
+    log("Profile applied successfully! Please log-out and log-in to see the changes completely!")
 
 
 # REMOVE PROFILE
+@exception_handler
 def remove_profile(id, list_of_profiles, length_of_lop):
     '''
     Removes the specified profile
@@ -198,11 +209,13 @@ def remove_profile(id, list_of_profiles, length_of_lop):
 
     # run
     item = list_of_profiles[id]
+    log('removing profile...')
     shutil.rmtree(os.path.join(PROFILES_DIR, item))
-    print_msg('removed profile successfully')
+    log('removed profile successfully')
 
 
 # EXPORT PROFILE
+@exception_handler
 def export(id, list_of_profiles, length_of_lop):
     '''
     It will export the specified profile as a ".knsv" file in the home directory
@@ -225,7 +238,7 @@ def export(id, list_of_profiles, length_of_lop):
         EXPORT_PATH = EXPORT_PATH + ''.join(rand_str)
 
     # compressing the files as zip
-    print_msg("Exporting profile. It might take a minute or two...")
+    log("Exporting profile. It might take a minute or two...")
 
     CONFIG_EXPORT_PATH = mkdir(os.path.join(EXPORT_PATH, "config"))
     PLASMA_EXPORT_PATH = mkdir(os.path.join(EXPORT_PATH, "plasma"))
@@ -246,25 +259,36 @@ def export(id, list_of_profiles, length_of_lop):
 
     def check_path_and_copy(path1, path2, export_location, name):
         if os.path.exists(path1):
-            check_error(copy, path1, os.path.join(export_location, name))
+            copy(path1, os.path.join(export_location, name))
         elif os.path.exists(path2):
-            check_error(copy, path2, os.path.join(export_location, name))
+            copy(path2, os.path.join(export_location, name))
         else:
-            print_msg(f"Couldn't find {path1} or {path2}. Skipping...")
+            log(f"Couldn't find {path1} or {path2}. Skipping...")
 
+
+    log("Exporting icon theme")
     check_path_and_copy(LOCAL_ICON_DIR, USR_ICON_DIR, ICON_EXPORT_PATH, icon)
-    check_path_and_copy(LOCAL_CURSOR_DIR, USR_CURSOR_DIR, CURSOR_EXPORT_PATH, cursor)
-    check_error(copy, PLASMA_DIR, PLASMA_EXPORT_PATH)
-    check_error(copy, PROFILE_DIR, CONFIG_EXPORT_PATH)
 
+    log("Exporting cursors...")
+    check_path_and_copy(LOCAL_CURSOR_DIR, USR_CURSOR_DIR, CURSOR_EXPORT_PATH, cursor)
+
+    log("Exporting plasma files")
+    copy(PLASMA_DIR, PLASMA_EXPORT_PATH)
+
+    log("Exporting config files")
+    copy(PROFILE_DIR, CONFIG_EXPORT_PATH)
+
+    log("Creating archive")
     shutil.make_archive(EXPORT_PATH, 'zip', EXPORT_PATH)
+
     shutil.rmtree(EXPORT_PATH)
     shutil.move(EXPORT_PATH + '.zip', EXPORT_PATH + export_extension)
 
-    print_msg(f"Successfully exported to {EXPORT_PATH}{export_extension}")
+    log(f"Successfully exported to {EXPORT_PATH}{export_extension}")
 
 
 # IMPORT PROFILE
+@exception_handler
 def import_profile(path):
     '''
     This will import an exported profile
@@ -277,7 +301,7 @@ def import_profile(path):
 
     # run
 
-    print_msg("Importing profile. It might take a minute or two...")
+    log("Importing profile. It might take a minute or two...")
 
     item = os.path.basename(path).replace(export_extension, '')
 
@@ -296,18 +320,27 @@ def import_profile(path):
     LOCAL_CURSOR_DIR = os.path.join(HOME, '.icons')
     PROFILE_DIR = os.path.join(PROFILES_DIR, item)
 
-    print()
-    check_error(copy, CONFIG_IMPORT_PATH, PROFILE_DIR)
-    check_error(copy, PLASMA_IMPORT_PATH, PLASMA_DIR)
-    check_error(copy, ICON_IMPORT_PATH, LOCAL_ICON_DIR)
-    check_error(copy, CURSOR_IMPORT_PATH, LOCAL_CURSOR_DIR)
+    check_mark = u'\u2713'
+
+    log("Importing config files")
+    copy(CONFIG_IMPORT_PATH, PROFILE_DIR)
+
+    log("Importing plasma files")
+    copy(PLASMA_IMPORT_PATH, PLASMA_DIR)
+
+    log("Importing icons")
+    copy(ICON_IMPORT_PATH, LOCAL_ICON_DIR)
+
+    log("Importing cursors")
+    copy(CURSOR_IMPORT_PATH, LOCAL_CURSOR_DIR)
 
     shutil.rmtree(TEMP_PATH)
 
-    print_msg("Profile successfully imported!")
+    log("Profile successfully imported!")
 
 
 # WIPE
+@exception_handler
 def wipe():
     '''
     This function will wipe all profiles
@@ -315,6 +348,6 @@ def wipe():
     confirm = input("This will wipe all your profiles. Enter \"WIPE\" Tto continue: ")
     if confirm == 'WIPE':
         shutil.rmtree(PROFILES_DIR)
-        print_msg("Removed all profiles!")
+        log("Removed all profiles!")
     else:
-        print_msg("Aborting...")
+        log("Aborting...")
