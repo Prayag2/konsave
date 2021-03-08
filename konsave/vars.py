@@ -1,5 +1,5 @@
 ## IMPORT ##
-import os, enum
+import os
 
 
 ## GLOBAL VARS ##
