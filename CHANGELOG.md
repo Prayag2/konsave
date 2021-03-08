@@ -8,7 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- ``CHANGELOG.md`` file with [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
+- ``CHANGELOG.md`` file with (Keep a Changelog)[https://keepachangelog.com/en/1.0.0/] format.
+
+## [1.1.5] - 2021-03-06
+### Changes
+- Changed `print_msg` to `log`.
+- Changed `check_error` function to a decorator (Thanks to (this article)[https://medium.com/swlh/handling-exceptions-in-python-a-cleaner-way-using-decorators-fae22aa0abec]) for easier maintenance.
+- Improved logging
 
 
 ## [1.1.4] - 2021-03-07

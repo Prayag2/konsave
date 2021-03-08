@@ -31,21 +31,21 @@ def main():
 
     ## CHECKING FOR ARGUMENTS ##
     if args.list:
-        check_error(list_profiles, list_of_profiles, length_of_lop)
+        list_profiles(list_of_profiles, length_of_lop)
     elif args.save is not None:
-        check_error(save_profile, args.save, list_of_profiles, args.force)
+        save_profile(args.save, list_of_profiles, args.force)
     elif args.remove is not None:
-        check_error(remove_profile, args.remove, list_of_profiles, length_of_lop)
+        remove_profile(args.remove, list_of_profiles, length_of_lop)
     elif args.apply is not None:
-        check_error(apply_profile, args.apply, list_of_profiles, length_of_lop)
+        apply_profile(args.apply, list_of_profiles, length_of_lop)
     elif args.export_profile is not None:
-        check_error(export, args.export_profile, list_of_profiles, length_of_lop)
+        export(args.export_profile, list_of_profiles, length_of_lop)
     elif args.import_profile is not None:
-        check_error(import_profile, args.import_profile)
+        import_profile(args.import_profile)
     elif args.version:
         print(f"Konsave: {VERSION}")
     elif args.wipe:
-        check_error(wipe)
+        wipe()
     else:
         parser.print_help()
 
