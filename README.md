@@ -37,8 +37,7 @@ You may need to log out and log in to see all the changes.
 ### Wipe all profiles
 `konsave -w` or `konsave --wipe`
 ## Contribution
-You can contribute by reporting issues or fixing bugs!
-Introduced changes should be briefly described in `CHANGELOG.md`.
+Please read [CONTRIBUTION.md](https://github.com/Prayag2/konsave/blob/master/CONTRIBUTION.md) for info about contributing. 
 
 ## License
 This project uses GNU General Public License 3.0

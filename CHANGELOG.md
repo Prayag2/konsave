@@ -10,12 +10,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - ``CHANGELOG.md`` file with (Keep a Changelog)[https://keepachangelog.com/en/1.0.0/] format.
 
-## [1.1.5] - 2021-03-06
+## [1.1.6] - 2021-03-11
+### Changes
+- Changed code style to [PEP8](https://www.python.org/dev/peps/pep-0008/)
+- Changed docstring style to [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+
+## Additions
+- Added a CONTRIBUTIONS.md
+
+## Fixes
+- Fixed a possible bug. Refer to [#26](https://github.com/Prayag2/konsave/issues/26).
+
+## [1.1.5] - 2021-03-08
 ### Changes
 - Changed `print_msg` to `log`.
 - Changed `check_error` function to a decorator (Thanks to (this article)[https://medium.com/swlh/handling-exceptions-in-python-a-cleaner-way-using-decorators-fae22aa0abec]) for easier maintenance.
 - Improved logging
-
 
 ## [1.1.4] - 2021-03-07
 ### Changes
