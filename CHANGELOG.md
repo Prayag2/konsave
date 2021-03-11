@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 - Changed code style to [PEP8](https://www.python.org/dev/peps/pep-0008/)
 - Changed docstring style to [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- Updated README
 
 ## Additions
 - Added a CONTRIBUTIONS.md
