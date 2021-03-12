@@ -1,9 +1,11 @@
-# Konsave (Save Plasma Customization)
-A CLI program that will let you save and apply your KDE Plasma customizations with just one command! Also, it has a "K" in the name :D  
+<h1 align=center> Konsave (Save Plasma Customization) </h1>
+<p align=center>A CLI program that will let you save and apply your KDE Plasma customizations with just one command! Also, it has a "K" in the name :D</p>
 
 ---
 
-![ezgif-7-e0c7257f0aef](https://user-images.githubusercontent.com/39525869/109611033-a6732c80-7b53-11eb-9ece-ffd9cef49047.gif)
+<p align="center">
+<img src="https://user-images.githubusercontent.com/39525869/109611033-a6732c80-7b53-11eb-9ece-ffd9cef49047.gif" />
+</p>
 
 ---
 ## Dependencies
@@ -11,7 +13,7 @@ A CLI program that will let you save and apply your KDE Plasma customizations wi
 `pip install pyyaml`
 
 ## Installation
-Install from PyPI
+Install from PyPI  
 `python -m pip install konsave`
 
 ## Usage
@@ -36,9 +38,13 @@ You may need to log out and log in to see all the changes.
 `konsave -v` or `konsave --version`  
 ### Wipe all profiles
 `konsave -w` or `konsave --wipe`
+
+## Uninstall Konsave
+To uninstall konsave, run the following:  
+`python -m pip uninstall konsave`
+
 ## Contribution
-You can contribute by reporting issues or fixing bugs!
-Introduced changes should be briefly described in `CHANGELOG.md`.
+Please read [CONTRIBUTION.md](https://github.com/Prayag2/konsave/blob/master/CONTRIBUTION.md) for info about contributing. 
 
 ## License
 This project uses GNU General Public License 3.0

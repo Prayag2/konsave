@@ -1,7 +1,12 @@
+"""
+Setup module
+"""
 from setuptools import setup, find_packages
 
 
 def read_desc():
+    """Reads the README
+    """
     with open('README.md', 'r') as desc:
         return desc.read()
 

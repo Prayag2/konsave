@@ -1,30 +1,93 @@
+"""
+This is the main module
+"""
+
 ## IMPORT ##
 import argparse
-from konsave.funcs import *
-from konsave.vars import VERSION
+from konsave.funcs import (
+    list_profiles,
+    save_profile,
+    remove_profile,
+    apply_profile,
+    export,
+    import_profile,
+    wipe,
+)
+from konsave.vars import VERSION, list_of_profiles, length_of_lop
 
 
 ## MAIN ##
 def main():
+    """
+    The main function that handles all the arguments and options
+    """
     ## PARSER SETTINGS ##
     parser = argparse.ArgumentParser(
-        prog='Konsave',
-        epilog="Please report bugs at https://www.github.com/prayag2/konsave"
+        prog="Konsave",
+        epilog="Please report bugs at https://www.github.com/prayag2/konsave",
     )
 
     ## ADDING ARGS ##
-    parser.add_argument('-l', '--list', required=False, action='store_true', help='Lists created profiles')
-    parser.add_argument('-s', '--save', required=False, type=str, help='Save current config as a profile',
-                        metavar='<name>')
-    parser.add_argument('-r', '--remove', required=False, type=int, help='Remove the specified profile', metavar='<id>')
-    parser.add_argument('-a', '--apply', required=False, type=int, help='Apply the specified profile', metavar='<id>')
-    parser.add_argument('-e', '--export-profile', required=False, type=int,
-                        help='Export a profile and share with your friends!', metavar='<id>')
-    parser.add_argument('-i', '--import-profile', required=False, type=str, help='Import a konsave file',
-                        metavar='<path>')
-    parser.add_argument('-f', '--force', required=False, action='store_true', help='Overwrite already saved profiles')
-    parser.add_argument('-v', '--version', required=False, action='store_true', help='Show version')
-    parser.add_argument('-w', '--wipe', required=False, action='store_true', help='Wipes all profiles.')
+    parser.add_argument(
+        "-l",
+        "--list",
+        required=False,
+        action="store_true",
+        help="Lists created profiles",
+    )
+    parser.add_argument(
+        "-s",
+        "--save",
+        required=False,
+        type=str,
+        help="Save current config as a profile",
+        metavar="<name>",
+    )
+    parser.add_argument(
+        "-r",
+        "--remove",
+        required=False,
+        type=int,
+        help="Remove the specified profile",
+        metavar="<id>",
+    )
+    parser.add_argument(
+        "-a",
+        "--apply",
+        required=False,
+        type=int,
+        help="Apply the specified profile",
+        metavar="<id>",
+    )
+    parser.add_argument(
+        "-e",
+        "--export-profile",
+        required=False,
+        type=int,
+        help="Export a profile and share with your friends!",
+        metavar="<id>",
+    )
+    parser.add_argument(
+        "-i",
+        "--import-profile",
+        required=False,
+        type=str,
+        help="Import a konsave file",
+        metavar="<path>",
+    )
+    parser.add_argument(
+        "-f",
+        "--force",
+        required=False,
+        action="store_true",
+        help="Overwrite already saved profiles",
+    )
+    parser.add_argument(
+        "-v", "--version", required=False, action="store_true", help="Show version"
+    )
+    parser.add_argument(
+        "-w", "--wipe", required=False, action="store_true", help="Wipes all profiles."
+    )
 
     ## PARSING ARGS ##
     args = parser.parse_args()
@@ -51,5 +114,5 @@ def main():
 
 
 ## CALLING MAIN ##
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
