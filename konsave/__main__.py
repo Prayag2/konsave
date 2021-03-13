@@ -87,15 +87,15 @@ def main():
 
     if args.list:
         list_profiles(list_of_profiles, length_of_lop)
-    elif args.save is not None:
+    elif args.save:
         save_profile(args.save, list_of_profiles, args.force)
-    elif args.remove is not None:
+    elif args.remove:
         remove_profile(args.remove, list_of_profiles, length_of_lop)
-    elif args.apply is not None:
+    elif args.apply:
         apply_profile(args.apply, list_of_profiles, length_of_lop)
-    elif args.export_profile is not None:
+    elif args.export_profile:
         export(args.export_profile, list_of_profiles, length_of_lop)
-    elif args.import_profile is not None:
+    elif args.import_profile:
         import_profile(args.import_profile)
     elif args.version:
         print(f"Konsave: {VERSION}")
