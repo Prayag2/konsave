@@ -1,0 +1,4 @@
+aiohttp>=3.7.4
+aiohttp_cors>=0.7.0
+black>=20.8b1
+pylint>=2.7.2
