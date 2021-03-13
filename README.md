@@ -8,9 +8,6 @@
 </p>
 
 ---
-## Dependencies
-### PyYaml
-`pip install pyyaml`
 
 ## Installation
 Install from PyPI  
