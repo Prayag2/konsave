@@ -16,9 +16,7 @@ from konsave.vars import VERSION, list_of_profiles, length_of_lop
 
 
 def main():
-    """
-    The main function that handles all the arguments and options
-    """
+    """The main function that handles all the arguments and options."""
     parser = argparse.ArgumentParser(
         prog="Konsave",
         epilog="Please report bugs at https://www.github.com/prayag2/konsave",

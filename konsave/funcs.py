@@ -27,7 +27,7 @@ except ModuleNotFoundError as error:
 
 
 def exception_handler(func):
-    """Handles errors and prints nicely
+    """Handles errors and prints nicely.
 
     Args:
         func: any function
@@ -49,7 +49,7 @@ def exception_handler(func):
 
 
 def mkdir(path):
-    """Creates directory if it doesn't exist
+    """Creates directory if it doesn't exist.
 
     Args:
         path: path to the new directory
@@ -63,7 +63,7 @@ def mkdir(path):
 
 
 def log(msg, *args, **kwargs):
-    """Logs text
+    """Logs text.
 
     Args:
         msg: the text to be printed
@@ -74,16 +74,14 @@ def log(msg, *args, **kwargs):
 
 
 def restart_kde():
-    """
-    Replaces plasmashell
-    """
+    """Replaces plasmashell."""
     log("restarting kde...")
     os.system("plasmashell --replace > /dev/null 2>&1 & disown")
 
 
 @exception_handler
 def search_config(path, section, option):
-    """This function will parse config files and search for specific values
+    """This function will parse config files and search for specific values.
 
     Args:
         path: path to a config file
@@ -100,7 +98,7 @@ def search_config(path, section, option):
 
 @exception_handler
 def load_config():
-    """Loads config file
+    """Loads config file.
 
     Returns:
         list: the names of files and folders in conf.yaml
@@ -152,7 +150,7 @@ def copy(source, dest):
 
 @exception_handler
 def list_profiles(profile_list, profile_count):
-    """Lists all the created profiles
+    """Lists all the created profiles.
 
     Args:
         profile_list: the list of all created profiles
@@ -171,7 +169,7 @@ def list_profiles(profile_list, profile_count):
 
 @exception_handler
 def save_profile(name, profile_list, force=False):
-    """Saves necessary config files in ~/.config/konsave/profiles/<name>
+    """Saves necessary config files in ~/.config/konsave/profiles/<name>.
 
     Args:
         name: name of the profile
@@ -201,7 +199,7 @@ def save_profile(name, profile_list, force=False):
 
 @exception_handler
 def apply_profile(profile_id, profile_list, profile_count):
-    """Applies profile of the given id
+    """Applies profile of the given id.
 
     Args:
         profile_id: id of the profile to be applied
@@ -232,7 +230,7 @@ def apply_profile(profile_id, profile_list, profile_count):
 
 @exception_handler
 def remove_profile(profile_id, profile_list, profile_count):
-    """Removes the specified profile
+    """Removes the specified profile.
 
     Args:
         profile_id: id of the profile to be removed
@@ -255,7 +253,7 @@ def remove_profile(profile_id, profile_list, profile_count):
 
 @exception_handler
 def export(profile_id, profile_list, profile_count):
-    """It will export the specified profile as a ".knsv" file in the home directory
+    """It will export the specified profile as a ".knsv" file in the home directory.
 
     Args:
         profile_id: id of the profile to be exported
@@ -336,7 +334,7 @@ def export(profile_id, profile_list, profile_count):
 
 @exception_handler
 def import_profile(path):
-    """This will import an exported profile
+    """This will import an exported profile.
 
     Args:
         path: path of the `.knsv` file
@@ -390,9 +388,7 @@ def import_profile(path):
 
 @exception_handler
 def wipe():
-    """
-    This function will wipe all profiles
-    """
+    """Wipes all profiles."""
     confirm = input('This will wipe all your profiles. Enter "WIPE" Tto continue: ')
     if confirm == "WIPE":
         shutil.rmtree(PROFILES_DIR)
