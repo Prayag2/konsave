@@ -4,8 +4,11 @@ Setup module
 from setuptools import setup, find_packages
 
 
-def read_desc():
-    """Reads the README
+def read_desc() -> str:
+    """Reads the README.
+
+    Returns:
+        str: Contents of README.md file.
     """
     with open('README.md', 'r') as desc:
         return desc.read()
