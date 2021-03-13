@@ -2,7 +2,6 @@
 This is the main module
 """
 
-## IMPORT ##
 import argparse
 from konsave.funcs import (
     list_profiles,
@@ -16,18 +15,15 @@ from konsave.funcs import (
 from konsave.vars import VERSION, list_of_profiles, length_of_lop
 
 
-## MAIN ##
 def main():
     """
     The main function that handles all the arguments and options
     """
-    ## PARSER SETTINGS ##
     parser = argparse.ArgumentParser(
         prog="Konsave",
         epilog="Please report bugs at https://www.github.com/prayag2/konsave",
     )
 
-    ## ADDING ARGS ##
     parser.add_argument(
         "-l",
         "--list",
@@ -89,10 +85,8 @@ def main():
         "-w", "--wipe", required=False, action="store_true", help="Wipes all profiles."
     )
 
-    ## PARSING ARGS ##
     args = parser.parse_args()
 
-    ## CHECKING FOR ARGUMENTS ##
     if args.list:
         list_profiles(list_of_profiles, length_of_lop)
     elif args.save is not None:
@@ -113,6 +107,5 @@ def main():
         parser.print_help()
 
 
-## CALLING MAIN ##
 if __name__ == "__main__":
     main()

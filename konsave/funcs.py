@@ -2,7 +2,6 @@
 This module contains all the functions for konsave.
 """
 
-## IMPORT ##
 import os
 import shutil
 import sys
@@ -27,8 +26,6 @@ except ModuleNotFoundError as error:
     ) from error
 
 
-## FUNCTIONS ##
-# ERROR HANDLING DECORATOR
 def exception_handler(func):
     """Handles errors and prints nicely
 
@@ -65,7 +62,6 @@ def mkdir(path):
     return path
 
 
-# PRINT/LOG
 def log(msg, *args, **kwargs):
     """Logs text
 
@@ -77,7 +73,6 @@ def log(msg, *args, **kwargs):
     print(f"Konsave: {msg.capitalize()}", *args, **kwargs)
 
 
-# RESTART KDE
 def restart_kde():
     """
     Replaces plasmashell
@@ -86,7 +81,6 @@ def restart_kde():
     os.system("plasmashell --replace > /dev/null 2>&1 & disown")
 
 
-# PARSE AND SEARCH IN A CONFIG FILE
 @exception_handler
 def search_config(path, section, option):
     """This function will parse config files and search for specific values
@@ -104,7 +98,6 @@ def search_config(path, section, option):
     return config[section][option]
 
 
-# LOAD CONFIG FILE
 @exception_handler
 def load_config():
     """Loads config file
@@ -124,7 +117,6 @@ def load_config():
     return config["entries"]
 
 
-# COPY FILE/FOLDER
 @exception_handler
 def copy(source, dest):
     """
@@ -158,7 +150,6 @@ def copy(source, dest):
                 shutil.copy(source_path, dest)
 
 
-# LIST PROFILES
 @exception_handler
 def list_profiles(profile_list, profile_count):
     """Lists all the created profiles
@@ -178,7 +169,6 @@ def list_profiles(profile_list, profile_count):
         print(f"{i + 1}\t{item}")
 
 
-# SAVE PROFILE
 @exception_handler
 def save_profile(name, profile_list, force=False):
     """Saves necessary config files in ~/.config/konsave/profiles/<name>
@@ -209,7 +199,6 @@ def save_profile(name, profile_list, force=False):
     log("Profile saved successfully!")
 
 
-# APPLY PROFILE
 @exception_handler
 def apply_profile(profile_id, profile_list, profile_count):
     """Applies profile of the given id
@@ -241,7 +230,6 @@ def apply_profile(profile_id, profile_list, profile_count):
     )
 
 
-# REMOVE PROFILE
 @exception_handler
 def remove_profile(profile_id, profile_list, profile_count):
     """Removes the specified profile
@@ -265,7 +253,6 @@ def remove_profile(profile_id, profile_list, profile_count):
     log("removed profile successfully")
 
 
-# EXPORT PROFILE
 @exception_handler
 def export(profile_id, profile_list, profile_count):
     """It will export the specified profile as a ".knsv" file in the home directory
@@ -347,7 +334,6 @@ def export(profile_id, profile_list, profile_count):
     log(f"Successfully exported to {export_path}{EXPORT_EXTENSION}")
 
 
-# IMPORT PROFILE
 @exception_handler
 def import_profile(path):
     """This will import an exported profile
@@ -402,7 +388,6 @@ def import_profile(path):
     log("Profile successfully imported!")
 
 
-# WIPE
 @exception_handler
 def wipe():
     """
