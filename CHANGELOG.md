@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - ``CHANGELOG.md`` file with (Keep a Changelog)[https://keepachangelog.com/en/1.0.0/] format.
 
+## [1.1.7] - 2021-03-13
+### Fixes
+- Fixed [#28](https://github.com/Prayag2/konsave/issues/28)
+
+## Changes
+- The program will now quit on any error
+
+
 ## [1.1.6] - 2021-03-11
 ### Changes
 - Changed code style to [PEP8](https://www.python.org/dev/peps/pep-0008/)
