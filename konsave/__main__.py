@@ -13,8 +13,12 @@ from konsave.funcs import (
 from konsave.vars import VERSION, list_of_profiles, length_of_lop
 
 
-def main():
-    """The main function that handles all the arguments and options."""
+def _get_parser() -> argparse.ArgumentParser:
+    """Returns CLI parser.
+
+    Returns:
+        argparse.ArgumentParser: Created parser.
+    """
     parser = argparse.ArgumentParser(
         prog="Konsave",
         epilog="Please report bugs at https://www.github.com/prayag2/konsave",
@@ -81,7 +85,12 @@ def main():
         "-w", "--wipe", required=False, action="store_true", help="Wipes all profiles."
     )
 
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    """The main function that handles all the arguments and options."""
+    args = _get_parser().parse_args()
 
     if args.list:
         list_profiles(list_of_profiles, length_of_lop)
