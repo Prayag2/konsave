@@ -5,6 +5,7 @@ This module contains all the functions for konsave.
 ## IMPORT ##
 import os
 import shutil
+import sys
 import configparser
 from random import shuffle
 from zipfile import is_zipfile, ZipFile
@@ -43,6 +44,7 @@ def exception_handler(func):
             function = func(*args, **kwargs)
         except Exception as error:
             print(f"Konsave: {error}\nTry 'konsave -h' for more info!")
+            sys.exit(0)
         else:
             return function
 
@@ -136,26 +138,24 @@ def copy(source, dest):
         source: the source destination
         dest: the destination to copy the file/folder to
     """
-    assert isinstance(source, str) and isinstance(dest, str), "Invalid path"
+    assert type(source) == str and type(dest) == str, "Invalid path"
     assert source != dest, "Source and destination can't be same"
     assert os.path.exists(source), "Source path doesn't exist"
 
     if not os.path.exists(dest):
         os.mkdir(dest)
 
-    if os.path.isdir(source):
-        for item in os.listdir(source):
-            source_path = os.path.join(source, item)
-            dest_path = os.path.join(dest, item)
+    for item in os.listdir(source):
+        source_path = os.path.join(source, item)
+        dest_path = os.path.join(dest, item)
 
-            if os.path.isdir(source_path):
-                copy(source_path, dest_path)
-            else:
-                if os.path.exists(dest_path):
-                    os.remove(dest_path)
+        if os.path.isdir(source_path):
+            copy(source_path, dest_path)
+        else:
+            if os.path.exists(dest_path):
+                os.remove(dest_path)
+            if os.path.exists(source_path):
                 shutil.copy(source_path, dest)
-    else:
-        shutil.copy(source, dest)
 
 
 # LIST PROFILES
