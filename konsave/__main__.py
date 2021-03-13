@@ -1,6 +1,4 @@
-"""
-This is the main module
-"""
+"""Konsave entry point."""
 
 import argparse
 from konsave.funcs import (
