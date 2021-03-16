@@ -1,11 +1,9 @@
 """
 This module contains all the variables for konsave
 """
-## IMPORT ##
 import os
 
 
-## GLOBAL VARS ##
 HOME = os.path.expandvars("$HOME")
 CONFIG_DIR = os.path.join(HOME, ".config")
 KONSAVE_DIR = os.path.join(CONFIG_DIR, "konsave")

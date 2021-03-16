@@ -1,8 +1,5 @@
-"""
-This is the main module
-"""
+"""Konsave entry point."""
 
-## IMPORT ##
 import argparse
 from konsave.funcs import (
     list_profiles,
@@ -16,18 +13,17 @@ from konsave.funcs import (
 from konsave.vars import VERSION, list_of_profiles, length_of_lop
 
 
-## MAIN ##
-def main():
+def _get_parser() -> argparse.ArgumentParser:
+    """Returns CLI parser.
+
+    Returns:
+        argparse.ArgumentParser: Created parser.
     """
-    The main function that handles all the arguments and options
-    """
-    ## PARSER SETTINGS ##
     parser = argparse.ArgumentParser(
         prog="Konsave",
         epilog="Please report bugs at https://www.github.com/prayag2/konsave",
     )
 
-    ## ADDING ARGS ##
     parser.add_argument(
         "-l",
         "--list",
@@ -89,21 +85,24 @@ def main():
         "-w", "--wipe", required=False, action="store_true", help="Wipes all profiles."
     )
 
-    ## PARSING ARGS ##
-    args = parser.parse_args()
+    return parser
 
-    ## CHECKING FOR ARGUMENTS ##
+
+def main():
+    """The main function that handles all the arguments and options."""
+    args = _get_parser().parse_args()
+
     if args.list:
         list_profiles(list_of_profiles, length_of_lop)
-    elif args.save is not None:
+    elif args.save:
         save_profile(args.save, list_of_profiles, args.force)
-    elif args.remove is not None:
+    elif args.remove:
         remove_profile(args.remove, list_of_profiles, length_of_lop)
-    elif args.apply is not None:
+    elif args.apply:
         apply_profile(args.apply, list_of_profiles, length_of_lop)
-    elif args.export_profile is not None:
+    elif args.export_profile:
         export(args.export_profile, list_of_profiles, length_of_lop)
-    elif args.import_profile is not None:
+    elif args.import_profile:
         import_profile(args.import_profile)
     elif args.version:
         print(f"Konsave: {VERSION}")
@@ -113,6 +112,5 @@ def main():
         parser.print_help()
 
 
-## CALLING MAIN ##
 if __name__ == "__main__":
     main()
