@@ -20,4 +20,4 @@ list_of_profiles = os.listdir(PROFILES_DIR)
 length_of_lop = len(list_of_profiles)
 
 # Current Version
-VERSION = "1.1.7"
+VERSION = "1.1.9"
