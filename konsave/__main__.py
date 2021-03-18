@@ -90,7 +90,8 @@ def _get_parser() -> argparse.ArgumentParser:
 
 def main():
     """The main function that handles all the arguments and options."""
-    args = _get_parser().parse_args()
+    parser = _get_parser()
+    args = parser.parse_args()
 
     if args.list:
         list_profiles(list_of_profiles, length_of_lop)
