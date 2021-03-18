@@ -4,7 +4,6 @@ This module contains all the functions for konsave.
 
 import os
 import shutil
-import sys
 import configparser
 from random import shuffle
 from zipfile import is_zipfile, ZipFile
@@ -41,7 +40,6 @@ def exception_handler(func):
             function = func(*args, **kwargs)
         except Exception as error:
             print(f"Konsave: {error}\nTry 'konsave -h' for more info!")
-            sys.exit(0)
         else:
             return function
 
@@ -128,7 +126,7 @@ def copy(source, dest):
         source: the source destination
         dest: the destination to copy the file/folder to
     """
-    assert type(source) == str and type(dest) == str, "Invalid path"
+    assert isinstance(source, str) and isinstance(dest, str), "Invalid path"
     assert source != dest, "Source and destination can't be same"
     assert os.path.exists(source), "Source path doesn't exist"
 
@@ -306,6 +304,8 @@ def export(profile_id, profile_list, profile_count):
         usr_icon_dir = os.path.join("/usr/share/icons", icon)
         log("Exporting icon theme")
         check_path_and_copy(local_icon_dir, usr_icon_dir, icon_export_path, icon)
+    else:
+        log("Skipping icon theme...")
 
     if cursor is not None:
         local_cursor_dir = os.path.join(HOME, ".icons", cursor)
@@ -314,6 +314,8 @@ def export(profile_id, profile_list, profile_count):
         check_path_and_copy(
             local_cursor_dir, usr_cursor_dir, cursor_export_path, cursor
         )
+    else:
+        log("Skipping cursors...")
 
     plasma_dir = os.path.join(HOME, ".local/share/plasma")
 

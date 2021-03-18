@@ -4,11 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
+  
 
-### Added
+## [1.1.9] - 2021-03-18
+### Fixes
+- Fixes [#26](https://github.com/Prayag2/konsave/issues/26)
+- Prints help when entering "konsave" without any arguments
 
-- ``CHANGELOG.md`` file with (Keep a Changelog)[https://keepachangelog.com/en/1.0.0/] format.
+## [1.1.8] - 2021-03-18
+### Changes
+- Add missing new lines at end of `.pylintrc` and `CONTRIBUTION.md`.
+- Gitignore:
+    - Common VS Code and JetBrains IDE user-specific stuff.
+    - All `__pycache__` dirs (`**/__pycache__`).
+- Delete and untrack all `*.pyc` files.
+- Reformat and improve some docstrings.
+- Remove some excessive comments, e.g. `## IMPORTS ##` or `# WIPE`. The import section is clear and visible enough to not need such additional comment. Same with functions - docstrings do that job well.
+- Refactor and simplify CLI argument parsing.
+- Adapt `setup.py` to use pip requirement text files.
+    - Create extra `dev` and corresponding `requirements_dev.txt` requirement text file. Can be installed via `pip install -e .[dev]` or from PyPI via `pip install konsave[dev]`.
+- Remove "Dependencies" section from `README.md` - dependencies get installed automatically anyway.
 
 ## [1.1.7] - 2021-03-13
 ### Fixes
@@ -24,10 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed docstring style to [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
 - Updated README
 
-## Additions
+### Additions
 - Added a CONTRIBUTIONS.md
 
-## Fixes
+### Fixes
 - Fixed a possible bug. Refer to [#26](https://github.com/Prayag2/konsave/issues/26).
 
 ## [1.1.5] - 2021-03-08
@@ -100,6 +116,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - You can also import ".knsv" files as profiles!
 
 
+[1.1.9]: https://github.com/Prayag2/konsave/compare/v1.1.8...v1.1.9
+[1.1.8]: https://github.com/Prayag2/konsave/compare/v1.1.7...v1.1.8
+[1.1.7]: https://github.com/Prayag2/konsave/compare/v1.1.6...v1.1.7
+[1.1.6]: https://github.com/Prayag2/konsave/compare/v1.1.5...v1.1.6
+[1.1.5]: https://github.com/Prayag2/konsave/compare/v1.1.4...v1.1.5
+[1.1.4]: https://github.com/Prayag2/konsave/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/Prayag2/konsave/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/Prayag2/konsave/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/Prayag2/konsave/compare/v1.1.0...v1.1.1
@@ -112,3 +134,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.2]: https://github.com/Prayag2/konsave/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/Prayag2/konsave/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Prayag2/konsave/compare/6b4a0c0bbf8c29684cc2a334065314bc8e4ea529...v1.0.0
+[Unreleased]: https://github.com/Prayag2/konsave/compare/v1.0.0...HEAD
