@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-  
+- You'll be able to edit konsave's configuration file to backup files/folders of your choice! You can add as many configurations to backup as you want.
+- You can use a few pre-defined variables and functions in the configuration file.
+- Exporting and importing is a lot better now.
+- This version of Konsave is not compatible with the older versions so the versioning has changed to 2.0.0. Please give your valuable feedback and help us improve Konsave!
 
 ## [1.1.9] - 2021-03-18
 ### Fixes

@@ -4,18 +4,18 @@ This module contains all the functions for konsave.
 
 import os
 import shutil
-import configparser
+import traceback
+from datetime import datetime
 from random import shuffle
 from zipfile import is_zipfile, ZipFile
-from pkg_resources import resource_stream, resource_filename
 from konsave.vars import (
     HOME,
     CONFIG_FILE,
     PROFILES_DIR,
-    CONFIG_DIR,
     EXPORT_EXTENSION,
     KONSAVE_DIR,
 )
+from konsave.parse import TOKEN_SYMBOL, tokens, parse_functions, parse_keywords
 
 try:
     import yaml
@@ -39,7 +39,18 @@ def exception_handler(func):
         try:
             function = func(*args, **kwargs)
         except Exception as error:
-            print(f"Konsave: {error}\nTry 'konsave -h' for more info!")
+            dateandtime = datetime.now().strftime("[%d/%m/%Y %H:%M:%S]")
+            log_file = os.path.join(HOME, "konsave_log.txt")
+
+            with open(log_file, "a") as file:
+                file.write(dateandtime + "\n")
+                traceback.print_exc(file=file)
+                file.write("\n")
+
+            print(
+                f"Konsave: {error}\nPlease check the log at {log_file} for more details."
+            )
+            return None
         else:
             return function
 
@@ -78,42 +89,6 @@ def restart_kde():
 
 
 @exception_handler
-def search_config(path, section, option):
-    """This function will parse config files and search for specific values.
-
-    Args:
-        path: path to a config file
-        section: name of the section to search in
-        option: name of the option to search for
-
-    Returns:
-        str: the found value
-    """
-    config = configparser.ConfigParser(strict=False)
-    config.read(path)
-    return config[section][option]
-
-
-@exception_handler
-def load_config():
-    """Loads config file.
-
-    Returns:
-        list: the names of files and folders in conf.yaml
-    """
-    default_config_path = resource_filename("konsave", "conf.yaml")
-    if not os.path.exists(CONFIG_FILE):
-        shutil.copy(default_config_path, CONFIG_FILE)
-        return yaml.load(
-            resource_stream("konsave", "conf.yaml"), Loader=yaml.FullLoader
-        )["entries"]
-
-    with open(CONFIG_FILE) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-    return config["entries"]
-
-
-@exception_handler
 def copy(source, dest):
     """
     This function was created because shutil.copytree gives error if the destination folder
@@ -144,6 +119,21 @@ def copy(source, dest):
                 os.remove(dest_path)
             if os.path.exists(source_path):
                 shutil.copy(source_path, dest)
+
+
+@exception_handler
+def read_konsave_config(config_file) -> dict:
+    """Reads "conf.yaml" and parses it.
+
+    Args:
+        config_file: path to the config file
+    """
+    with open(config_file, "r") as text:
+        konsave_config = yaml.load(text.read(), Loader=yaml.SafeLoader)
+    parse_keywords(tokens, TOKEN_SYMBOL, konsave_config)
+    parse_functions(tokens, TOKEN_SYMBOL, konsave_config)
+
+    return konsave_config
 
 
 @exception_handler
@@ -183,14 +173,22 @@ def save_profile(name, profile_list, force=False):
     profile_dir = os.path.join(PROFILES_DIR, name)
     mkdir(profile_dir)
 
-    entries = load_config()
-    for entry in entries:
-        source = os.path.join(CONFIG_DIR, entry)
-        if os.path.exists(source):
-            if os.path.isdir(source):
-                copy(source, os.path.join(profile_dir, entry))
-            else:
-                shutil.copy(source, profile_dir)
+    konsave_config = read_konsave_config(CONFIG_FILE)["save"]
+
+    for section in konsave_config:
+        location = konsave_config[section]["location"]
+        folder = os.path.join(profile_dir, section)
+        mkdir(folder)
+        for entry in konsave_config[section]["entries"]:
+            source = os.path.join(location, entry)
+            dest = os.path.join(folder, entry)
+            if os.path.exists(source):
+                if os.path.isdir(source):
+                    copy(source, dest)
+                else:
+                    shutil.copy(source, dest)
+
+    shutil.copy(CONFIG_FILE, profile_dir)
 
     log("Profile saved successfully!")
 
@@ -218,7 +216,12 @@ def apply_profile(profile_id, profile_list, profile_count):
 
     log("copying files...")
 
-    copy(profile_dir, CONFIG_DIR)
+    config_location = os.path.join(profile_dir, "conf.yaml")
+    profile_config = read_konsave_config(config_location)["save"]
+    for name in profile_config:
+        location = os.path.join(profile_dir, name)
+        copy(location, profile_config[name]["location"])
+
     restart_kde()
 
     log(
@@ -278,52 +281,27 @@ def export(profile_id, profile_list, profile_count):
     # compressing the files as zip
     log("Exporting profile. It might take a minute or two...")
 
-    # VARIABLES
-    config_export_path = mkdir(os.path.join(export_path, "config"))
-    plasma_export_path = mkdir(os.path.join(export_path, "plasma"))
-    cursor_export_path = mkdir(os.path.join(export_path, "cursor"))
-    icon_export_path = mkdir(os.path.join(export_path, "icons"))
+    profile_config_file = os.path.join(profile_dir, "conf.yaml")
+    konsave_config = read_konsave_config(profile_config_file)
 
-    kde_globals = os.path.join(profile_dir, "kdeglobals")
+    for section in konsave_config:
+        section_folder = os.path.join(export_path, section)
+        mkdir(section_folder)
+        for sub_section in konsave_config[section]:
+            location = konsave_config[section][sub_section]["location"]
+            path = os.path.join(section_folder, sub_section)
+            mkdir(path)
+            for entry in konsave_config[section][sub_section]["entries"]:
+                source = os.path.join(location, entry)
+                dest = os.path.join(path, entry)
+                log(f'Exporting "{entry}"...')
+                if os.path.exists(source):
+                    if os.path.isdir(source):
+                        copy(source, dest)
+                    else:
+                        shutil.copy(source, dest)
 
-    icon = search_config(kde_globals, "Icons", "Theme")
-    cursor = search_config(
-        os.path.join(profile_dir, "kcminputrc"), "Mouse", "cursorTheme"
-    )
-
-    def check_path_and_copy(path1, path2, export_location, name):
-        if os.path.exists(path1):
-            copy(path1, os.path.join(export_location, name))
-        elif os.path.exists(path2):
-            copy(path2, os.path.join(export_location, name))
-        else:
-            log(f"Couldn't find {path1} or {path2}. Skipping...")
-
-    if icon is not None:
-        local_icon_dir = os.path.join(HOME, ".local/share/icons", icon)
-        usr_icon_dir = os.path.join("/usr/share/icons", icon)
-        log("Exporting icon theme")
-        check_path_and_copy(local_icon_dir, usr_icon_dir, icon_export_path, icon)
-    else:
-        log("Skipping icon theme...")
-
-    if cursor is not None:
-        local_cursor_dir = os.path.join(HOME, ".icons", cursor)
-        usr_cursor_dir = os.path.join("/usr/share/icons", cursor)
-        log("Exporting cursors...")
-        check_path_and_copy(
-            local_cursor_dir, usr_cursor_dir, cursor_export_path, cursor
-        )
-    else:
-        log("Skipping cursors...")
-
-    plasma_dir = os.path.join(HOME, ".local/share/plasma")
-
-    log("Exporting plasma files")
-    copy(plasma_dir, plasma_export_path)
-
-    log("Exporting config files")
-    copy(profile_dir, config_export_path)
+    shutil.copy(CONFIG_FILE, export_path)
 
     log("Creating archive")
     shutil.make_archive(export_path, "zip", export_path)
@@ -361,27 +339,26 @@ def import_profile(path):
     with ZipFile(path, "r") as zip_file:
         zip_file.extractall(temp_path)
 
-    config_import_path = os.path.join(temp_path, "config")
-    plasma_import_path = os.path.join(temp_path, "plasma")
-    icon_import_path = os.path.join(temp_path, "icons")
-    cursor_import_path = os.path.join(temp_path, "cursor")
+    config_file_location = os.path.join(temp_path, "conf.yaml")
+    konsave_config = read_konsave_config(config_file_location)
 
-    plasma_dir = os.path.join(HOME, ".local/share/plasma")
-    local_icon_dir = os.path.join(HOME, ".local/share/icons")
-    local_cursor_dir = os.path.join(HOME, ".icons")
     profile_dir = os.path.join(PROFILES_DIR, item)
+    copy(os.path.join(temp_path, "save"), profile_dir)
+    shutil.copy(os.path.join(temp_path, "conf.yaml"), profile_dir)
 
-    log("Importing config files")
-    copy(config_import_path, profile_dir)
-
-    log("Importing plasma files")
-    copy(plasma_import_path, plasma_dir)
-
-    log("Importing icons")
-    copy(icon_import_path, local_icon_dir)
-
-    log("Importing cursors")
-    copy(cursor_import_path, local_cursor_dir)
+    for section in konsave_config["export"]:
+        location = konsave_config["export"][section]["location"]
+        path = os.path.join(temp_path, "export", section)
+        mkdir(path)
+        for entry in konsave_config["export"][section]["entries"]:
+            source = os.path.join(path, entry)
+            dest = os.path.join(location, entry)
+            log(f'Importing "{entry}"...')
+            if os.path.exists(source):
+                if os.path.isdir(source):
+                    copy(source, dest)
+                else:
+                    shutil.copy(source, dest)
 
     shutil.rmtree(temp_path)
 

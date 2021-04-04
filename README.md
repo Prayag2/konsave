@@ -38,7 +38,33 @@ You may need to log out and log in to see all the changes.
 
 ## Uninstall Konsave
 To uninstall konsave, run the following:  
-`python -m pip uninstall konsave`
+`python -m pip uninstall konsave`  
+<br>
+
+---
+
+# UNRELEASED FEATURES
+These features have been recently added to Konsave but will remain unreleased for some time. The version is `2.0.0-alpha.1`. Your feedback will be appreciated greatly.
+
+## Installation of the unreleased version
+To test these features out, you can install Konsave by entering the following commands in your terminal:  
+-  `git clone https://github.com/prayag2/konsave`  
+-  `cd konsave`  
+-  `python -m pip install -e .`
+
+## Uninstall
+- `python -m pip uninstall konsave`
+
+
+## The Features:
+- You'll be able to edit konsave's configuration file to backup files/folders of your choice! You can add as many configurations to backup as you want.
+- You can use a few pre-defined variables and functions in the configuration file.
+- Exporting and importing is a lot better now.
+- This version of Konsave is not compatible with the older versions so the versioning has changed to 2.0.0. Please give your valuable feedback and help us improve Konsave!
+
+---
+
+<br>
 
 ## Contribution
 Please read [CONTRIBUTION.md](https://github.com/Prayag2/konsave/blob/master/CONTRIBUTION.md) for info about contributing. 
