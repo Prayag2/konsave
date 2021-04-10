@@ -8,7 +8,7 @@ import traceback
 from datetime import datetime
 from random import shuffle
 from zipfile import is_zipfile, ZipFile
-from konsave.vars import (
+from konsave.consts import (
     HOME,
     CONFIG_FILE,
     PROFILES_DIR,

@@ -13,7 +13,7 @@ from konsave.funcs import (
     import_profile,
     wipe,
 )
-from konsave.vars import (
+from konsave.consts import (
     VERSION,
     CONFIG_FILE,
     list_of_profiles,
