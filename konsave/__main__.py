@@ -4,6 +4,8 @@ import argparse
 import os
 import shutil
 from pkg_resources import resource_filename
+
+import konsave
 from konsave.funcs import (
     list_profiles,
     save_profile,
@@ -14,7 +16,6 @@ from konsave.funcs import (
     wipe,
 )
 from konsave.consts import (
-    VERSION,
     CONFIG_FILE,
     list_of_profiles,
     length_of_lop,
@@ -119,7 +120,7 @@ def main():
     elif args.import_profile:
         import_profile(args.import_profile)
     elif args.version:
-        print(f"Konsave: {VERSION}")
+        print(f"Konsave: {konsave.__version__}")
     elif args.wipe:
         wipe()
     else:
