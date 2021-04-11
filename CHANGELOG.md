@@ -5,10 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- You'll be able to edit konsave's configuration file to backup files/folders of your choice! You can add as many configurations to backup as you want.
-- You can use a few pre-defined variables and functions in the configuration file.
-- Exporting and importing is a lot better now.
-- This version of Konsave is not compatible with the older versions so the versioning has changed to 2.0.0. Please give your valuable feedback and help us improve Konsave!
+
+## [2.0.0] - 2021-04-11
+### Added
+- Possibility to define multiple backup targets via the configuration file.
+- Errors will be saved to `konsave_log.txt` in the home directory.
+- Ability to use a few variables and functions in the configuration file.
+
+### Changed
+- Improved export and import feature. You'll be able change which files to export and import from the configuration file.
+
+### Break
+- The old configuration files and profiles won't work with this version of Konsave.
 
 ## [1.1.9] - 2021-03-18
 ### Fixes
@@ -119,6 +127,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - You can also import ".knsv" files as profiles!
 
 
+[2.0.0]: https://github.com/Prayag2/konsave/compare/v1.1.9...v2.0.0
 [1.1.9]: https://github.com/Prayag2/konsave/compare/v1.1.8...v1.1.9
 [1.1.8]: https://github.com/Prayag2/konsave/compare/v1.1.7...v1.1.8
 [1.1.7]: https://github.com/Prayag2/konsave/compare/v1.1.6...v1.1.7
