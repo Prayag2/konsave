@@ -11,9 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Possibility to define multiple backup targets via the configuration file.
 - Errors will be saved to `konsave_log.txt` in the home directory.
 - Ability to use a few variables and functions in the configuration file.
+- Ability to use Konsave on all desktop environments.
 
 ### Changed
 - Improved export and import feature. You'll be able change which files to export and import from the configuration file.
+- Changed yaml loader from `yaml.FullLoader` to `yaml.SafeLoader`
 
 ### Break
 - The old configuration files and profiles won't work with this version of Konsave.
