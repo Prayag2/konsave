@@ -12,7 +12,7 @@ from konsave.funcs import (
     export,
     import_profile,
     wipe,
-    log
+    log,
 )
 from konsave.consts import (
     VERSION,
@@ -103,15 +103,15 @@ def main():
     if not os.path.exists(CONFIG_FILE):
         log("Select your desktop environment-")
         try:
-            de = int(input("1. KDE Plasma\n2. Other\n=>"))
+            desktop_environment = int(input("1. KDE Plasma\n2. Other\n=>"))
         except ValueError:
             log("Invalid input.")
             return
         else:
-            if de == 1:
+            if desktop_environment == 1:
                 default_config_path = resource_filename("konsave", "conf_kde.yaml")
                 shutil.copy(default_config_path, CONFIG_FILE)
-            elif de == 2:
+            elif desktop_environment == 2:
                 default_config_path = resource_filename("konsave", "conf_other.yaml")
                 shutil.copy(default_config_path, CONFIG_FILE)
             else:
