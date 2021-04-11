@@ -82,12 +82,6 @@ def log(msg, *args, **kwargs):
     print(f"Konsave: {msg.capitalize()}", *args, **kwargs)
 
 
-def restart_kde():
-    """Replaces plasmashell."""
-    log("restarting kde...")
-    os.system("plasmashell --replace > /dev/null 2>&1 & disown")
-
-
 @exception_handler
 def copy(source, dest):
     """
@@ -222,7 +216,6 @@ def apply_profile(profile_id, profile_list, profile_count):
         location = os.path.join(profile_dir, name)
         copy(location, profile_config[name]["location"])
 
-    restart_kde()
 
     log(
         "Profile applied successfully! Please log-out and log-in to see the changes completely!"

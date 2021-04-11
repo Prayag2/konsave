@@ -29,7 +29,7 @@ Install from PyPI
 You may need to log out and log in to see all the changes.  
 ### Export a profile as a ".knsv" file to share it with your friends!
 `konsave -e <profile id>` or `konsave --export-profile <profile id>`
-### Import a ".knsv file
+### Import a ".knsv" file
 `konsave -i <path to the file>` or `konsave --import-profile <path to the file>`
 ### Show current version
 `konsave -v` or `konsave --version`  
