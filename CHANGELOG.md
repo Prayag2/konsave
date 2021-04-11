@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Improved export and import feature. You'll be able change which files to export and import from the configuration file.
 - Changed yaml loader from `yaml.FullLoader` to `yaml.SafeLoader`
+- The version will now be dynamically printed.
 
 ### Break
 - The old configuration files and profiles won't work with this version of Konsave.
