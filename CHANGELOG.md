@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2021-04-11
+### Removed
+- KDE Plasma won't be restarted after applying a new configuration now. You'll have to restart it yourself. This was done because using Konsave on other DEs would give an error.
+
 ## [2.0.0] - 2021-04-11
 ### Added
 - Possibility to define multiple backup targets via the configuration file.
