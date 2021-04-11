@@ -1,5 +1,5 @@
-<h1 align=center> Konsave (Save Plasma Customization) </h1>
-<p align=center>A CLI program that will let you save and apply your KDE Plasma customizations with just one command! Also, it has a "K" in the name :D</p>
+<h1 align=center> Konsave (Save Linux Customization) </h1>
+<p align=center>A CLI program that will let you save and apply your Linux customizations with just one command! It officially supports KDE Plasma but it can be used on all other desktop environments too!</p>
 
 ---
 
