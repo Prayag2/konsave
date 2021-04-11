@@ -1,6 +1,9 @@
 """Konsave entry point."""
 
 import argparse
+import os
+import shutil
+from pkg_resources import resource_filename
 from konsave.funcs import (
     list_profiles,
     save_profile,
@@ -9,8 +12,14 @@ from konsave.funcs import (
     export,
     import_profile,
     wipe,
+    log,
 )
-from konsave.vars import VERSION, list_of_profiles, length_of_lop
+from konsave.consts import (
+    VERSION,
+    CONFIG_FILE,
+    list_of_profiles,
+    length_of_lop,
+)
 
 
 def _get_parser() -> argparse.ArgumentParser:
@@ -90,13 +99,32 @@ def _get_parser() -> argparse.ArgumentParser:
 
 def main():
     """The main function that handles all the arguments and options."""
+
+    if not os.path.exists(CONFIG_FILE):
+        log("Select your desktop environment-")
+        try:
+            desktop_environment = int(input("1. KDE Plasma\n2. Other\n=>"))
+        except ValueError:
+            log("Invalid input.")
+            return
+        else:
+            if desktop_environment == 1:
+                default_config_path = resource_filename("konsave", "conf_kde.yaml")
+                shutil.copy(default_config_path, CONFIG_FILE)
+            elif desktop_environment == 2:
+                default_config_path = resource_filename("konsave", "conf_other.yaml")
+                shutil.copy(default_config_path, CONFIG_FILE)
+            else:
+                log("Invalid input.")
+                return
+
     parser = _get_parser()
     args = parser.parse_args()
 
     if args.list:
         list_profiles(list_of_profiles, length_of_lop)
     elif args.save:
-        save_profile(args.save, list_of_profiles, args.force)
+        save_profile(args.save, list_of_profiles, force=args.force)
     elif args.remove:
         remove_profile(args.remove, list_of_profiles, length_of_lop)
     elif args.apply:

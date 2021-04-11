@@ -1,5 +1,5 @@
-<h1 align=center> Konsave (Save Plasma Customization) </h1>
-<p align=center>A CLI program that will let you save and apply your KDE Plasma customizations with just one command! Also, it has a "K" in the name :D</p>
+<h1 align=center> Konsave (Save Linux Customization) </h1>
+<p align=center>A CLI program that will let you save and apply your Linux customizations with just one command! It officially supports KDE Plasma but it can be used on all other desktop environments too!</p>
 
 ---
 
@@ -36,11 +36,80 @@ You may need to log out and log in to see all the changes.
 ### Wipe all profiles
 `konsave -w` or `konsave --wipe`
 
-## Uninstall Konsave
-To uninstall konsave, run the following:  
-`python -m pip uninstall konsave`
+<br><hr><br>
 
-## Contribution
+
+## Editing the configuration file
+You can make changes to Konsave's configuration file according to your needs. The configuration file is located in `~/.config/konsave/config.yaml`.
+When using Konsave for the first time, you'll be prompted to enter your desktop environment.  
+For KDE Plasma users, the configuration file will be pre-configured.
+
+### Format
+The configuration file should be formatted in the following way:
+```
+---
+save:
+    name:
+        location: "path/to/parent/directory"
+        entries: 
+        # These are files to be backed up.
+        # They should be present in the specified location.
+            - file1
+            - file2
+export:
+    # This includes files which will be exported with your profile.
+    # They will not be saved but only be exported and imported.
+    # These may include files like complete icon packs and themes..
+    name:
+        location: "path/to/parent/directory"
+        entries: 
+            - file1
+            - file2
+...
+```
+
+### Adding more files/folders to backup
+You can add more files/folders in the configuration file like this:
+```
+save:
+    name:
+        location: "path/to/parent/directory"
+        entries:
+            - file1
+            - file2
+            - folder1
+            - folder2
+export
+    anotherName:
+            location: "another/path/to/parent/directory"
+            entries:
+                - file1
+                - file2
+                - folder1
+                - folder2
+```
+
+### Using variables and functions
+You can use a few variables and functions in the `location` of each entry in the configuration file. These are:  
+`$HOME`: points to the home directory  
+`$CONFIG_DIR`: points to `~/.config`  
+`$KONSAVE_DIR`: points to `~/.config/konsave`  
+`$PROFILES_DIR`: points to `~/.config/konsave/profiles`  
+`${ENDS_WITH="text"}`: for folders with different names on different computers whose names end with the same thing.  
+The best example for this is the ".default-release" folder in `~/.mozilla/firefox`.  
+`${BEGINS_WITH="text"}`: for folders with different names on different computers whose names start with the same thing.  
+Here's an example of how you can use these variables:
+```
+save:
+    firefox:
+        location: "$HOME/.mozilla/firefox/${ENDS_WITH='.default-release'}"
+        entries:
+            - chrome
+```
+
+<br><hr><br>
+
+## Contributing
 Please read [CONTRIBUTION.md](https://github.com/Prayag2/konsave/blob/master/CONTRIBUTION.md) for info about contributing. 
 
 ## License

@@ -1,0 +1,105 @@
+---
+# This is the configuration file for konsave. This file is pre-configured for KDE Plasma users.
+# This will backup all the important files for your Plasma customizations.
+# Please make sure it follows the correct format for proper working of konsave.
+# The format should be:
+# ---
+# save:
+#     name:
+#         location: "path/to/parent/directory"
+#         entries: 
+#         # these are files to be backed up. They should be present in the specified location.
+#             - file1
+#             - file2
+# export:
+#     # This includes files which will be exported with your profile.
+#     # They will not be saved but only be exported and imported.
+#     # These may include files like complete icon packs and themes..
+#     name:
+#         location: "path/to/parent/directory"
+#         entries: 
+#             - file1
+#             - file2
+# ...
+# You can use these variables and functions in the locations of different entries:
+# $HOME: the home directory
+# $PROFILES_DIR: directory where all profiles are saved
+# $CONFIG_DIR: refers to "$HOME/.config/"
+# $KONSAVE_DIR: the location where all Konsave files are stored ("$CONFIG_DIR/konsave").
+# ${ENDS_WITH="text"}: for folders with different names on different computers whose names end with the same thing.
+# The best example for this is the ".default-release" folder for firefox.
+# ${BEGINS_WITH="text"}: for folders with different names on different computers whose names start with the same thing.
+
+save:
+    configs:
+        location: "$HOME/.config"
+        entries:
+            - gtk-2.0
+            - gtk-3.0
+            - gtk-4.0
+            - Kvantum
+            - latte
+            - dolphinrc
+            - konsolerc
+            - kcminputrc
+            - kdeglobals
+            - kglobalshortcutsrc
+            - klipperrc
+            - krunnerrc
+            - kscreenlockerrc
+            - ksmserverrc
+            - kwinrc
+            - kwinrulesrc
+            - plasma-org.kde.plasma.desktop-appletsrc
+            - plasmarc
+            - plasmashellrc
+            - gtkrc
+            - gtkrc-2.0
+            - lattedockrc
+            - breezerc
+            - oxygenrc
+            - lightlyrc
+            - ksplashrc
+            - khotkeysrc
+
+    # Here are a few examples of how you can add more stuff to back up
+    # firefox:
+    #     location: "$HOME/.mozilla/firefox/${ENDS_WITH='.default-release'}"
+    #     entries:
+    #         - chrome # for firefox customizations
+
+    # oss:
+    #     location: "$HOME/.config/Code - OSS/User/"
+    #     entries:
+    #         - settings.json
+
+
+# The following files will only be used for exporting and importing.
+export:
+    share_folder:
+        location: "$HOME/.local/share"
+        entries:
+            - plasma
+            - kwin
+            - konsole
+            - fonts
+            - color-schemes
+            # Add icons only if necessary. They can take up to a few gigabytes of storage easily.
+            #- icons
+    home_folder:
+        location: "$HOME/"
+        entries:
+            - .fonts
+            - .themes
+            - .icons # this refers to the cursor pack and not the icon pack.
+    
+        
+    # You can add more files to export like this
+    # name:
+    #     location: "path"
+    #     entries:
+    #         - file1
+    #         - file2
+    #         - folder1
+    #         - folder2
+...
