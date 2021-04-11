@@ -36,37 +36,80 @@ You may need to log out and log in to see all the changes.
 ### Wipe all profiles
 `konsave -w` or `konsave --wipe`
 
-## Uninstall Konsave
-To uninstall konsave, run the following:  
-`python -m pip uninstall konsave`  
-<br>
+<br><hr><br>
 
+
+## Editing the configuration file
+You can make changes to Konsave's configuration file according to your needs. The configuration file is located in `~/.config/konsave/config.yaml`.
+When using Konsave for the first time, you'll be prompted to enter your desktop environment.  
+For KDE Plasma users, the configuration file will be pre-configured.
+
+### Format
+The configuration file should be formatted in the following way:
+```
 ---
+save:
+    name:
+        location: "path/to/parent/directory"
+        entries: 
+        # These are files to be backed up.
+        # They should be present in the specified location.
+            - file1
+            - file2
+export:
+    # This includes files which will be exported with your profile.
+    # They will not be saved but only be exported and imported.
+    # These may include files like complete icon packs and themes..
+    name:
+        location: "path/to/parent/directory"
+        entries: 
+            - file1
+            - file2
+...
+```
 
-# UNRELEASED FEATURES
-These features have been recently added to Konsave but will remain unreleased for some time. The version is `2.0.0-alpha.1`. Your feedback will be appreciated greatly.
+### Adding more files/folders to backup
+You can add more files/folders in the configuration file like this:
+```
+save:
+    name:
+        location: "path/to/parent/directory"
+        entries:
+            - file1
+            - file2
+            - folder1
+            - folder2
+export
+    anotherName:
+            location: "another/path/to/parent/directory"
+            entries:
+                - file1
+                - file2
+                - folder1
+                - folder2
+```
 
-## Installation of the unreleased version
-To test these features out, you can install Konsave by entering the following commands in your terminal:  
--  `git clone https://github.com/prayag2/konsave`  
--  `cd konsave`  
--  `python -m pip install -e .`
+### Using variables and functions
+You can use a few variables and functions in the `location` of each entry in the configuration file. These are:  
+`$HOME`: points to the home directory  
+`$CONFIG_DIR`: points to `~/.config`  
+`$KONSAVE_DIR`: points to `~/.config/konsave`  
+`$PROFILES_DIR`: points to `~/.config/konsave/profiles`  
+`${ENDS_WITH="text"}`: for folders with different names on different computers whose names end with the same thing.  
+The best example for this is the ".default-release" folder in `~/.mozilla/firefox`.  
+`${BEGINS_WITH="text"}`: for folders with different names on different computers whose names start with the same thing.  
+Here's an example of how you can use these variables:
+```
+save:
+    firefox:
+        location: "$HOME/.mozilla/firefox/${ENDS_WITH='.default-release'}"
+        entries:
+            - chrome
+```
 
-## Uninstall
-- `python -m pip uninstall konsave`
+<br><hr><br>
 
-
-## The Features:
-- You'll be able to edit konsave's configuration file to backup files/folders of your choice! You can add as many configurations to backup as you want.
-- You can use a few pre-defined variables and functions in the configuration file.
-- Exporting and importing is a lot better now.
-- This version of Konsave is not compatible with the older versions so the versioning has changed to 2.0.0. Please give your valuable feedback and help us improve Konsave!
-
----
-
-<br>
-
-## Contribution
+## Contributing
 Please read [CONTRIBUTION.md](https://github.com/Prayag2/konsave/blob/master/CONTRIBUTION.md) for info about contributing. 
 
 ## License
