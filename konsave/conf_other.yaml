@@ -1,0 +1,73 @@
+---
+# This is the configuration file for konsave.
+# Please make sure it follows the correct format for proper working of konsave.
+# The format should be:
+# ---
+# save:
+#     name:
+#         location: "path/to/parent/directory"
+#         entries: 
+#         # these are files to be backed up. They should be present in the specified location.
+#             - file1
+#             - file2
+# export:
+#     # This includes files which will be exported with your profile.
+#     # They will not be saved but only be exported and imported.
+#     # These may include files like complete icon packs and themes..
+#     name:
+#         location: "path/to/parent/directory"
+#         entries: 
+#             - file1
+#             - file2
+# ...
+# You can use these variables and functions in the locations of different entries:
+# $HOME: the home directory
+# $PROFILES_DIR: directory where all profiles are saved
+# $CONFIG_DIR: refers to "$HOME/.config/"
+# $KONSAVE_DIR: the location where all Konsave files are stored ("$CONFIG_DIR/konsave").
+# ${ENDS_WITH="text"}: for folders with different names on different computers but their names end with the same thing.
+# The best example for this is the ".default-release" folder for firefox.
+# ${BEGINS_WITH="text"}: for folders with different names on different computers but their names start with the same thing.
+
+# The following files will be saved in your profiles
+save:
+    configs:
+        location: "$HOME/.config"
+        entries:
+            # add config files and folders to backup here like this
+            # - file1
+            # - file2
+            # - folder1
+
+    # Here are a few examples of how you can add more stuff to back up
+    # firefox:
+    #     location: "$HOME/.mozilla/firefox/${ENDS_WITH='.default-release'}"
+    #     entries:
+    #         - chrome # for firefox customizations
+
+    # oss:
+    #     location: "$HOME/.config/Code - OSS/User/"
+    #     entries:
+    #         - settings.json
+
+
+# The following files will only be used for exporting and importing.
+export:
+    share_folder:
+        location: "$HOME/.local/share"
+        entries:
+            # add files/folders to export from "~/.local/share" here
+    home_folder:
+        location: "$HOME/"
+        entries:
+            # add files/folders to export from the home directory here
+    
+    # You can add more files to export like this
+    # name:
+        # location: "path"
+        # entries:
+            # - file1
+            # - file2
+            # - folder1
+            # - folder2
+...
