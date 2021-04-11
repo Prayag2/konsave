@@ -2,6 +2,7 @@
 This module contains all the variables for konsave
 """
 import os
+from konsave import __version__
 
 
 HOME = os.path.expandvars("$HOME")
@@ -19,5 +20,4 @@ if not os.path.exists(PROFILES_DIR):
 list_of_profiles = os.listdir(PROFILES_DIR)
 length_of_lop = len(list_of_profiles)
 
-# Current Version
-VERSION = "2.0.0-alpha.1"
+VERSION = __version__
