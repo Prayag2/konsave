@@ -1,5 +1,5 @@
 <h1 align=center> Konsave (Save Linux Customization) </h1>
-<p align=center>A CLI program that will let you save and apply your Linux customizations with just one command! It officially supports KDE Plasma but it can be used on all other desktop environments too!</p>
+<p align=center>A CLI program that will let you save and apply your Linux customizations with just one command! Konsave also lets you share your dot files to your friends in an instant! It officially supports KDE Plasma but it can be used on all other desktop environments too!</p>
 
 ---
 
@@ -79,7 +79,7 @@ save:
             - file2
             - folder1
             - folder2
-export
+export:
     anotherName:
             location: "another/path/to/parent/directory"
             entries:

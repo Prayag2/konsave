@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2] - 2021-04-13
+### Fixed
+- Fixed a bug with export. Previously, exporting a profile would export the current profile but now it will export the specified profile.
+- Fixed a typo in the readme
+
+## Added
+- Added a line in the readme
+
 ## [2.0.1] - 2021-04-11
 ### Removed
 - KDE Plasma won't be restarted after applying a new configuration now. You'll have to restart it yourself. This was done because using Konsave on other DEs would give an error.

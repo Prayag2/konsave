@@ -277,22 +277,26 @@ def export(profile_id, profile_list, profile_count):
     profile_config_file = os.path.join(profile_dir, "conf.yaml")
     konsave_config = read_konsave_config(profile_config_file)
 
-    for section in konsave_config:
-        section_folder = os.path.join(export_path, section)
-        mkdir(section_folder)
-        for sub_section in konsave_config[section]:
-            location = konsave_config[section][sub_section]["location"]
-            path = os.path.join(section_folder, sub_section)
-            mkdir(path)
-            for entry in konsave_config[section][sub_section]["entries"]:
-                source = os.path.join(location, entry)
-                dest = os.path.join(path, entry)
-                log(f'Exporting "{entry}"...')
-                if os.path.exists(source):
-                    if os.path.isdir(source):
-                        copy(source, dest)
-                    else:
-                        shutil.copy(source, dest)
+    export_path_save = mkdir(os.path.join(export_path, "save"))
+    for name in konsave_config["save"]:
+        location = os.path.join(profile_dir, name)
+        log(f'Exporting "{name}"...')
+        copy(location, os.path.join(export_path_save, name))
+
+    konsave_config_export = konsave_config["export"]
+    export_path_export = mkdir(os.path.join(export_path, "export"))
+    for name in konsave_config_export:
+        location = konsave_config_export[name]["location"]
+        path = mkdir(os.path.join(export_path_export, name))
+        for entry in konsave_config_export[name]["entries"]:
+            source = os.path.join(location, entry)
+            dest = os.path.join(path, entry)
+            log(f'Exporting "{entry}"...')
+            if os.path.exists(source):
+                if os.path.isdir(source):
+                    copy(source, dest)
+                else:
+                    shutil.copy(source, dest)
 
     shutil.copy(CONFIG_FILE, export_path)
 
