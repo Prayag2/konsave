@@ -99,46 +99,47 @@ def _get_parser() -> argparse.ArgumentParser:
 
 def main():
     """The main function that handles all the arguments and options."""
-
-    if not os.path.exists(CONFIG_FILE):
-        log("Select your desktop environment-")
-        try:
-            desktop_environment = int(input("1. KDE Plasma\n2. Other\n=>"))
-        except ValueError:
-            log("Invalid input.")
-            return
-        else:
-            if desktop_environment == 1:
-                default_config_path = resource_filename("konsave", "conf_kde.yaml")
-                shutil.copy(default_config_path, CONFIG_FILE)
-            elif desktop_environment == 2:
-                default_config_path = resource_filename("konsave", "conf_other.yaml")
-                shutil.copy(default_config_path, CONFIG_FILE)
-            else:
+    
+    if args.version:
+        print(f"Konsave: {VERSION}")
+    else:
+        if not os.path.exists(CONFIG_FILE):
+            log("Select your desktop environment-")
+            try:
+                desktop_environment = int(input("1. KDE Plasma\n2. Other\n=>"))
+            except ValueError:
                 log("Invalid input.")
                 return
+            else:
+                if desktop_environment == 1:
+                    default_config_path = resource_filename("konsave", "conf_kde.yaml")
+                    shutil.copy(default_config_path, CONFIG_FILE)
+                elif desktop_environment == 2:
+                    default_config_path = resource_filename("konsave", "conf_other.yaml")
+                    shutil.copy(default_config_path, CONFIG_FILE)
+                else:
+                    log("Invalid input.")
+                    return
 
-    parser = _get_parser()
-    args = parser.parse_args()
+        parser = _get_parser()
+        args = parser.parse_args()
 
-    if args.list:
-        list_profiles(list_of_profiles, length_of_lop)
-    elif args.save:
-        save_profile(args.save, list_of_profiles, force=args.force)
-    elif args.remove:
-        remove_profile(args.remove, list_of_profiles, length_of_lop)
-    elif args.apply:
-        apply_profile(args.apply, list_of_profiles, length_of_lop)
-    elif args.export_profile:
-        export(args.export_profile, list_of_profiles, length_of_lop)
-    elif args.import_profile:
-        import_profile(args.import_profile)
-    elif args.version:
-        print(f"Konsave: {VERSION}")
-    elif args.wipe:
-        wipe()
-    else:
-        parser.print_help()
+        if args.list:
+            list_profiles(list_of_profiles, length_of_lop)
+        elif args.save:
+            save_profile(args.save, list_of_profiles, force=args.force)
+        elif args.remove:
+            remove_profile(args.remove, list_of_profiles, length_of_lop)
+        elif args.apply:
+            apply_profile(args.apply, list_of_profiles, length_of_lop)
+        elif args.export_profile:
+            export(args.export_profile, list_of_profiles, length_of_lop)
+        elif args.import_profile:
+            import_profile(args.import_profile)
+        elif args.wipe:
+            wipe()
+        else:
+            parser.print_help()
 
 
 if __name__ == "__main__":
