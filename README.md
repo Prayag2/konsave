@@ -23,12 +23,12 @@ Install from PyPI
 ### List all profiles
 `konsave -l` or `konsave --list`
 ### Remove a profile
-`konsave -r <profile id>` or `konsave --remove <profile id>`
+`konsave -r <profile name>` or `konsave --remove <profile name>`
 ### Apply a profile
-`konsave -a <profile id>` or `konsave --apply <profile id>`
+`konsave -a <profile name>` or `konsave --apply <profile name>`
 You may need to log out and log in to see all the changes.  
 ### Export a profile as a ".knsv" file to share it with your friends!
-`konsave -e <profile id>` or `konsave --export-profile <profile id>`
+`konsave -e <profile name>` or `konsave --export-profile <profile name>`
 ### Import a ".knsv" file
 `konsave -i <path to the file>` or `konsave --import-profile <path to the file>`
 ### Show current version
@@ -89,16 +89,17 @@ export:
                 - folder2
 ```
 
-### Using variables and functions
-You can use a few variables and functions in the `location` of each entry in the configuration file. These are:  
-`$HOME`: points to the home directory  
-`$CONFIG_DIR`: points to `~/.config`  
-`$KONSAVE_DIR`: points to `~/.config/konsave`  
-`$PROFILES_DIR`: points to `~/.config/konsave/profiles`  
-`${ENDS_WITH="text"}`: for folders with different names on different computers whose names end with the same thing.  
-The best example for this is the ".default-release" folder in `~/.mozilla/firefox`.  
-`${BEGINS_WITH="text"}`: for folders with different names on different computers whose names start with the same thing.  
-Here's an example of how you can use these variables:
+### Using placeholders
+You can use a few placeholders in the `location` of each entry in the configuration file. These are:  
+`$HOME`: the home directory
+`$CONFIG_DIR`: refers to "$HOME/.config/"
+`$SHARE_DIR`: refers to "$HOME/.local/share"
+`$BIN_DIR`: refers to "$HOME/.local/bin"
+`${ENDS_WITH="text"}`: for folders with different names on different computers whose names end with the same thing.
+The best example for this is the ".default-release" folder of firefox.
+`${BEGINS_WITH="text"}`: for folders with different names on different computers whose names start with the same thing.
+
+
 ```
 save:
     firefox:

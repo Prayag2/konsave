@@ -52,25 +52,25 @@ def _get_parser() -> argparse.ArgumentParser:
         "-r",
         "--remove",
         required=False,
-        type=int,
+        type=str,
         help="Remove the specified profile",
-        metavar="<id>",
+        metavar="<name>",
     )
     parser.add_argument(
         "-a",
         "--apply",
         required=False,
-        type=int,
+        type=str,
         help="Apply the specified profile",
-        metavar="<id>",
+        metavar="<name>",
     )
     parser.add_argument(
         "-e",
         "--export-profile",
         required=False,
-        type=int,
+        type=str,
         help="Export a profile and share with your friends!",
-        metavar="<id>",
+        metavar="<name>",
     )
     parser.add_argument(
         "-i",
