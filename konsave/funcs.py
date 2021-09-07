@@ -174,7 +174,7 @@ def save_profile(name, profile_list, force=False):
         folder = os.path.join(profile_dir, section)
         mkdir(folder)
         for entry in konsave_config[section]["entries"]:
-            source = os.path.join(location, entry)
+            source = os.path.join(location, entry) 
             dest = os.path.join(folder, entry)
             if os.path.exists(source):
                 if os.path.isdir(source):
@@ -188,25 +188,21 @@ def save_profile(name, profile_list, force=False):
 
 
 @exception_handler
-def apply_profile(profile_id, profile_list, profile_count):
+def apply_profile(profile_name, profile_list, profile_count):
     """Applies profile of the given id.
 
     Args:
-        profile_id: id of the profile to be applied
+        profile_name: name of the profile to be applied
         profile_list: the list of all created profiles
         profile_count: number of profiles created
     """
 
-    # Lowering id by 1
-    profile_id -= 1
-
     # assert
     assert profile_count != 0, "No profile saved yet."
-    assert profile_id in range(profile_count), "Profile not found :("
+    assert profile_name in profile_list, "Profile not found :("
 
     # run
-    name = profile_list[profile_id]
-    profile_dir = os.path.join(PROFILES_DIR, name)
+    profile_dir = os.path.join(PROFILES_DIR, profile_name)
 
     log("copying files...")
 
@@ -216,55 +212,48 @@ def apply_profile(profile_id, profile_list, profile_count):
         location = os.path.join(profile_dir, name)
         copy(location, profile_config[name]["location"])
 
-
     log(
         "Profile applied successfully! Please log-out and log-in to see the changes completely!"
     )
 
 
 @exception_handler
-def remove_profile(profile_id, profile_list, profile_count):
+def remove_profile(profile_name, profile_list, profile_count):
     """Removes the specified profile.
 
     Args:
-        profile_id: id of the profile to be removed
+        profile_name: name of the profile to be removed
         profile_list: the list of all created profiles
         profile_count: number of profiles created
     """
 
-    # Lowering profile_id by 1
-    profile_id -= 1
-
     # assert
-    assert profile_id in range(profile_count), "Profile not found."
+    assert profile_count != 0, "No profile saved yet."
+    assert profile_name in profile_list, "Profile not found."
 
     # run
-    item = profile_list[profile_id]
     log("removing profile...")
-    shutil.rmtree(os.path.join(PROFILES_DIR, item))
+    shutil.rmtree(os.path.join(PROFILES_DIR, profile_name))
     log("removed profile successfully")
 
 
 @exception_handler
-def export(profile_id, profile_list, profile_count):
+def export(profile_name, profile_list, profile_count):
     """It will export the specified profile as a ".knsv" file in the home directory.
 
     Args:
-        profile_id: id of the profile to be exported
+        profile_name: name of the profile to be exported
         profile_list: the list of all created profiles
         profile_count: number of profiles created
     """
 
-    # lowering profile_id by 1
-    profile_id -= 1
-
     # assert
-    assert profile_id in range(profile_count), "Profile not found."
+    assert profile_count != 0, "No profile saved yet."
+    assert profile_name in profile_list, "Profile not found."
 
     # run
-    item = profile_list[profile_id]
-    profile_dir = os.path.join(PROFILES_DIR, item)
-    export_path = os.path.join(HOME, item)
+    profile_dir = os.path.join(PROFILES_DIR, profile_name)
+    export_path = os.path.join(HOME, profile_name)
 
     if os.path.exists(export_path):
         rand_str = list("abcdefg12345")

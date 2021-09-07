@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2021-09-07
+### Added
+- The following placeholders for `config.yaml` were added:
+    1. `$SHARE_DIR`: It points to `$HOME/.local/share`
+    2. `$BIN_DIR`: It points to `$HOME/.local/bin`
+
+### Changed
+- Now, there's no need to check for the ID of a profile if you already know its name. You can remove, apply and export a profile using its name. For example `konsave --export myprofile`. See [#38](https://github.com/Prayag2/konsave/issues/38)
+- Replaced the words "variables and functions" with "placeholders".
+- Updated readme.
+
+### Removed
+- You'll no longer be able to use IDs to remove, apply and export profiles. You have to use the name of the profile to do so.
+- The following placeholders were removed:
+    - `$KONSAVE_DIR`
+    - `$CONFIG_DIR`
+
 ## [2.0.2] - 2021-04-13
 ### Fixed
 - Fixed a bug with export. Previously, exporting a profile would export the current profile but now it will export the specified profile.

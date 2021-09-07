@@ -3,7 +3,7 @@ This module parses conf.yaml
 """
 import os
 import re
-from konsave.consts import HOME, CONFIG_DIR, KONSAVE_DIR, PROFILES_DIR
+from konsave.consts import HOME, CONFIG_DIR, SHARE_DIR, BIN_DIR
 
 
 def ends_with(grouped_regex, path) -> str:
@@ -89,9 +89,9 @@ tokens = {
         "dict": {
             "HOME": HOME,
             "CONFIG_DIR": CONFIG_DIR,
-            "KONSAVE_DIR": KONSAVE_DIR,
-            "PROFILES_DIR": PROFILES_DIR,
-        }
+            "SHARE_DIR": SHARE_DIR,
+            "BIN_DIR": BIN_DIR
+            }
     },
     "functions": {
         "raw_regex": r"\{\w+\=(?:\"|')\S+(?:\"|')\}",
