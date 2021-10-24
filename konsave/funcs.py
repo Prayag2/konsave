@@ -38,7 +38,7 @@ def exception_handler(func):
     def inner_func(*args, **kwargs):
         try:
             function = func(*args, **kwargs)
-        except Exception as error:
+        except Exception as err:
             dateandtime = datetime.now().strftime("[%d/%m/%Y %H:%M:%S]")
             log_file = os.path.join(HOME, "konsave_log.txt")
 
@@ -48,7 +48,7 @@ def exception_handler(func):
                 file.write("\n")
 
             print(
-                f"Konsave: {error}\nPlease check the log at {log_file} for more details."
+                f"Konsave: {err}\nPlease check the log at {log_file} for more details."
             )
             return None
         else:
@@ -174,7 +174,7 @@ def save_profile(name, profile_list, force=False):
         folder = os.path.join(profile_dir, section)
         mkdir(folder)
         for entry in konsave_config[section]["entries"]:
-            source = os.path.join(location, entry) 
+            source = os.path.join(location, entry)
             dest = os.path.join(folder, entry)
             if os.path.exists(source):
                 if os.path.isdir(source):

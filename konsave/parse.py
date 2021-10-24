@@ -90,8 +90,8 @@ tokens = {
             "HOME": HOME,
             "CONFIG_DIR": CONFIG_DIR,
             "SHARE_DIR": SHARE_DIR,
-            "BIN_DIR": BIN_DIR
-            }
+            "BIN_DIR": BIN_DIR,
+        }
     },
     "functions": {
         "raw_regex": r"\{\w+\=(?:\"|')\S+(?:\"|')\}",

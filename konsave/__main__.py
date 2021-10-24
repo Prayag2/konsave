@@ -12,7 +12,6 @@ from konsave.funcs import (
     export,
     import_profile,
     wipe,
-    log,
 )
 from konsave.consts import (
     VERSION,
@@ -101,22 +100,12 @@ def main():
     """The main function that handles all the arguments and options."""
 
     if not os.path.exists(CONFIG_FILE):
-        log("Select your desktop environment-")
-        try:
-            desktop_environment = int(input("1. KDE Plasma\n2. Other\n=>"))
-        except ValueError:
-            log("Invalid input.")
-            return
+        if os.path.expandvars("$XDG_CURRENT_DESKTOP") == "KDE":
+            default_config_path = resource_filename("konsave", "conf_kde.yaml")
+            shutil.copy(default_config_path, CONFIG_FILE)
         else:
-            if desktop_environment == 1:
-                default_config_path = resource_filename("konsave", "conf_kde.yaml")
-                shutil.copy(default_config_path, CONFIG_FILE)
-            elif desktop_environment == 2:
-                default_config_path = resource_filename("konsave", "conf_other.yaml")
-                shutil.copy(default_config_path, CONFIG_FILE)
-            else:
-                log("Invalid input.")
-                return
+            default_config_path = resource_filename("konsave", "conf_other.yaml")
+            shutil.copy(default_config_path, CONFIG_FILE)
 
     parser = _get_parser()
     args = parser.parse_args()
