@@ -174,7 +174,7 @@ def save_profile(name, profile_list, force=False):
         folder = os.path.join(profile_dir, section)
         mkdir(folder)
         for entry in konsave_config[section]["entries"]:
-            source = os.path.join(location, entry)
+            source = os.path.join(location, entry) 
             dest = os.path.join(folder, entry)
             if os.path.exists(source):
                 if os.path.isdir(source):
