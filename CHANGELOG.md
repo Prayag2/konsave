@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.1] - 2021-10-24
+### Removed
+- Removed the prompt that asked you which desktop environment you use when you ran Konsave for the first time. See [#45](https://github.com/Prayag2/konsave/issues/45).
+- Removed unused import of the `log` function in `__main__.py`.
+
+### Changed
+- Konsave will now automatically detect if you're using KDE plasma or not.
+- Fixed some Pylint errors.
+
 ## [2.1.0] - 2021-09-07
 ### Added
 - The following placeholders for `config.yaml` were added:
@@ -159,6 +168,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - You can also import ".knsv" files as profiles!
 
 
+[2.1.1]: https://github.com/Prayag2/konsave/compare/v2.1.0...v2.1.1
+[2.1.0]: https://github.com/Prayag2/konsave/compare/v2.0.2...v2.1.0
+[2.0.2]: https://github.com/Prayag2/konsave/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/Prayag2/konsave/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/Prayag2/konsave/compare/v1.1.9...v2.0.0
 [1.1.9]: https://github.com/Prayag2/konsave/compare/v1.1.8...v1.1.9
 [1.1.8]: https://github.com/Prayag2/konsave/compare/v1.1.7...v1.1.8
