@@ -354,7 +354,7 @@ def import_profile(path):
 @exception_handler
 def wipe():
     """Wipes all profiles."""
-    confirm = input('This will wipe all your profiles. Enter "WIPE" Tto continue: ')
+    confirm = input('This will wipe all your profiles. Enter "WIPE" To continue: ')
     if confirm == "WIPE":
         shutil.rmtree(PROFILES_DIR)
         log("Removed all profiles!")
