@@ -39,9 +39,11 @@ save:
             - gtk-2.0
             - gtk-3.0
             - gtk-4.0
+            - kate
             - Kvantum
             - latte
             - dolphinrc
+            - katerc
             - konsolerc
             - kcminputrc
             - kdeglobals
