@@ -127,7 +127,20 @@ def read_konsave_config(config_file) -> dict:
     parse_keywords(tokens, TOKEN_SYMBOL, konsave_config)
     parse_functions(tokens, TOKEN_SYMBOL, konsave_config)
 
-    return konsave_config
+    # in some cases conf.yaml may contain nothing in "entries"
+    # yaml parses these as NoneType which are not iterable which throws an exception
+    # we can convert all None-Entries into empty lists recursively so they are simply skipped in loops later on
+    def convert_none_to_empty_list(data):
+        if isinstance(data, list):
+            data[:] = [convert_none_to_empty_list(i) for i in data]
+        elif isinstance(data, dict):
+            for k, v in data.items():
+                data[k] = convert_none_to_empty_list(v)
+        return [] if data is None else data
+
+
+    return convert_none_to_empty_list(konsave_config)
+
 
 
 @exception_handler
