@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.2] - 2022-04-20
+### Fixed
+- Empty entries in the config files will now be parsed as empty strings to prevent an exception. See [#50](https://github.com/Prayag2/konsave/pull/50)
+- A small typo was fixed. See [#51](https://github.com/Prayag2/konsave/pull/51)
+- Fixed incorrect PyYaml version in `requirements.txt`. See [#56](https://github.com/Prayag2/konsave/pull/56)
+
+### Added
+- Kate's (KDE's code editor) config files were added in the default KDE config file. See [#58](https://github.com/Prayag2/konsave/pull/58)
+
 ## [2.1.1] - 2021-10-24
 ### Removed
 - Removed the prompt that asked you which desktop environment you use when you ran Konsave for the first time. See [#45](https://github.com/Prayag2/konsave/issues/45).
@@ -168,6 +177,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - You can also import ".knsv" files as profiles!
 
 
+[2.1.2]: https://github.com/Prayag2/konsave/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/Prayag2/konsave/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/Prayag2/konsave/compare/v2.0.2...v2.1.0
 [2.0.2]: https://github.com/Prayag2/konsave/compare/v2.0.1...v2.0.2
