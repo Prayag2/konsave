@@ -93,13 +93,13 @@ export:
 
 ### Using placeholders
 You can use a few placeholders in the `location` of each entry in the configuration file. These are:  
-`$HOME`: the home directory
-`$CONFIG_DIR`: refers to "$HOME/.config/"
-`$SHARE_DIR`: refers to "$HOME/.local/share"
-`$BIN_DIR`: refers to "$HOME/.local/bin"
-`${ENDS_WITH="text"}`: for folders with different names on different computers whose names end with the same thing.
-The best example for this is the ".default-release" folder of firefox.
-`${BEGINS_WITH="text"}`: for folders with different names on different computers whose names start with the same thing.
+`$HOME`: the home directory  
+`$CONFIG_DIR`: refers to "$HOME/.config/"  
+`$SHARE_DIR`: refers to "$HOME/.local/share"  
+`$BIN_DIR`: refers to "$HOME/.local/bin"  
+`${ENDS_WITH="text"}`: for folders with different names on different computers whose names end with the same thing.  
+The best example for this is the ".default-release" folder of firefox.  
+`${BEGINS_WITH="text"}`: for folders with different names on different computers whose names start with the same thing.  
 
 
 ```
@@ -110,7 +110,7 @@ save:
             - chrome
 ```
 
-<br><hr><br>
+<hr>
 
 ## Contributing
 Please read [CONTRIBUTION.md](https://github.com/Prayag2/konsave/blob/master/CONTRIBUTION.md) for info about contributing. 
