@@ -1,3 +1,5 @@
+> :warning: Due to upcoming exams, this project won't be maintained for a few months. You may still open issues and pull requests :)
+
 <h1 align=center> Konsave (Save Linux Customization) </h1>
 <p align=center>A CLI program that will let you save and apply your Linux customizations with just one command! Konsave also lets you share your dot files to your friends in an instant! It officially supports KDE Plasma but it can be used on all other desktop environments too!</p>
 
