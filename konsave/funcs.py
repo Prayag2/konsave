@@ -40,7 +40,7 @@ def exception_handler(func):
             function = func(*args, **kwargs)
         except Exception as err:
             dateandtime = datetime.now().strftime("[%d/%m/%Y %H:%M:%S]")
-            log_file = os.path.join(HOME, ".konsave_log.txt")
+            log_file = os.path.join(HOME, ".cache/konsave_log.txt")
 
             with open(log_file, "a") as file:
                 file.write(dateandtime + "\n")
