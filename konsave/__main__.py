@@ -127,7 +127,8 @@ def main():
     elif args.apply:
         apply_profile(args.apply, list_of_profiles, length_of_lop)
     elif args.export_profile:
-        export(args.export_profile, list_of_profiles, length_of_lop)
+        export(args.export_profile, list_of_profiles, length_of_lop,
+               args.export_directory, args.export_name, args.force)
     elif args.import_profile:
         import_profile(args.import_profile)
     elif args.version:
