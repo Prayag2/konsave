@@ -87,6 +87,14 @@ def _get_parser() -> argparse.ArgumentParser:
         help="Overwrite already saved profiles",
     )
     parser.add_argument(
+    parser.add_argument(
+        "-n",
+        "--export-name",
+        required=False,
+        help="Specify the export name when exporting a profile",
+        metavar="<archive-name>"
+    )
+    parser.add_argument(
         "-v", "--version", required=False, action="store_true", help="Show version"
     )
     parser.add_argument(

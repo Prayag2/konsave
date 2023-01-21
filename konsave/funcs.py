@@ -270,10 +270,8 @@ def export(profile_name, profile_list, profile_count, archive_dir, archive_name,
     profile_dir = os.path.join(PROFILES_DIR, profile_name)
     export_path = os.path.join(HOME, profile_name)
 
-    if os.path.exists(export_path):
-        rand_str = list("abcdefg12345")
-        shuffle(rand_str)
-        export_path = export_path + "".join(rand_str)
+    if archive_name:
+        profile_name = archive_name
 
     # compressing the files as zip
     log("Exporting profile. It might take a minute or two...")
