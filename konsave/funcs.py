@@ -79,7 +79,7 @@ def log(msg, *args, **kwargs):
         *args: any arguments for the function print()
         **kwargs: any keyword arguments for the function print()
     """
-    print(f"Konsave: {msg.capitalize()}", *args, **kwargs)
+    print(f"Konsave: {msg}", *args, **kwargs)
 
 
 @exception_handler
