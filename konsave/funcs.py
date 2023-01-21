@@ -249,13 +249,17 @@ def remove_profile(profile_name, profile_list, profile_count):
 
 
 @exception_handler
-def export(profile_name, profile_list, profile_count):
-    """It will export the specified profile as a ".knsv" file in the home directory.
+def export(profile_name, profile_list, profile_count, archive_dir, archive_name, force):
+    """It will export the specified profile as a ".knsv" to the specified directory.
+       If there is no specified directory, the directory is set to the current working directory.
 
     Args:
         profile_name: name of the profile to be exported
         profile_list: the list of all created profiles
         profile_count: number of profiles created
+        directory: output directory for the export
+        force: force the overwrite of existing export file
+        name: the name of the resulting archive
     """
 
     # assert
