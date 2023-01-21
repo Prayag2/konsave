@@ -87,6 +87,12 @@ def _get_parser() -> argparse.ArgumentParser:
         help="Overwrite already saved profiles",
     )
     parser.add_argument(
+        "-d",
+        "--export-directory",
+        required=False,
+        help="Specify the export directory when exporting a profile",
+        metavar="<directory>"
+    )
     parser.add_argument(
         "-n",
         "--export-name",

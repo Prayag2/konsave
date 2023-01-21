@@ -273,6 +273,22 @@ def export(profile_name, profile_list, profile_count, archive_dir, archive_name,
     if archive_name:
         profile_name = archive_name
 
+    if archive_dir:
+        export_path = os.path.join(archive_dir, profile_name)
+    else:
+        export_path = os.path.join(os.getcwd(), profile_name)
+
+    # Only continue if export_path, export_path.ksnv and export_path.zip don't exist
+    # Appends date and time to create a unique file name
+    if not force:
+        while True:
+            paths = [f"{export_path}", f"{export_path}.knsv", f"{export_path}.zip"]
+            if any([os.path.exists(path) for path in paths]):
+                time = "f{:%d-%m-%Y:%H-%M-%S}".format(datetime.now())
+                export_path = f"{export_path}_{time}"
+            else:
+                break
+
     # compressing the files as zip
     log("Exporting profile. It might take a minute or two...")
 
