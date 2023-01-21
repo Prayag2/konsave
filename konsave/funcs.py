@@ -268,7 +268,6 @@ def export(profile_name, profile_list, profile_count, archive_dir, archive_name,
 
     # run
     profile_dir = os.path.join(PROFILES_DIR, profile_name)
-    export_path = os.path.join(HOME, profile_name)
 
     if archive_name:
         profile_name = archive_name
