@@ -12,7 +12,7 @@
 ---
 
 ## Installation
-Install from PyPI  
+Install from PyPI
 `python -m pip install konsave`
 
 ## Usage
@@ -28,13 +28,13 @@ Install from PyPI
 `konsave -r <profile name>` or `konsave --remove <profile name>`
 ### Apply a profile
 `konsave -a <profile name>` or `konsave --apply <profile name>`
-You may need to log out and log in to see all the changes.  
+You may need to log out and log in to see all the changes.
 ### Export a profile as a ".knsv" file to share it with your friends!
 `konsave -e <profile name>` or `konsave --export-profile <profile name>`
 ### Import a ".knsv" file
 `konsave -i <path to the file>` or `konsave --import-profile <path to the file>`
 ### Show current version
-`konsave -v` or `konsave --version`  
+`konsave -v` or `konsave --version`
 ### Wipe all profiles
 `konsave -w` or `konsave --wipe`
 
@@ -43,7 +43,7 @@ You may need to log out and log in to see all the changes.
 
 ## Editing the configuration file
 You can make changes to Konsave's configuration file according to your needs. The configuration file is located in `~/.config/konsave/config.yaml`.
-When using Konsave for the first time, you'll be prompted to enter your desktop environment.  
+When using Konsave for the first time, you'll be prompted to enter your desktop environment.
 For KDE Plasma users, the configuration file will be pre-configured.
 
 ### Format
@@ -53,7 +53,7 @@ The configuration file should be formatted in the following way:
 save:
     name:
         location: "path/to/parent/directory"
-        entries: 
+        entries:
         # These are files to be backed up.
         # They should be present in the specified location.
             - file1
@@ -64,7 +64,7 @@ export:
     # These may include files like complete icon packs and themes..
     name:
         location: "path/to/parent/directory"
-        entries: 
+        entries:
             - file1
             - file2
 ...
@@ -92,14 +92,14 @@ export:
 ```
 
 ### Using placeholders
-You can use a few placeholders in the `location` of each entry in the configuration file. These are:  
-`$HOME`: the home directory  
-`$CONFIG_DIR`: refers to "$HOME/.config/"  
-`$SHARE_DIR`: refers to "$HOME/.local/share"  
-`$BIN_DIR`: refers to "$HOME/.local/bin"  
-`${ENDS_WITH="text"}`: for folders with different names on different computers whose names end with the same thing.  
-The best example for this is the ".default-release" folder of firefox.  
-`${BEGINS_WITH="text"}`: for folders with different names on different computers whose names start with the same thing.  
+You can use a few placeholders in the `location` of each entry in the configuration file. These are:
+`$HOME`: the home directory
+`$CONFIG_DIR`: refers to "$HOME/.config/"
+`$SHARE_DIR`: refers to "$HOME/.local/share"
+`$BIN_DIR`: refers to "$HOME/.local/bin"
+`${ENDS_WITH="text"}`: for folders with different names on different computers whose names end with the same thing.
+The best example for this is the ".default-release" folder of firefox.
+`${BEGINS_WITH="text"}`: for folders with different names on different computers whose names start with the same thing.
 
 
 ```
@@ -113,7 +113,7 @@ save:
 <hr>
 
 ## Contributing
-Please read [CONTRIBUTION.md](https://github.com/Prayag2/konsave/blob/master/CONTRIBUTION.md) for info about contributing. 
+Please read [CONTRIBUTION.md](https://github.com/Prayag2/konsave/blob/master/CONTRIBUTION.md) for info about contributing.
 
 ## License
 This project uses GNU General Public License 3.0
