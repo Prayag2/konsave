@@ -49,7 +49,7 @@ For KDE Plasma users, the configuration file will be pre-configured.
 
 ### Format
 The configuration file should be formatted in the following way:
-```
+```yaml
 ---
 save:
     name:
@@ -73,7 +73,7 @@ export:
 
 ### Adding more files/folders to backup
 You can add more files/folders in the configuration file like this:
-```
+```yaml
 save:
     name:
         location: "path/to/parent/directory"
@@ -103,7 +103,7 @@ The best example for this is the ".default-release" folder of firefox.
 `${BEGINS_WITH="text"}`: for folders with different names on different computers whose names start with the same thing.  
 
 
-```
+```yaml
 save:
     firefox:
         location: "$HOME/.mozilla/firefox/${ENDS_WITH='.default-release'}"
