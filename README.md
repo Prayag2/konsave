@@ -38,7 +38,8 @@ You may need to log out and log in to see all the changes.
 ### Wipe all profiles
 `konsave -w` or `konsave --wipe`
 
-<br><hr><br>
+
+---
 
 
 ## Editing the configuration file
@@ -110,7 +111,7 @@ save:
             - chrome
 ```
 
-<hr>
+---
 
 ## Contributing
 Please read [CONTRIBUTION.md](https://github.com/Prayag2/konsave/blob/master/CONTRIBUTION.md) for info about contributing. 
