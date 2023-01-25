@@ -38,9 +38,9 @@ You may need to log out and log in to see all the changes.
 ### Wipe all profiles
 `konsave -w` or `konsave --wipe`
 
-
+  
 ---
-
+  
 
 ## Editing the configuration file
 You can make changes to Konsave's configuration file according to your needs. The configuration file is located in `~/.config/konsave/config.yaml`.
