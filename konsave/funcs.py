@@ -153,6 +153,9 @@ def list_profiles(profile_list, profile_count):
     # assert
     assert os.path.exists(PROFILES_DIR) and profile_count != 0, "No profile found."
 
+    # sort in alphabetical order
+    profile_list.sort()
+
     # run
     print("Konsave profiles:")
     print("ID\tNAME")
