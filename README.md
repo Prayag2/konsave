@@ -31,6 +31,13 @@ Install from PyPI
 You may need to log out and log in to see all the changes.  
 ### Export a profile as a ".knsv" file to share it with your friends!
 `konsave -e <profile name>` or `konsave --export-profile <profile name>`
+### Export a profile, setting the output dir and archive name
+`konsave -e <profile name> -d <archive directory> -n <archive name>`
+or
+`konsave --export-profile <profile name> --archive-directory <archive directory> --export-name <export name>`
+### Export a profile, overwrite files if they already exist
+`konsave -e <profile name> -f` or `konsave --export-profile <profile name> --force`
+*note: without --force, the export will be appended with the date and time to ensure unique naming and no data is overwritten
 ### Import a ".knsv" file
 `konsave -i <path to the file>` or `konsave --import-profile <path to the file>`
 ### Show current version

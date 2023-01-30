@@ -79,7 +79,7 @@ def log(msg, *args, **kwargs):
         *args: any arguments for the function print()
         **kwargs: any keyword arguments for the function print()
     """
-    print(f"Konsave: {msg.capitalize()}", *args, **kwargs)
+    print(f"Konsave: {msg}", *args, **kwargs)
 
 
 @exception_handler
@@ -249,13 +249,17 @@ def remove_profile(profile_name, profile_list, profile_count):
 
 
 @exception_handler
-def export(profile_name, profile_list, profile_count):
-    """It will export the specified profile as a ".knsv" file in the home directory.
+def export(profile_name, profile_list, profile_count, archive_dir, archive_name, force):
+    """It will export the specified profile as a ".knsv" to the specified directory.
+       If there is no specified directory, the directory is set to the current working directory.
 
     Args:
         profile_name: name of the profile to be exported
         profile_list: the list of all created profiles
         profile_count: number of profiles created
+        directory: output directory for the export
+        force: force the overwrite of existing export file
+        name: the name of the resulting archive
     """
 
     # assert
@@ -264,12 +268,25 @@ def export(profile_name, profile_list, profile_count):
 
     # run
     profile_dir = os.path.join(PROFILES_DIR, profile_name)
-    export_path = os.path.join(HOME, profile_name)
 
-    if os.path.exists(export_path):
-        rand_str = list("abcdefg12345")
-        shuffle(rand_str)
-        export_path = export_path + "".join(rand_str)
+    if archive_name:
+        profile_name = archive_name
+
+    if archive_dir:
+        export_path = os.path.join(archive_dir, profile_name)
+    else:
+        export_path = os.path.join(os.getcwd(), profile_name)
+
+    # Only continue if export_path, export_path.ksnv and export_path.zip don't exist
+    # Appends date and time to create a unique file name
+    if not force:
+        while True:
+            paths = [f"{export_path}", f"{export_path}.knsv", f"{export_path}.zip"]
+            if any([os.path.exists(path) for path in paths]):
+                time = "f{:%d-%m-%Y:%H-%M-%S}".format(datetime.now())
+                export_path = f"{export_path}_{time}"
+            else:
+                break
 
     # compressing the files as zip
     log("Exporting profile. It might take a minute or two...")
