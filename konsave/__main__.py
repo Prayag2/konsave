@@ -68,7 +68,7 @@ def _get_parser() -> argparse.ArgumentParser:
         "--export-profile",
         required=False,
         type=str,
-        help="Export a profile and share with your friends!",
+        help="Export an existing profile and share with your friends!",
         metavar="<name>",
     )
     parser.add_argument(
