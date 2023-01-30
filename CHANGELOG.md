@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [2.2.0] - 2023-01-31
+### Added
+- You can now set the output directory and archive name when exporting a profile ([#72](https://github.com/Prayag2/konsave/pull/72))
+- Profiles will now be listed in alphabetical order (#67)
+
+### Fixed
+- Fixed typo in README (#48)
+
+### Changed
+- Improved README (#75)
+- Made it clear that a profile needs to be saved before exporting in the help text.
+- Logs will now be saved to `$HOME/.cache/konsave_log.txt`
+
 
 ## [2.1.2] - 2022-04-20
 ### Fixed
@@ -177,6 +190,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - You can also import ".knsv" files as profiles!
 
 
+[2.2.0]: https://github.com/Prayag2/konsave/compare/v2.1.2...v2.2.0
 [2.1.2]: https://github.com/Prayag2/konsave/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/Prayag2/konsave/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/Prayag2/konsave/compare/v2.0.2...v2.1.0
