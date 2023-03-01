@@ -65,6 +65,12 @@ save:
             - lightlyrc
             - ksplashrc
             - khotkeysrc
+        # list of keys and groups to strip from given file name
+        # filename must be present in entries
+        strip:
+          plasma-org.kde.plasma.desktop-appletsrc: 
+            groups: [Google Calendar] # event calendar widget 
+            keys: [APIKey] # wallhaven wallpapers plugin
 
     app_layouts:
         location: "$HOME/.local/share/kxmlgui5"

@@ -3,19 +3,23 @@ This module contains all the functions for konsave.
 """
 
 import os
+import re
 import shutil
 import traceback
 from datetime import datetime
+from pathlib import Path
 from random import shuffle
-from zipfile import is_zipfile, ZipFile
+from typing import Dict, List
+from zipfile import ZipFile, is_zipfile
+
 from konsave.consts import (
-    HOME,
     CONFIG_FILE,
-    PROFILES_DIR,
     EXPORT_EXTENSION,
+    HOME,
     KONSAVE_DIR,
+    PROFILES_DIR,
 )
-from konsave.parse import TOKEN_SYMBOL, tokens, parse_functions, parse_keywords
+from konsave.parse import TOKEN_SYMBOL, parse_functions, parse_keywords, tokens
 
 try:
     import yaml
@@ -185,6 +189,7 @@ def save_profile(name, profile_list, force=False):
 
     for section in konsave_config:
         location = konsave_config[section]["location"]
+        strip = konsave_config[section].get("strip", {})
         folder = os.path.join(profile_dir, section)
         mkdir(folder)
         for entry in konsave_config[section]["entries"]:
@@ -196,9 +201,65 @@ def save_profile(name, profile_list, force=False):
                 else:
                     shutil.copy(source, dest)
 
+                if entry in strip:
+                    strip_content(Path(dest), strip[entry])
+
     shutil.copy(CONFIG_FILE, profile_dir)
 
     log("Profile saved successfully!")
+
+
+def strip_content(file_path: Path, strip_args: Dict[str, List[str]]) -> None:
+    """
+    strip entire groups or individual keys from all groups in a file
+    group names are in the plasma config format
+    https://userbase.kde.org/KDE_System_Administration/Configuration_Files
+
+    Args:
+        file_path: path to the file
+        strip_args: dict with keys "groups" and "keys"
+    """
+    groups = strip_args.get("groups", [])
+    keys = strip_args.get("keys", [])
+    file_content = file_path.read_text().splitlines()
+    placeholder = "# stripped by konsave"
+
+    def strip_groups(file_content: List[str], groups: List[str]) -> List[str]:
+        for group in groups:
+            group_lines = [line for line in file_content if f"[{group}]" in line]
+            if group_lines:
+                for group_line in group_lines:
+                    group_idx = file_content.index(group_line)
+
+                    # remove group header line
+                    file_content[group_idx] = placeholder
+
+                    # remove lines from group_index until next section start
+                    for line in range(group_idx, len(file_content)):
+                        exp = re.compile(r"^\[.*\].*")
+                        if exp.match(file_content[line]):
+                            break
+                        file_content[line] = placeholder
+
+        return file_content
+
+    def strip_keys(file_content: List[str], keys: List[str]) -> List[str]:
+        for key in keys:
+            key_lines = [line for line in file_content if f"{key}=" in line]
+            if key_lines:
+                for key_line in key_lines:
+                    key_idx = file_content.index(key_line)
+                    file_content[key_idx] = placeholder
+
+        return file_content
+
+    file_content = strip_groups(file_content, groups)
+    file_content = strip_keys(file_content, keys)
+
+    # remove empty lines
+    file_content = list(filter(lambda x: x != placeholder, file_content))
+
+    file_path.write_text("\n".join(file_content))
 
 
 @exception_handler
