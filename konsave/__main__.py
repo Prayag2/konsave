@@ -91,14 +91,14 @@ def _get_parser() -> argparse.ArgumentParser:
         "--export-directory",
         required=False,
         help="Specify the export directory when exporting a profile",
-        metavar="<directory>"
+        metavar="<directory>",
     )
     parser.add_argument(
         "-n",
         "--export-name",
         required=False,
         help="Specify the export name when exporting a profile",
-        metavar="<archive-name>"
+        metavar="<archive-name>",
     )
     parser.add_argument(
         "-v", "--version", required=False, action="store_true", help="Show version"
@@ -133,8 +133,14 @@ def main():
     elif args.apply:
         apply_profile(args.apply, list_of_profiles, length_of_lop)
     elif args.export_profile:
-        export(args.export_profile, list_of_profiles, length_of_lop,
-               args.export_directory, args.export_name, args.force)
+        export(
+            args.export_profile,
+            list_of_profiles,
+            length_of_lop,
+            args.export_directory,
+            args.export_name,
+            args.force,
+        )
     elif args.import_profile:
         import_profile(args.import_profile)
     elif args.version:

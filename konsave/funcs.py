@@ -6,7 +6,6 @@ import os
 import shutil
 import traceback
 from datetime import datetime
-from random import shuffle
 from zipfile import is_zipfile, ZipFile
 from konsave.consts import (
     HOME,
@@ -21,7 +20,7 @@ try:
     import yaml
 except ModuleNotFoundError as error:
     raise ModuleNotFoundError(
-        "Please install the module PyYAML using pip: \n" "pip install PyYAML"
+        "Please install the module PyYAML using pip: \n pip install PyYAML"
     ) from error
 
 
@@ -42,7 +41,7 @@ def exception_handler(func):
             dateandtime = datetime.now().strftime("[%d/%m/%Y %H:%M:%S]")
             log_file = os.path.join(HOME, ".cache/konsave_log.txt")
 
-            with open(log_file, "a") as file:
+            with open(log_file, "a", encoding="utf-8") as file:
                 file.write(dateandtime + "\n")
                 traceback.print_exc(file=file)
                 file.write("\n")
@@ -51,8 +50,8 @@ def exception_handler(func):
                 f"Konsave: {err}\nPlease check the log at {log_file} for more details."
             )
             return None
-        else:
-            return function
+
+        return function
 
     return inner_func
 
@@ -122,14 +121,15 @@ def read_konsave_config(config_file) -> dict:
     Args:
         config_file: path to the config file
     """
-    with open(config_file, "r") as text:
+    with open(config_file, "r", encoding="utf-8") as text:
         konsave_config = yaml.load(text.read(), Loader=yaml.SafeLoader)
     parse_keywords(tokens, TOKEN_SYMBOL, konsave_config)
     parse_functions(tokens, TOKEN_SYMBOL, konsave_config)
 
-    # in some cases conf.yaml may contain nothing in "entries"
-    # yaml parses these as NoneType which are not iterable which throws an exception
-    # we can convert all None-Entries into empty lists recursively so they are simply skipped in loops later on
+    # in some cases conf.yaml may contain nothing in "entries". Yaml parses
+    # these as NoneType which are not iterable which throws an exception
+    # we can convert all None-Entries into empty lists recursively so they
+    # are simply skipped in loops later on
     def convert_none_to_empty_list(data):
         if isinstance(data, list):
             data[:] = [convert_none_to_empty_list(i) for i in data]
@@ -285,7 +285,7 @@ def export(profile_name, profile_list, profile_count, archive_dir, archive_name,
     if not force:
         while True:
             paths = [f"{export_path}", f"{export_path}.knsv", f"{export_path}.zip"]
-            if any([os.path.exists(path) for path in paths]):
+            if any(os.path.exists(path) for path in paths):
                 time = "f{:%d-%m-%Y:%H-%M-%S}".format(datetime.now())
                 export_path = f"{export_path}_{time}"
             else:

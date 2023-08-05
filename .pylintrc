@@ -1,2 +1,3 @@
 [MASTER]
 disable=broad-except, too-many-locals, too-many-branches
+good-names=i,j,k,v,ex,_,pk,x,y
