@@ -10,8 +10,12 @@
 ---
 
 ## Installation
+
 Install from PyPI  
 `python -m pip install konsave`
+
+Install with nix
+`nix profile install nixpkgs#konsave`
 
 ## Usage
 ### Get Help
