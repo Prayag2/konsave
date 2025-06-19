@@ -3,7 +3,7 @@
 import argparse
 import os
 import shutil
-from pkg_resources import resource_filename
+from importlib.resources import files
 from konsave.funcs import (
     list_profiles,
     save_profile,
@@ -91,14 +91,14 @@ def _get_parser() -> argparse.ArgumentParser:
         "--export-directory",
         required=False,
         help="Specify the export directory when exporting a profile",
-        metavar="<directory>",
+        metavar="<directory>"
     )
     parser.add_argument(
         "-n",
         "--export-name",
         required=False,
         help="Specify the export name when exporting a profile",
-        metavar="<archive-name>",
+        metavar="<archive-name>"
     )
     parser.add_argument(
         "-v", "--version", required=False, action="store_true", help="Show version"
@@ -115,10 +115,10 @@ def main():
 
     if not os.path.exists(CONFIG_FILE):
         if os.path.expandvars("$XDG_CURRENT_DESKTOP") == "KDE":
-            default_config_path = resource_filename("konsave", "conf_kde.yaml")
+            default_config_path = str(files("konsave") / "conf_kde.yaml")
             shutil.copy(default_config_path, CONFIG_FILE)
         else:
-            default_config_path = resource_filename("konsave", "conf_other.yaml")
+            default_config_path = str(files("konsave") / "conf_other.yaml")
             shutil.copy(default_config_path, CONFIG_FILE)
 
     parser = _get_parser()
@@ -133,14 +133,8 @@ def main():
     elif args.apply:
         apply_profile(args.apply, list_of_profiles, length_of_lop)
     elif args.export_profile:
-        export(
-            args.export_profile,
-            list_of_profiles,
-            length_of_lop,
-            args.export_directory,
-            args.export_name,
-            args.force,
-        )
+        export(args.export_profile, list_of_profiles, length_of_lop,
+               args.export_directory, args.export_name, args.force)
     elif args.import_profile:
         import_profile(args.import_profile)
     elif args.version:
