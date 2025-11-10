@@ -1,9 +1,9 @@
 """Top-level Konsave package."""
 
-from pkg_resources import get_distribution, DistributionNotFound
+from importlib.metadata import distribution, PackageNotFoundError
 
 try:
-    __version__ = get_distribution(__name__).version
-except DistributionNotFound:
+    __version__ = distribution(__name__).version
+except PackageNotFoundError:
     # Package is not installed
     pass
