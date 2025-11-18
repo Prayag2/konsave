@@ -93,8 +93,6 @@ save:
     autostart:
         location: "$CONFIG_DIR/autostart"
         entries:
-            # Enumerated user autostart entries (adjust as needed)
-            - org.kde.yakuake.desktop
             # Add/remove entries above if your autostart changes.
 
     # Here are a few examples of how you can add more stuff to back up.
