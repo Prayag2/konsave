@@ -83,6 +83,7 @@ save:
         entries:
             - dolphin
             - konsole
+            - yakuakerc
             # Optional application GUI layout overrides (add if present)
             - systemsettings
             - spectacle
@@ -122,6 +123,7 @@ export:
             - aurorae
             - icons
             - wallpapers
+            - yakuake
 
     home_folder:
         location: "$HOME/"
