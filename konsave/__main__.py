@@ -4,20 +4,21 @@ import argparse
 import os
 import shutil
 from importlib.resources import files
+
+from konsave.consts import (
+    CONFIG_FILE,
+    VERSION,
+    length_of_lop,
+    list_of_profiles,
+)
 from konsave.funcs import (
-    list_profiles,
-    save_profile,
-    remove_profile,
     apply_profile,
     export,
     import_profile,
+    list_profiles,
+    remove_profile,
+    save_profile,
     wipe,
-)
-from konsave.consts import (
-    VERSION,
-    CONFIG_FILE,
-    list_of_profiles,
-    length_of_lop,
 )
 
 
@@ -29,82 +30,92 @@ def _get_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser(
         prog="Konsave",
+        description="A simple and powerful utility for managing KDE Plasma configuration profiles.",
         epilog="Please report bugs at https://www.github.com/prayag2/konsave",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        add_help=False,
     )
 
-    parser.add_argument(
-        "-l",
-        "--list",
-        required=False,
+    # Profile Management Group
+    profile_group = parser.add_argument_group(
+        "Profile Management", "Commands for managing configuration profiles"
+    )
+    profile_group.add_argument(
+        "-l", "--list",
         action="store_true",
-        help="Lists created profiles",
+        help="List all saved profiles",
     )
-    parser.add_argument(
-        "-s",
-        "--save",
-        required=False,
+    profile_group.add_argument(
+        "-s", "--save",
         type=str,
-        help="Save current config as a profile",
+        help="Save current configuration as a new profile",
         metavar="<name>",
     )
-    parser.add_argument(
-        "-r",
-        "--remove",
-        required=False,
+    profile_group.add_argument(
+        "-a", "--apply",
         type=str,
-        help="Remove the specified profile",
+        help="Apply a saved profile to restore its configuration",
         metavar="<name>",
     )
-    parser.add_argument(
-        "-a",
-        "--apply",
-        required=False,
+    profile_group.add_argument(
+        "-r", "--remove",
         type=str,
-        help="Apply the specified profile",
+        help="Delete a saved profile permanently",
         metavar="<name>",
     )
-    parser.add_argument(
-        "-e",
-        "--export-profile",
-        required=False,
+    profile_group.add_argument(
+        "-w", "--wipe",
+        action="store_true",
+        help="Delete all saved profiles (use with caution!)",
+    )
+
+    # Import/Export Group
+    transfer_group = parser.add_argument_group(
+        "Import & Export",
+        "Commands for sharing profiles with others",
+    )
+    transfer_group.add_argument(
+        "-e", "--export-profile",
         type=str,
-        help="Export an existing profile and share with your friends!",
+        help="Export a profile as a shareable .knsv archive file",
         metavar="<name>",
     )
-    parser.add_argument(
-        "-i",
-        "--import-profile",
-        required=False,
+    transfer_group.add_argument(
+        "-i", "--import-profile",
         type=str,
-        help="Import a konsave file",
+        help="Import a profile from a .knsv archive file",
         metavar="<path>",
     )
-    parser.add_argument(
-        "-f",
-        "--force",
-        required=False,
+
+    # Options Group
+    options_group = parser.add_argument_group(
+        "Options", "Additional options to modify command behavior"
+    )
+    options_group.add_argument(
+        "-f", "--force",
         action="store_true",
-        help="Overwrite already saved profiles",
+        help="Force overwrite when saving/exporting (skip confirmation prompts)",
     )
-    parser.add_argument(
-        "-d",
-        "--export-directory",
-        required=False,
-        help="Specify the export directory when exporting a profile",
-        metavar="<directory>"
+    options_group.add_argument(
+        "-d", "--export-directory",
+        help="Specify custom directory for exported profile (default: current directory)",
+        metavar="<directory>",
     )
-    parser.add_argument(
-        "-n",
-        "--export-name",
-        required=False,
-        help="Specify the export name when exporting a profile",
-        metavar="<archive-name>"
+    options_group.add_argument(
+        "-n", "--export-name",
+        help="Specify custom filename for exported profile archive",
+        metavar="<archive-name>",
     )
-    parser.add_argument(
-        "-v", "--version", required=False, action="store_true", help="Show version"
+
+    # Miscellaneous Group
+    misc_group = parser.add_argument_group("Miscellaneous", "Other utility commands")
+    misc_group.add_argument(
+        "-h", "--help", action="help", help="Show this help message and exit"
     )
-    parser.add_argument(
-        "-w", "--wipe", required=False, action="store_true", help="Wipes all profiles."
+    misc_group.add_argument(
+        "-v", "--version",
+        action="store_true",
+        help="Display the current version of Konsave",
     )
 
     return parser
