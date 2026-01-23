@@ -3,7 +3,7 @@
 import argparse
 import os
 import shutil
-from pkg_resources import resource_filename
+from importlib.resources import files
 from konsave.funcs import (
     list_profiles,
     save_profile,
@@ -113,12 +113,14 @@ def _get_parser() -> argparse.ArgumentParser:
 def main():
     """The main function that handles all the arguments and options."""
 
-    if os.path.expandvars("$XDG_CURRENT_DESKTOP") == "KDE":
-        default_config_path = resource_filename("konsave", "conf_kde.yaml")
-        shutil.copy(default_config_path, CONFIG_FILE)
-    else:
-        default_config_path = resource_filename("konsave", "conf_other.yaml")
-        shutil.copy(default_config_path, CONFIG_FILE)
+    if not os.path.exists(CONFIG_FILE):
+        if os.path.expandvars("$XDG_CURRENT_DESKTOP") == "KDE":
+            default_config_content = files("konsave").joinpath('conf_kde.yaml').read_text("utf-8")
+        else:
+            default_config_content = files("konsave").joinpath('conf_other.yaml').read_text("utf-8")
+
+        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+            f.write(default_config_content)
 
     parser = _get_parser()
     args = parser.parse_args()
