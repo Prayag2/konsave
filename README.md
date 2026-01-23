@@ -10,8 +10,11 @@
 ---
 
 ## Installation
-Install from PyPI  
+Install from PyPI using pip  
 `python -m pip install konsave`
+
+Install from PyPI using pipx  
+`pipx install konsave`
 
 ## Usage
 ### Get Help

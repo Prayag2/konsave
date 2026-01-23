@@ -65,12 +65,35 @@ save:
             - lightlyrc
             - ksplashrc
             - khotkeysrc
+            # Added for Plasma 6.x compatibility (optional/extra configs)
+            - systemsettingsrc
+            - kded5rc               # renamed from kdedrc (Plasma 6)
+            - kconf_updaterc
+            - kscreenrc            # include if persistent on your system
+            - plasma-systemmonitorrc
+            - spectaclerc
+            - plasmanotifyrc
+            - plasma-localerc
+            - plasma_calendar_holiday_regions
+            - xdg-desktop-portal-kderc
+            - kwinoutputconfig.json
 
     app_layouts:
         location: "$HOME/.local/share/kxmlgui5"
         entries:
             - dolphin
             - konsole
+            - yakuakerc
+            # Optional application GUI layout overrides (add if present)
+            - systemsettings
+            - spectacle
+            - plasma-systemmonitor
+
+    # Autostart user .desktop entries (do NOT include distro defaults)
+    autostart:
+        location: "$CONFIG_DIR/autostart"
+        entries:
+            # Add/remove entries above if your autostart changes.
 
     # Here are a few examples of how you can add more stuff to back up.
     # Uncomment these lines if you want.
@@ -98,6 +121,7 @@ export:
             - aurorae
             - icons
             - wallpapers
+            - yakuake
 
     home_folder:
         location: "$HOME/"

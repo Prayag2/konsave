@@ -1,0 +1,2 @@
+PyYaml>=5.4.1
+setuptools>=75.1.0
