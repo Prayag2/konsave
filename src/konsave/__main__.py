@@ -113,13 +113,12 @@ def _get_parser() -> argparse.ArgumentParser:
 def main():
     """The main function that handles all the arguments and options."""
 
-    if not os.path.exists(CONFIG_FILE):
-        if os.path.expandvars("$XDG_CURRENT_DESKTOP") == "KDE":
-            default_config_path = resource_filename("konsave", "conf_kde.yaml")
-            shutil.copy(default_config_path, CONFIG_FILE)
-        else:
-            default_config_path = resource_filename("konsave", "conf_other.yaml")
-            shutil.copy(default_config_path, CONFIG_FILE)
+    if os.path.expandvars("$XDG_CURRENT_DESKTOP") == "KDE":
+        default_config_path = resource_filename("konsave", "conf_kde.yaml")
+        shutil.copy(default_config_path, CONFIG_FILE)
+    else:
+        default_config_path = resource_filename("konsave", "conf_other.yaml")
+        shutil.copy(default_config_path, CONFIG_FILE)
 
     parser = _get_parser()
     args = parser.parse_args()

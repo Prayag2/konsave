@@ -1,0 +1,38 @@
+[project]
+name = "konsave"
+version = "2.2.1"
+description = "A program that lets you save your Plasma configuration in an instant!"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml>=6.0.3",
+    "setuptools>=80.10.1",
+]
+authors = [ { name = "Prayag Jain", email = "prayagjain2@gmail.com" } ]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Programming Language :: Python",
+]
+repository = "https://github.com/prayag2/konsave.git"
+license = { file = "LICENSE" }
+[dependency-groups]
+dev = [
+    "aiohttp>=3.13.3",
+    "aiohttp-cors>=0.8.1",
+    "black>=26.1.0",
+    "mypy>=1.19.1",
+    "pylint>=4.0.4",
+]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+konsave = "konsave.__main__:main"
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.10.0"]
+build-backend = "uv_build"
