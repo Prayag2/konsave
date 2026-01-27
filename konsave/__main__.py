@@ -30,7 +30,7 @@ def _get_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser(
         prog="Konsave",
-        description="A simple and powerful utility for managing KDE Plasma configuration profiles.",
+        description="A simple and powerful utility for managing your dotfiles.",
         epilog="Please report bugs at https://www.github.com/prayag2/konsave",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         add_help=False,
