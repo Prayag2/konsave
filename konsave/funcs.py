@@ -49,8 +49,7 @@ def exception_handler(func):
             print(
                 f"Konsave: {err}\nPlease check the log at {log_file} for more details."
             )
-            return None
-
+            raise RuntimeError from err
         return function
 
     return inner_func

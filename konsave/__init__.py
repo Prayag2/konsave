@@ -6,4 +6,4 @@ try:
     __version__ = distribution(__name__).version
 except PackageNotFoundError:
     # Package is not installed
-    pass
+    __version__ = "unknown"

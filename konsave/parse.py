@@ -1,6 +1,7 @@
 """
 This module parses conf.yaml
 """
+
 import os
 import re
 from konsave.consts import HOME, CONFIG_DIR, SHARE_DIR, BIN_DIR
