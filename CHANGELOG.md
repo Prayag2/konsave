@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Reorganized CLI arguments into logical groups (Profile Management, Import & Export, Options, Miscellaneous) for better readability
 - Improved all help messages with clearer and more descriptive text
+- Return appropriate exit codes when ran from the CLI.
+
+### Added
+- Add 'py.test' framework with plug-ins.
+- Create basic test fixtures for testing 'konsave' in a shell like environment.
+- Add basic test cases for verifying CLI exit codes.
 
 ## [2.2.0] - 2023-01-31
 ### Added
