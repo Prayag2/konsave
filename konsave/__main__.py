@@ -113,6 +113,11 @@ def _get_parser() -> argparse.ArgumentParser:
         "-h", "--help", action="help", help="Show this help message and exit"
     )
     misc_group.add_argument(
+        "-g", "--gui",
+        action="store_true",
+        help="Launch the graphical interface",
+    )
+    misc_group.add_argument(
         "-v", "--version",
         action="store_true",
         help="Display the current version of Konsave",
@@ -148,6 +153,10 @@ def main():
                args.export_directory, args.export_name, args.force)
     elif args.import_profile:
         import_profile(args.import_profile)
+    elif args.gui:
+        from konsave.gui import main as gui_main
+
+        gui_main()
     elif args.version:
         print(f"Konsave: {VERSION}")
     elif args.wipe:

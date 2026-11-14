@@ -8,8 +8,8 @@
 # save:
 #     name:
 #         location: "path/to/parent/directory"
-#         entries: 
-#         # these are files which will be backed up. 
+#         entries:
+#         # these are files which will be backed up.
 #         # They should be present in the specified location.
 #             - file1
 #             - file2
@@ -19,7 +19,7 @@
 #     # These may include files like complete icon packs and themes..
 #     name:
 #         location: "path/to/parent/directory"
-#         entries: 
+#         entries:
 #             - file1
 #             - file2
 # ...
@@ -33,6 +33,7 @@
 # ${BEGINS_WITH="text"}: for folders with different names on different computers whose names start with the same thing.
 
 save:
+    # Desktop look and feel, Plasma session, window rules and activities.
     configs:
         location: "$CONFIG_DIR"
         entries:
@@ -65,18 +66,25 @@ save:
             - lightlyrc
             - ksplashrc
             - khotkeysrc
-            # Added for Plasma 6.x compatibility (optional/extra configs)
+            # Plasma 6.x compatibility (optional/extra configs)
             - systemsettingsrc
             - kded5rc               # renamed from kdedrc (Plasma 6)
             - kconf_updaterc
-            - kscreenrc            # include if persistent on your system
+            - kscreenrc             # display layout; include if persistent on your system
             - plasma-systemmonitorrc
             - spectaclerc
             - plasmanotifyrc
             - plasma-localerc
             - plasma_calendar_holiday_regions
             - xdg-desktop-portal-kderc
-            - kwinoutputconfig.json
+            - kwinoutputconfig.json # per-output display settings
+            # KDE Activities
+            - kactivitymanagerdrc
+            - kactivitymanagerd-statsrc
+            - kactivitymanagerd-pluginsrc
+            # Power management profiles
+            - powermanagementprofilesrc
+            - powerdevilrc
 
     app_layouts:
         location: "$HOME/.local/share/kxmlgui5"
@@ -93,7 +101,78 @@ save:
     autostart:
         location: "$CONFIG_DIR/autostart"
         entries:
-            # Add/remove entries above if your autostart changes.
+
+    # Shell, terminal, developer tooling and CLI groups. These work on
+    # desktops, laptops and headless servers alike.
+    shell:
+        location: "$HOME/"
+        entries:
+            - .bashrc
+            - .bash_profile
+            - .bash_logout
+            - .profile
+            - .zshrc
+            - .zshenv
+            - .zprofile
+            - .zlogin
+            - .config/starship.toml
+            - .config/fish
+
+    terminals:
+        location: "$CONFIG_DIR"
+        entries:
+            - alacritty
+            - kitty
+            - wezterm
+            - foot
+            - ghostty
+            - xfce4/terminal
+
+    dev_tools:
+        location: "$CONFIG_DIR"
+        entries:
+            - git
+            - gh
+            - glab
+            - nvim
+            - helix
+            - micro
+            - bat
+            - ripgrep
+            - fd
+            - lazygit
+
+    cli_tools:
+        location: "$CONFIG_DIR"
+        entries:
+            - htop
+            - btop
+            - tmux
+            - starship.toml
+            - dconf
+
+    # Tabby terminal settings. "traversal: files" only picks up the top-level
+    # config files (config.yaml, window.json, …) and skips Electron caches.
+    tabby:
+        location: "$CONFIG_DIR/tabby"
+        traversal: files
+        exclude:
+            - DIPS*
+            - "Network Persistent State"
+            - Preferences
+            - "Trust Tokens*"
+            - SharedStorage*
+            - "Local State"
+            - log.txt
+            - "*.log"
+
+    # SSH is available but unchecked by default so private keys are never
+    # exported accidentally. Add finer-grained entries like ".ssh/config"
+    # or ".ssh/known_hosts" to share only specific files.
+    ssh:
+        location: "$HOME/"
+        entries:
+            - .ssh
 
     # Here are a few examples of how you can add more stuff to back up.
     # Uncomment these lines if you want.
@@ -122,6 +201,10 @@ export:
             - icons
             - wallpapers
             - yakuake
+            - kactivitymanagerd
+            - themes
+            - emoji
+            - ksplash
 
     home_folder:
         location: "$HOME/"
@@ -129,8 +212,10 @@ export:
             - .fonts
             - .themes
             - .icons
-    
-        
+            - .local/share/fonts
+            - .local/share/icons
+            - .local/share/themes
+
     # You can add more files to export like this
     # name:
     #     location: "path/to/parent/directory"
