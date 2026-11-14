@@ -46,6 +46,49 @@ or
 ### Wipe all profiles
 `konsave -w` or `konsave --wipe`
 
+## Graphical interface
+Konsave ships with an optional PyQt5 GUI that can save, export, import and
+apply profiles and lets you pick exactly which items are included.
+
+Install the GUI dependency (once):
+```bash
+python3 -m pip install "Konsave[gui]"
+# or
+python3 -m pip install PyQt5
+```
+
+Launch it with either:
+```bash
+konsave-gui
+# or
+konsave --gui
+```
+
+The GUI is built around a **profile library**: one folder that holds every
+profile. Pick it with **Change location…** at the top. The choice is remembered
+in `~/.config/konsave/gui.yaml` and is also used by the command-line tools.
+Point your laptop and your desktop at the same synced or network folder and
+both machines see the same profiles.
+
+- **Profile library** – change the folder or rescan it. Profiles are discovered
+  automatically; any directory containing a `conf.yaml` is listed.
+- **Profiles** – click a profile to open it. Create new profiles, apply,
+  rename, duplicate or delete them, and import/export `.knsv` archives.
+  Right-click the list for the same actions.
+- **Profile editor** – every configured save group is shown with checkboxes.
+  Items already stored in the profile are ticked, items available on this
+  machine are offered, and items that are not available are greyed out.
+  Filter the list, use **Select all** / **Select none**, then choose
+  **Save changes to profile** to write the selection into that profile.
+  Files which exist in the profile but not on the current machine are kept,
+  so editing a shared profile on your laptop does not delete desktop-only apps.
+- **Tools → Configuration…** – edit `~/.config/konsave/conf.yaml` with
+  validation, add missing default groups from a newer Konsave release, or reset
+  to defaults.
+
+Entries that commonly contain credentials or private keys (for example
+`gh/hosts.yml` or `.ssh/`) are labelled **sensitive** in the item list.
+
   
 ---
   

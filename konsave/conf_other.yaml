@@ -6,8 +6,8 @@
 # save:
 #     name:
 #         location: "path/to/parent/directory"
-#         entries: 
-#         # these are files to be backed up. They should be present in the specified location.
+#         entries:
+#         # these are files which will be backed up. They should be present in the specified location.
 #             - file1
 #             - file2
 # export:
@@ -16,7 +16,7 @@
 #     # These may include files like complete icon packs and themes..
 #     name:
 #         location: "path/to/parent/directory"
-#         entries: 
+#         entries:
 #             - file1
 #             - file2
 # ...
@@ -32,12 +32,86 @@
 # The following files will be saved in your profiles
 save:
     configs:
-        location: "$HOME/.config"
+        location: "$CONFIG_DIR"
         entries:
-            # add config files and folders to backup here like this
-            # - file1
-            # - file2
-            # - folder1
+            - gtk-2.0
+            - gtk-3.0
+            - gtk-4.0
+            - Kvantum
+
+    # Shell startup files and prompt configuration.
+    shell:
+        location: "$HOME/"
+        entries:
+            - .bashrc
+            - .bash_profile
+            - .bash_logout
+            - .profile
+            - .zshrc
+            - .zshenv
+            - .zprofile
+            - .zlogin
+            - .config/starship.toml
+            - .config/fish
+
+    # Terminal emulator profiles and colours.
+    terminals:
+        location: "$CONFIG_DIR"
+        entries:
+            - alacritty
+            - kitty
+            - wezterm
+            - foot
+            - ghostty
+            - xfce4/terminal
+
+    # Version control and developer tooling.
+    dev_tools:
+        location: "$CONFIG_DIR"
+        entries:
+            - git
+            - gh
+            - glab
+            - nvim
+            - helix
+            - micro
+            - bat
+            - ripgrep
+            - fd
+            - lazygit
+
+    # Command-line utility preferences.
+    cli_tools:
+        location: "$CONFIG_DIR"
+        entries:
+            - htop
+            - btop
+            - tmux
+            - starship.toml
+            - dconf
+
+    # Tabby terminal settings. "traversal: files" only picks up the top-level
+    # config files (config.yaml, window.json, …) and skips Electron caches.
+    tabby:
+        location: "$CONFIG_DIR/tabby"
+        traversal: files
+        exclude:
+            - DIPS*
+            - "Network Persistent State"
+            - Preferences
+            - "Trust Tokens*"
+            - SharedStorage*
+            - "Local State"
+            - log.txt
+            - "*.log"
+
+    # SSH is available but unchecked by default so private keys are never
+    # exported accidentally. Add finer-grained entries like ".ssh/config"
+    # or ".ssh/known_hosts" to share only specific files.
+    ssh:
+        location: "$HOME/"
+        entries:
+            - .ssh
 
     # Here are a few examples of how you can add more stuff to back up
     # firefox:
@@ -46,7 +120,7 @@ save:
     #         - chrome # for firefox customizations
 
     # oss:
-    #     location: "$HOME/.config/Code - OSS/User/"
+    #     location: "$CONFIG_DIR/Code - OSS/User/"
     #     entries:
     #         - settings.json
 
@@ -56,18 +130,25 @@ export:
     share_folder:
         location: "$HOME/.local/share"
         entries:
-            # add files/folders to export from "~/.local/share" here
+            - fonts
+            - icons
+            - themes
+            - color-schemes
+            - wallpapers
+
     home_folder:
         location: "$HOME/"
         entries:
-            # add files/folders to export from the home directory here
-    
+            - .fonts
+            - .themes
+            - .icons
+
     # You can add more files to export like this
     # name:
-        # location: "path"
-        # entries:
-            # - file1
-            # - file2
-            # - folder1
-            # - folder2
+    #     location: "path/to/parent/directory"
+    #     entries:
+    #         - file1
+    #         - file2
+    #         - folder1
+    #         - folder2
 ...
